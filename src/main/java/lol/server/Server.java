@@ -62,7 +62,6 @@ public class Server implements Runnable {
     System.out.println("Ask team composition...");
     for(Player p : players) {
       arena.addTeam(p.askTeamComposition());
-      gui.print(arena.toString());
       p.sendUID();
     }
   }
