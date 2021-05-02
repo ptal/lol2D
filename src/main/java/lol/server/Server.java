@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import lol.common.*;
 import lol.game.*;
+import lol.game.gui.*;
 
 /* The server is stopped whenever a player leaves or the game is over.
 */
@@ -15,12 +16,10 @@ public class Server implements Runnable {
   private final Thread acceptTask;
   private ServerSocket server;
   private Arena arena;
+  private LOL2D gui;
 
-  public static void main(String[] args) {
-    new Server().run();
-  }
-
-  public Server() {
+  public Server(LOL2D gui) {
+    this.gui = gui;
     players = new ArrayList<>();
     acceptTask = Thread.currentThread();
     arena = new Arena();
@@ -63,6 +62,7 @@ public class Server implements Runnable {
     System.out.println("Ask team composition...");
     for(Player p : players) {
       arena.addTeam(p.askTeamComposition());
+      gui.print(arena.toString());
       p.sendUID();
     }
   }
