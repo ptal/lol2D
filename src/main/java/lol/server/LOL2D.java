@@ -24,13 +24,10 @@ public class LOL2D extends Application {
   Battlefield battlefield;
   BattlefieldView battlefieldView;
 
-  public LOL2D() {
-    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
-    battlefield = battlefieldBuilder.build();
-  }
-
   public void start(Stage stage)
   {
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    battlefield = battlefieldBuilder.build();
     battlefieldView = new BattlefieldView(battlefield, stage);
     update();
     stage.show();

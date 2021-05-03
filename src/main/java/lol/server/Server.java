@@ -5,10 +5,10 @@ import java.io.*;
 import java.util.*;
 import lol.common.*;
 import lol.game.*;
+import lol.game.action.*;
 import lol.ui.*;
 
 public class Server implements Runnable {
-  private final static int NUM_PLAYERS = 2;
   private final ArrayList<Player> players;
   private final Thread acceptTask;
   private ServerSocket server;
@@ -20,6 +20,7 @@ public class Server implements Runnable {
     this.ui = ui;
     players = new ArrayList<>();
     acceptTask = Thread.currentThread();
+    this.battlefield = battlefield;
     arena = new Arena(battlefield);
   }
 
@@ -28,7 +29,7 @@ public class Server implements Runnable {
     System.out.println("Starting server...");
     try(ServerSocket serverRessource = new ServerSocket(ServerInfo.port)) {
       server = serverRessource;
-      while(players.size() < NUM_PLAYERS) {
+      while(players.size() < battlefield.numberOfTeams()) {
         waitNewPlayer();
       }
       startGame();
@@ -43,35 +44,44 @@ public class Server implements Runnable {
   private void waitNewPlayer() throws IOException {
     Socket socket = server.accept();
     System.out.println("New player at " + socket);
-    newPlayer(socket);
-  }
-
-  private void newPlayer(Socket socket) {
-    Player player = new Player(socket, this);
-    players.add(player);
+    players.add(new Player(socket, this));
   }
 
   private void startGame() throws IOException {
-
-    askTeamComposition();
-    arena.spawnChampions();
+    championSelectionPhase();
+    spawnPhase();
+    arena.startGamePhase();
     ui.update();
-    broadcastTeamComposition();
   }
 
-  private void askTeamComposition() throws IOException {
-    System.out.println("Ask team composition...");
+  private void championSelectionPhase() throws IOException {
+    System.out.println("Champion selection phase...");
+    ArrayList<Turn> champSelect = new ArrayList<Turn>();
     for(Player p : players) {
-      Team team = p.askTeamComposition();
-      arena.addTeam(team);
       p.sendUID();
+      Turn turn = p.askTurn();
+      champSelect.add(turn);
+    }
+    System.out.println("Broadcast team composition...");
+    broadcast(champSelect);
+  }
+
+  private void spawnPhase() throws IOException {
+    Turn turn = arena.spawnTurn();
+    arena.applyTurn(turn);
+    System.out.println("Broadcast spawning positions...");
+    broadcast(turn);
+  }
+
+  private void broadcast(Turn turn) throws IOException {
+    for(Player p : players) {
+      p.sendTurn(turn);
     }
   }
 
-  private void broadcastTeamComposition() throws IOException {
-    System.out.println("Broadcast team composition...");
+  private void broadcast(ArrayList<Turn> turns) throws IOException {
     for(Player p : players) {
-      p.sendTeamComposition(arena);
+      p.sendTurns(turns);
     }
   }
 
