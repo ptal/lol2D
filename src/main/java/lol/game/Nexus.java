@@ -1,21 +1,16 @@
 package lol.game;
 
-import java.io.Serializable;
+public class Nexus extends Destructible {
+  public static final int BLUE = 0;
+  public static final int RED = 1;
+  private int teamID;
 
-public class Nexus extends Destructible implements Serializable {
-  public enum Color {
-    BLUE,
-    RED;
+  public Nexus(int teamID) {
+    this.teamID = teamID;
   }
 
-  private Color colorTeam;
-
-  public Nexus(Color colorTeam) {
-    this.colorTeam = colorTeam;
-  }
-
-  public Color color() {
-    return colorTeam;
+  public int teamOfNexus() {
+    return teamID;
   }
 
   @Override public void accept(TileVisitor visitor, int x, int y) {

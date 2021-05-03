@@ -1,8 +1,6 @@
 package lol.game;
 
-import java.io.Serializable;
-
-public class Champion extends Destructible implements Serializable {
+public class Champion extends Destructible {
   private String name;
 
   private Champion(String name) {

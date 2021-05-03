@@ -39,6 +39,7 @@ public class Battlefield {
   // /!\ NOTE: Accessing position (x, y) is done with reversed indices ground[y][x].
   private GroundTile[][] ground;
   private Optional<Destructible>[][] battlefield;
+  private ArrayList<Nexus> nexuses;
 
   // Initialize a battlefield with a ground tiles map.
   // See `ASCIIBattlefieldBuilder` for a class initializing the battlefield using ASCII map.
@@ -51,6 +52,9 @@ public class Battlefield {
         battlefield[i][j] = Optional.empty();
       }
     }
+    nexuses = new ArrayList<>();
+    nexuses.add(new Nexus(0));
+    nexuses.add(new Nexus(1));
   }
 
   public int width() {
@@ -63,6 +67,14 @@ public class Battlefield {
 
   public GroundTile groundAt(int x, int y) {
     return ground[y][x];
+  }
+
+  public Nexus nexusOf(int teamID) {
+    return nexuses.get(teamID);
+  }
+
+  public int numberOfTeams() {
+    return nexuses.size();
   }
 
   // We can place something at (x, y) if:
@@ -172,9 +184,9 @@ public class Battlefield {
       }
 
       public void visitNexus(Nexus n, int x, int y) {
-        switch(n.color()) {
-          case BLUE: map.append('B'); break;
-          case RED: map.append('R'); break;
+        switch(n.teamOfNexus()) {
+          case Nexus.BLUE: map.append('B'); break;
+          case Nexus.RED: map.append('R'); break;
           default: throw new RuntimeException("Unknown Nexus Color in Battlefield.toString");
         }
         newline(x);

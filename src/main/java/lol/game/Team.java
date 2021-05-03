@@ -4,63 +4,52 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import lol.common.*;
+import lol.game.action.*;
 
-public class Team implements Serializable {
+public class Team {
+  private int teamID;
   private ArrayList<Champion> champions;
   private Nexus nexus;
+  private Battlefield battlefield;
 
-  public Team(Nexus nexus) {
+  public Team(int teamID, Battlefield battlefield) {
+    this.teamID = teamID;
     this.champions = new ArrayList<>();
-    this.nexus = nexus;
+    this.nexus = battlefield.nexusOf(teamID);
+    this.battlefield = battlefield;
   }
 
   public void addChampion(Champion c) {
     champions.add(c);
   }
 
-  // Simple boolean holder for `placed` in spawnChampions ("local variables referenced from an inner class must be final").
-  class BooleanPlaceholder {
-    BooleanPlaceholder(boolean b) { this.b = b; }
-    public boolean b;
+  public void spawnChampion(int championID, int x, int y) {
+    Champion champion = champions.get(championID);
+    boolean placed = battlefield.placeAt(champion, x, y);
+    if(!placed) {
+      System.out.println("Invalid spawn position of champion " + champion.name());
+    }
   }
 
-  public void spawnChampions(Battlefield battlefield) {
-    for(Champion champion : champions) {
-      final BooleanPlaceholder placed = new BooleanPlaceholder(false);
-      battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
-        public void visitGrass(int x, int y) {
-          if(!placed.b) {
-            battlefield.placeAt(champion, x, y);
-            placed.b = true;
-          }
+  // Simple int holder for `champIdx` in makeSpawnTurn ("local variables referenced from an inner class must be final").
+  class MutableInt {
+    public int v;
+    MutableInt(int v) { this.v = v; }
+  }
+
+  public void makeSpawnTurn(final Turn turn) {
+    MutableInt champIdx = new MutableInt(0);
+    battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
+      public void visitGrass(int x, int y) {
+        if(champIdx.v < champions.size()) {
+          turn.registerAction(new Spawn(teamID, champIdx.v, x, y));
+          champIdx.v = champIdx.v + 1;
         }
-      });
-      if(!placed.b) {
-        throw new RuntimeException("Cannot place the champion `" + champion
-          + "` due to all spawned spots next to the Nexus occupied.");
       }
+    });
+    if(champIdx.v != champions.size()) {
+      throw new RuntimeException("Cannot place all champions because all spawned spots next to the Nexus are already taken.");
     }
-  }
-
-  public Nexus.Color color() {
-    return nexus.color();
-  }
-
-  public void send(Socket socket) throws IOException {
-    OutputStream outputStream = socket.getOutputStream();
-    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-    objectOutputStream.writeObject(this);
-  }
-
-  public static Team receive(Socket socket) throws IOException {
-    InputStream inputStream = socket.getInputStream();
-    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    Object rawTeam = null;
-    try { rawTeam = objectInputStream.readObject(); } catch(Exception e) {}
-    if(!(rawTeam instanceof Team)) {
-      throw new BadProtocolException("a team composition of type `Team`");
-    }
-    return (Team) rawTeam;
   }
 
   @Override public String toString() {

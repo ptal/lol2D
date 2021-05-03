@@ -47,10 +47,10 @@ public class ASCIIBattlefieldBuilder {
   private void initDestructibleTile(char destructibleASCII, int y, int x) {
     switch(destructibleASCII) {
       case 'B':
-        battlefield.placeAt(new Nexus(Nexus.Color.BLUE), x, y);
+        battlefield.placeAt(battlefield.nexusOf(Nexus.BLUE), x, y);
         break;
       case 'R':
-        battlefield.placeAt(new Nexus(Nexus.Color.RED), x, y);
+        battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
         break;
       case '.': break;
       default:
