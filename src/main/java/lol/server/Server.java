@@ -61,6 +61,7 @@ public class Server implements Runnable {
       p.sendUID();
       Turn turn = p.askTurn();
       champSelect.add(turn);
+      arena.applyTurn(turn);
     }
     System.out.println("Broadcast team composition...");
     broadcast(champSelect);

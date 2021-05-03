@@ -6,8 +6,8 @@ public interface TileVisitor {
 
   default void visitGround(Battlefield.GroundTile groundTile, int x, int y) {
     switch(groundTile) {
-      case GRASS: visitGrass(x, y);
-      case ROCK: visitRock(x, y);
+      case GRASS: visitGrass(x, y); break;
+      case ROCK: visitRock(x, y); break;
       default: throw new RuntimeException("Missing GroundTile case in visitGround.");
     }
   }

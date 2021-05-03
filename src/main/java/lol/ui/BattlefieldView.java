@@ -36,10 +36,12 @@ public class BattlefieldView implements TileVisitor
   }
 
   public void update() {
-    initTilePane();
-    battlefield.visitFullMap(this);
-    scene = new Scene(tiles);
-    stage.setScene(scene);
+    Platform.runLater(() -> {
+      System.out.println("Updating battefield view...");
+      initTilePane();
+      battlefield.visitFullMap(this);
+      scene = new Scene(tiles);
+      stage.setScene(scene);});
   }
 
   ImageView groundView(Battlefield.GroundTile tile) {
@@ -52,18 +54,18 @@ public class BattlefieldView implements TileVisitor
 
   ImageView championView(Champion champion) {
     String name = champion.name();
-    if(name.equals("archer")) { return sprites.archer(); }
-    else if (name.equals("warrior")) { return sprites.warrior(); }
+    if(name.equals("Archer")) { return sprites.archer(); }
+    else if (name.equals("Warrior")) { return sprites.warrior(); }
     else {
       throw new UnsupportedOperationException(
-        "Displaying Champion tile `" + champion.name() + "` is not yet supported.");
+        "Displaying Champion tile `" + name + "` is not yet supported.");
     }
   }
 
   ImageView nexusView(Nexus nexus) {
-    switch(nexus.color()) {
-      case BLUE: return sprites.blueNexus();
-      case RED: return sprites.redNexus();
+    switch(nexus.teamOfNexus()) {
+      case Nexus.BLUE: return sprites.blueNexus();
+      case Nexus.RED: return sprites.redNexus();
       default: throw new RuntimeException("Unsupported Nexus color");
     }
   }

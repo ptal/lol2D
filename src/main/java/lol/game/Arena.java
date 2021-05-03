@@ -19,18 +19,17 @@ public class Arena {
   private Phase phase;
 
   public Arena(Battlefield battlefield) {
-    teams = new ArrayList<>();
+    teams = new ArrayList<>(battlefield.numberOfTeams());
+    for(int i = 0; i < battlefield.numberOfTeams(); ++i) {
+      teams.add(new Team(i, battlefield));
+    }
     this.battlefield = battlefield;
     this.phase = Phase.CHAMP_SELECT;
   }
 
-  public void initTeam() {
-    int teamID = teams.size();
-    teams.add(new Team(teamID, battlefield));
-  }
-
-  public int teamsNum() {
-    return teams.size();
+  public int numberOfTeams() {
+    assert teams.size() == battlefield.numberOfTeams();
+    return battlefield.numberOfTeams();
   }
 
   public Team teamOf(int teamID) {

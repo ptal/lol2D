@@ -36,8 +36,11 @@ public class Client implements Runnable {
       ai.initTeamID(teamID);
       System.out.println("UID received: " + teamID);
       Turn turn = ai.championSelect();
+      System.out.println("champion selected");
       turn.send(socket);
+      System.out.println("sent");
       allChampionSelection();
+      System.out.println("allCham");
       allSpawningChampion();
       System.out.println("Champion selection phase done.");
       // Now the turn-based game starts until the game is over.
@@ -62,7 +65,7 @@ public class Client implements Runnable {
   }
 
   private void turnsFromAll() throws IOException {
-    for(int i = 0; i < arena.teamsNum(); ++i) {
+    for(int i = 0; i < arena.numberOfTeams(); ++i) {
       oneTurn();
     }
   }

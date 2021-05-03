@@ -156,8 +156,8 @@ public class Battlefield {
           visit(visitor, xi, yi);
           int xShift = xDirection[(i + 1) % 4] - xDirection[i % 4];
           int yShift = yDirection[(i + 1) % 4] - yDirection[i % 4];
-          xi += (xShift > 0) ? -1 : ((xShift < 0) ? 1 : 0);
-          yi += (yShift > 0) ? -1 : ((yShift < 0) ? 1 : 0);
+          xi += (xCorner[(i + 1) % 4] == xCorner[i % 4]) ? 0 : (xShift > 0) ? 1 : -1;
+          yi += (yCorner[(i + 1) % 4] == yCorner[i % 4]) ? 0 : (yShift > 0) ? 1 : -1;
         }
       }
     }
