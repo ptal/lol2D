@@ -31,6 +31,17 @@ public class Team {
     }
   }
 
+  public void moveChampion(int championID, int x, int y) {
+    Champion champion = champions.get(championID);
+    boolean placed = false;
+    if(champion.canWalkTo(x, y)) {
+      placed = battlefield.moveTo(champion, x, y);
+    }
+    if(!placed) {
+      System.out.println("Invalid move position of champion " + champion.name());
+    }
+  }
+
   // Simple int holder for `champIdx` in makeSpawnTurn ("local variables referenced from an inner class must be final").
   class MutableInt {
     public int v;

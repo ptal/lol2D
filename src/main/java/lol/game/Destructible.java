@@ -4,6 +4,13 @@ package lol.game;
 public abstract class Destructible {
   protected int xCoord;
   protected int yCoord;
+  protected int initialHP;
+  protected int currentHP;
+
+  public Destructible(int hp) {
+    this.initialHP = hp;
+    this.currentHP = hp;
+  }
 
   public void place(int xCoord, int yCoord) {
     this.xCoord = xCoord;
@@ -16,6 +23,19 @@ public abstract class Destructible {
 
   public int y() {
     return yCoord;
+  }
+
+  public void hit(int hp) {
+    this.currentHP = Math.max(0, this.currentHP - hp);
+  }
+
+  public boolean isAlive() {
+    return currentHP > 0;
+  }
+
+  public void reviveAt(int x, int y) {
+    currentHP = initialHP;
+    place(x, y);
   }
 
   public abstract void accept(TileVisitor visitor, int x, int y);

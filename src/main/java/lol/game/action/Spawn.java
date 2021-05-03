@@ -3,16 +3,10 @@ package lol.game.action;
 import lol.game.*;
 import java.io.Serializable;
 
-public class Spawn extends Action implements Serializable {
-  private int championID;
-  private int x;
-  private int y;
+public class Spawn extends ChampionAction implements Serializable {
 
   public Spawn(int teamID, int championID, int x, int y) {
-    super(teamID);
-    this.championID = championID;
-    this.x = x;
-    this.y = y;
+    super(teamID, championID, x, y);
   }
 
   public void accept(ActionVisitor visitor) {

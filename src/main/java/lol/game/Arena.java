@@ -41,6 +41,10 @@ public class Arena {
       teams.get(teamID).spawnChampion(championID, x, y);
     }
 
+    public void visitMove(int teamID, int championID, int x, int y) {
+      teams.get(teamID).moveChampion(championID, x, y);
+    }
+
     public void visitChampionSelect(int teamID, String championName) {
       if(phase == Phase.CHAMP_SELECT) {
         try {
