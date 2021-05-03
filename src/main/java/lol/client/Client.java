@@ -10,8 +10,7 @@ import lol.client.ai.*;
 
 public class Client implements Runnable {
   public static void main(String[] args) {
-    Random rand = new Random();
-    new Client(new RandomAI(rand.nextBoolean())).run();
+    new Client(new RandomAI()).run();
   }
 
   private AIBase ai;
@@ -29,11 +28,14 @@ public class Client implements Runnable {
     try(Socket s = new Socket(ServerInfo.ip, ServerInfo.port)) {
       socket = s;
       System.out.println("Connection succeeds.");
+      Team team = Team.receive(socket);
+      ai.setTeam(team);
       ai.teamComposition().send(socket);
       System.out.println("Team composition sent.");
       receiveUID();
       System.out.println("UID received: " + uid);
       receiveArena();
+      ai.setArena(arena);
       System.out.println("Arena received\n" + arena);
     }
     catch (IOException e) {
@@ -54,6 +56,6 @@ public class Client implements Runnable {
   }
 
   private void receiveArena() throws IOException {
-    arena = Arena.receive(socket);
+    arena.receive(socket);
   }
 }

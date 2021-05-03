@@ -1,6 +1,8 @@
 package lol.game;
 
-public class Nexus extends Destructible {
+import java.io.Serializable;
+
+public class Nexus extends Destructible implements Serializable {
   public enum Color {
     BLUE,
     RED;

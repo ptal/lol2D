@@ -19,6 +19,7 @@ public class BattlefieldView implements TileVisitor
   Battlefield battlefield;
   Sprites sprites;
   TilePane tiles;
+  Stage stage;
   Scene scene;
 
   private void initTilePane() {
@@ -28,12 +29,13 @@ public class BattlefieldView implements TileVisitor
     tiles.setTileAlignment(Pos.CENTER);
   }
 
-  public BattlefieldView(Battlefield battlefield) {
+  public BattlefieldView(Battlefield battlefield, Stage stage) {
     this.battlefield = battlefield;
+    this.stage = stage;
     sprites = new Sprites();
   }
 
-  public void update(Stage stage) {
+  public void update() {
     initTilePane();
     battlefield.visitFullMap(this);
     scene = new Scene(tiles);
@@ -49,9 +51,9 @@ public class BattlefieldView implements TileVisitor
   }
 
   ImageView championView(Champion champion) {
-    if(champion.name().equals("archer")) {
-      return sprites.archer();
-    }
+    String name = champion.name();
+    if(name.equals("archer")) { return sprites.archer(); }
+    else if (name.equals("warrior")) { return sprites.warrior(); }
     else {
       throw new UnsupportedOperationException(
         "Displaying Champion tile `" + champion.name() + "` is not yet supported.");

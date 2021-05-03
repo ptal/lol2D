@@ -7,13 +7,43 @@ import lol.common.*;
 
 public class Team implements Serializable {
   private ArrayList<Champion> champions;
+  private Nexus nexus;
 
-  public Team() {
-    champions = new ArrayList<>();
+  public Team(Nexus nexus) {
+    this.champions = new ArrayList<>();
+    this.nexus = nexus;
   }
 
   public void addChampion(Champion c) {
     champions.add(c);
+  }
+
+  // Simple boolean holder for `placed` in spawnChampions ("local variables referenced from an inner class must be final").
+  class BooleanPlaceholder {
+    BooleanPlaceholder(boolean b) { this.b = b; }
+    public boolean b;
+  }
+
+  public void spawnChampions(Battlefield battlefield) {
+    for(Champion champion : champions) {
+      final BooleanPlaceholder placed = new BooleanPlaceholder(false);
+      battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
+        public void visitGrass(int x, int y) {
+          if(!placed.b) {
+            battlefield.placeAt(champion, x, y);
+            placed.b = true;
+          }
+        }
+      });
+      if(!placed.b) {
+        throw new RuntimeException("Cannot place the champion `" + champion
+          + "` due to all spawned spots next to the Nexus occupied.");
+      }
+    }
+  }
+
+  public Nexus.Color color() {
+    return nexus.color();
   }
 
   public void send(Socket socket) throws IOException {

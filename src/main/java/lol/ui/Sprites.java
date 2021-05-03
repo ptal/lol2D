@@ -6,12 +6,14 @@ import javafx.scene.image.ImageView;
 public class Sprites {
   private Image grassImage;
   private Image archerImage;
+  private Image warriorImage;
   private Image blueNexusImage;
   private Image redNexusImage;
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
     archerImage = new Image("sprites/archer.png");
+    warriorImage = new Image("sprites/warrior.png");
     blueNexusImage = new Image("sprites/blue-nexus.png");
     redNexusImage = new Image("sprites/red-nexus.png");
   }
@@ -28,6 +30,10 @@ public class Sprites {
 
   public ImageView archer() {
     return makeView(archerImage);
+  }
+
+  public ImageView warrior() {
+    return makeView(warriorImage);
   }
 
   public ImageView blueNexus() {

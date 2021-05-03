@@ -1,7 +1,9 @@
 package lol.game;
 
+import java.io.Serializable;
+
 // The coordinates are the position of the destructible in the battlefield.
-public abstract class Destructible {
+public abstract class Destructible implements Serializable {
   protected int xCoord;
   protected int yCoord;
 

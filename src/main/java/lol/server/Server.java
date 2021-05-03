@@ -7,9 +7,6 @@ import lol.common.*;
 import lol.game.*;
 import lol.ui.*;
 
-/* The server is stopped whenever a player leaves or the game is over.
-*/
-
 public class Server implements Runnable {
   private final static int NUM_PLAYERS = 2;
   private final ArrayList<Player> players;
@@ -17,12 +14,13 @@ public class Server implements Runnable {
   private ServerSocket server;
   private Arena arena;
   private LOL2D ui;
+  private Battlefield battlefield;
 
-  public Server(LOL2D ui) {
+  public Server(LOL2D ui, Battlefield battlefield) {
     this.ui = ui;
     players = new ArrayList<>();
     acceptTask = Thread.currentThread();
-    arena = new Arena();
+    arena = new Arena(battlefield);
   }
 
   @Override
@@ -54,22 +52,26 @@ public class Server implements Runnable {
   }
 
   private void startGame() throws IOException {
+
     askTeamComposition();
-    broadcastArena();
+    arena.spawnChampions();
+    ui.update();
+    broadcastTeamComposition();
   }
 
   private void askTeamComposition() throws IOException {
     System.out.println("Ask team composition...");
     for(Player p : players) {
-      arena.addTeam(p.askTeamComposition());
+      Team team = p.askTeamComposition();
+      arena.addTeam(team);
       p.sendUID();
     }
   }
 
-  private void broadcastArena() throws IOException {
-    System.out.println("Broadcast arena...");
+  private void broadcastTeamComposition() throws IOException {
+    System.out.println("Broadcast team composition...");
     for(Player p : players) {
-      p.sendArena(arena);
+      p.sendTeamComposition(arena);
     }
   }
 

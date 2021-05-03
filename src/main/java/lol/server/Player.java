@@ -32,7 +32,7 @@ public class Player {
     objectOutputStream.writeObject(this.uid);
   }
 
-  public void sendArena(Arena arena) throws IOException {
+  public void sendTeamComposition(Arena arena) throws IOException {
     arena.send(socket);
   }
 }

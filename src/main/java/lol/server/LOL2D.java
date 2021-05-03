@@ -27,18 +27,22 @@ public class LOL2D extends Application {
   public LOL2D() {
     ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
     battlefield = battlefieldBuilder.build();
-    battlefieldView = new BattlefieldView(battlefield);
   }
 
   public void start(Stage stage)
   {
-    battlefieldView.update(stage);
+    battlefieldView = new BattlefieldView(battlefield, stage);
+    update();
     stage.show();
     startServer();
   }
 
+  public void update() {
+    battlefieldView.update();
+  }
+
   private void startServer() {
-    Thread t = new Thread(new Server(this));
+    Thread t = new Thread(new Server(this, battlefield));
     t.start();
   }
 }
