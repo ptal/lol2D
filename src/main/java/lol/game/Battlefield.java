@@ -34,10 +34,13 @@ public class Battlefield {
   private void initTile(char groundASCII, char destructibleASCII, int x, int y) {
     ground[x][y] = GroundTile.fromASCII(groundASCII);
     switch(destructibleASCII) {
-      case 'n':
-        battlefield[x][y] = Optional.of(new Nexus());
+      case 'B':
+        battlefield[x][y] = Optional.of(new Nexus(Nexus.Color.BLUE));
         break;
-      case ' ': break;
+      case 'R':
+        battlefield[x][y] = Optional.of(new Nexus(Nexus.Color.RED));
+        break;
+      case '.': break;
       default:
         throw new RuntimeException("No destructible object with the representation `" + destructibleASCII + "`.");
     }
@@ -58,8 +61,9 @@ public class Battlefield {
   // The textual battlefield is an ASCII representation:
   //   - '~' is a grass tile (groundASCIIMap).
   //   - '*' is a rock tile (groundASCIIMap).
-  //   - 'n' is a Nexus tile (destructibleASCIIMap).
-  //   - ' ' indicates no destructible are present there (destructibleASCIIMap).
+  //   - 'B' is a blue Nexus tile (destructibleASCIIMap).
+  //   - 'R' is a red Nexus tile (destructibleASCIIMap).
+  //   - '.' indicates no destructible is present there (destructibleASCIIMap).
   @SuppressWarnings("unchecked")
   public Battlefield(char[][] groundASCIIMap, char[][] destructibleASCIIMap) {
     verifyMaps(groundASCIIMap, destructibleASCIIMap);
@@ -72,13 +76,18 @@ public class Battlefield {
     }
   }
 
-  // Move a destructible object on the battlefield.
-  // The move is allowed (return `true`) if:
+  // We can place something at (x, y) if:
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
+  public boolean canPlaceAt(int x, int y) {
+    return walkable(ground[x][y]) && battlefield[x][y].isEmpty();
+  }
+
+  // Move a destructible object on the battlefield.
+  // The move is allowed (return `true`) if `canPlaceAt(x,y)`.
   // Otherwise no action is performed.
   public boolean moveTo(Destructible d, int x, int y) {
-    if(walkable(ground[x][y]) && battlefield[x][y].isEmpty()) {
+    if(canPlaceAt(x, y)) {
       battlefield[x][y] = Optional.of(d);
       battlefield[d.x()][d.y()] = Optional.empty();
       d.place(x, y);
