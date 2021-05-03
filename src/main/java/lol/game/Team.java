@@ -12,6 +12,7 @@ public class Team {
   private ArrayList<Champion> champions;
   private Nexus nexus;
   private Battlefield battlefield;
+  private boolean logInvalidMove = false;
 
   public Team(int teamID, Battlefield battlefield) {
     this.teamID = teamID;
@@ -45,29 +46,37 @@ public class Team {
     if(champion.canWalkTo(x, y)) {
       moved = battlefield.moveTo(champion, x, y);
     }
-    if(!moved) {
+    if(!moved && logInvalidMove) {
       System.out.println("Invalid move position of champion " + champion.name());
     }
     return moved;
   }
 
-  // Simple int holder for `champIdx` in makeSpawnTurn ("local variables referenced from an inner class must be final").
-  class MutableInt {
-    public int v;
-    MutableInt(int v) { this.v = v; }
+  public boolean championAttack(int championID, int x, int y) {
+    Champion champion = champions.get(championID);
+    boolean[] attacked = {false};
+    battlefield.visit(x, y, new TileVisitor(){
+      @Override public void visitDestructible(Destructible d) {
+        attacked[0] = champion.attack(d);
+      }
+    });
+    if(!attacked[0]) {
+      System.out.println("Invalid attack target of champion " + champion.name());
+    }
+    return attacked[0];
   }
 
   public void makeSpawnTurn(final Turn turn) {
-    MutableInt champIdx = new MutableInt(0);
+    int[] champIdx = {0};
     battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
-      public void visitGrass(int x, int y) {
-        if(champIdx.v < champions.size()) {
-          turn.registerAction(new Spawn(teamID, champIdx.v, x, y));
-          champIdx.v = champIdx.v + 1;
+      @Override public void visitGrass(int x, int y) {
+        if(champIdx[0] < champions.size()) {
+          turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
+          champIdx[0] = champIdx[0] + 1;
         }
       }
     });
-    if(champIdx.v != champions.size()) {
+    if(champIdx[0] != champions.size()) {
       throw new RuntimeException("Cannot place all champions because all spawned spots next to the Nexus are already taken.");
     }
   }

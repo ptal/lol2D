@@ -12,8 +12,7 @@ public class Arena {
 
   public enum Phase {
     CHAMP_SELECT,
-    GAME,
-    TERMINATED;
+    GAME;
   }
 
   private Phase phase;
@@ -55,6 +54,19 @@ public class Arena {
       if(phase == Phase.GAME) {
         if(!championsWhoActed.contains(championID)) {
           if(teams.get(teamID).moveChampion(championID, x, y)) {
+            championsWhoActed.add(championID);
+          }
+        }
+      }
+      else {
+        System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
+      }
+    }
+
+    public void visitAttack(int teamID, int championID, int x, int y) {
+      if(phase == Phase.GAME) {
+        if(!championsWhoActed.contains(championID)) {
+          if(teams.get(teamID).championAttack(championID, x, y)) {
             championsWhoActed.add(championID);
           }
         }

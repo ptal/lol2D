@@ -32,6 +32,7 @@ public class Server implements Runnable {
       }
       startGame();
       gameLoop();
+      endOfGameMessage();
     }
     catch (IOException e) {
       System.err.println(e);
@@ -58,6 +59,18 @@ public class Server implements Runnable {
       Thread.sleep(timeInMS); // wait time in milliseconds to control duration
     } catch(InterruptedException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void endOfGameMessage() {
+    for(int i = 0; i < battlefield.numberOfTeams(); ++i) {
+      Nexus nexus = battlefield.nexusOf(i);
+      if(nexus.isAlive()) {
+        System.out.println("WINNER: " + nexus);
+      }
+      else {
+        System.out.println("LOSER: " + nexus);
+      }
     }
   }
 

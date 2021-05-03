@@ -12,6 +12,11 @@ public interface TileVisitor {
     }
   }
 
-  default void visitChampion(Champion c) {}
-  default void visitNexus(Nexus n) {}
+  default void visitDestructible(Destructible d) {}
+  default void visitChampion(Champion c) {
+    visitDestructible(c);
+  }
+  default void visitNexus(Nexus n) {
+    visitDestructible(n);
+  }
 }

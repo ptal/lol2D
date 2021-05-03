@@ -9,7 +9,7 @@ import lol.game.action.*;
 import lol.client.ai.*;
 
 public class Client implements Runnable {
-  public static int MAX_TURNS = 10;
+  public static int MAX_TURNS = 25;
 
   public static void main(String[] args) {
     ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();

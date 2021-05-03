@@ -19,7 +19,12 @@ public class Nexus extends Destructible {
     visitor.visitNexus(this);
   }
 
+  @Override public void hit(int damage) {
+    super.hit(damage);
+    System.out.println(this);
+  }
+
   @Override public String toString() {
-    return (teamID == BLUE ? "Blue" : "Red") + " nexus";
+    return (teamID == BLUE ? "Blue" : "Red") + " nexus: " + currentHP + "hp left";
   }
 }

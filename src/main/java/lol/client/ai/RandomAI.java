@@ -28,6 +28,16 @@ public class RandomAI extends AIBase {
 
   public Turn turn() {
     Turn turn = new Turn();
+    // Try to attack the Nexus first.
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+        public void visitNexus(Nexus nexus) {
+          if(nexus.teamOfNexus() != teamID) {
+            turn.registerAction(new Attack(teamID, id, nexus.x(), nexus.y()));
+          }
+        }
+      }));
+    // Add a move action in case we could not attack the Nexus.
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
         public void visitGrass(int x, int y) {

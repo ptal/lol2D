@@ -119,7 +119,7 @@ public class Battlefield {
 
   // Visit a tile using the visitor.
   // Do nothing if x or y is out of bounds.
-  private void visit(TileVisitor visitor, int x, int y) {
+  public void visit(int x, int y, TileVisitor visitor) {
     if(x >= width() || x < 0 || y >= height() || y < 0) {
       return;
     }
@@ -136,11 +136,10 @@ public class Battlefield {
   public void visitFullMap(TileVisitor visitor) {
     for(int y = 0; y < height(); ++y) {
       for(int x = 0; x < width(); ++x) {
-        visit(visitor, x, y);
+        visit(x, y, visitor);
       }
     }
   }
-
 
   // Clockwise shifted coordinates, for each corner of a square with center of (0, 0).
   static int[] xDirection = {-1, 1, 1, -1};
@@ -162,7 +161,7 @@ public class Battlefield {
         int yi = yCorner[i];
         // While we do not reach the next corner.
         while(!(xi == xCorner[(i + 1) % 4] && yi == yCorner[(i + 1) % 4])) {
-          visit(visitor, xi, yi);
+          visit(xi, yi, visitor);
           int xShift = xDirection[(i + 1) % 4] - xDirection[i % 4];
           int yShift = yDirection[(i + 1) % 4] - yDirection[i % 4];
           xi += (xCorner[(i + 1) % 4] == xCorner[i % 4]) ? 0 : (xShift > 0) ? 1 : -1;
