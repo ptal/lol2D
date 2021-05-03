@@ -5,21 +5,25 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import lol.game.*;
+import lol.game.action.*;
 import lol.client.ai.*;
-
 
 public class Client implements Runnable {
   public static void main(String[] args) {
-    new Client(new RandomAI()).run();
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    Battlefield battlefield = battlefieldBuilder.build();
+    Arena arena = new Arena(battlefield);
+    new Client(new RandomAI(arena), arena).run();
   }
 
   private AIBase ai;
-  private int uid;
+  private int teamID;
   private Arena arena;
   private Socket socket;
 
-  public Client(AIBase ai) {
+  public Client(AIBase ai, Arena arena) {
     this.ai = ai;
+    this.arena = arena;
   }
 
   @Override
@@ -28,18 +32,38 @@ public class Client implements Runnable {
     try(Socket s = new Socket(ServerInfo.ip, ServerInfo.port)) {
       socket = s;
       System.out.println("Connection succeeds.");
-      Team team = Team.receive(socket);
-      ai.setTeam(team);
-      ai.teamComposition().send(socket);
-      System.out.println("Team composition sent.");
       receiveUID();
-      System.out.println("UID received: " + uid);
-      receiveArena();
-      ai.setArena(arena);
-      System.out.println("Arena received\n" + arena);
+      ai.initTeamID(teamID);
+      System.out.println("UID received: " + teamID);
+      Turn turn = ai.championSelect();
+      turn.send(socket);
+      allChampionSelection();
+      allSpawningChampion();
+      System.out.println("Champion selection phase done.");
+      // Now the turn-based game starts until the game is over.
+      arena.startGamePhase();
     }
     catch (IOException e) {
       System.err.println(e);
+    }
+  }
+
+  private void allChampionSelection() throws IOException {
+    turnsFromAll();
+  }
+
+  private void allSpawningChampion() throws IOException {
+    oneTurn();
+  }
+
+  private void oneTurn() throws IOException {
+    Turn turn = Turn.receive(socket);
+    ai.applyTurn(turn);
+  }
+
+  private void turnsFromAll() throws IOException {
+    for(int i = 0; i < arena.teamsNum(); ++i) {
+      oneTurn();
     }
   }
 
@@ -51,11 +75,6 @@ public class Client implements Runnable {
     if(!(rawUID instanceof Integer)) {
       throw new ProtocolException("an UID of type `Integer`");
     }
-    uid = (Integer) rawUID;
-    ai.setUID(uid);
-  }
-
-  private void receiveArena() throws IOException {
-    arena.receive(socket);
+    teamID = (Integer) rawUID;
   }
 }
