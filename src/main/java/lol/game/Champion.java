@@ -32,4 +32,8 @@ public class Champion extends Destructible implements Serializable {
   @Override public String toString() {
     return name();
   }
+
+  @Override public void accept(TileVisitor visitor, int x, int y) {
+    visitor.visitChampion(this, x, y);
+  }
 }

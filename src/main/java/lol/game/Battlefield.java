@@ -20,8 +20,8 @@ public class Battlefield {
     }
   }
 
-  private boolean walkable(GroundTile ground) {
-    switch(ground) {
+  private boolean walkable(GroundTile groundTile) {
+    switch(groundTile) {
       case GRASS: return true;
       case ROCK: return false;
       default: throw new RuntimeException("Missing GroundTile case in walkable.");
@@ -85,5 +85,20 @@ public class Battlefield {
       return true;
     }
     return false;
+  }
+
+  // Visit the battlefield map from top left to bottom right in order.
+  // If a destructible is present on the map, we visit it, otherwise we visit the ground tile.
+  public void visitFullMap(TileVisitor visitor) {
+    for(int x = 0; x < ground.length; ++x) {
+      for(int y = 0; y < ground[x].length; ++y) {
+        if(battlefield[x][y].isEmpty()) {
+          visitor.visitGround(ground[x][y], x, y);
+        }
+        else {
+          battlefield[x][y].get().accept(visitor, x, y);
+        }
+      }
+    }
   }
 }

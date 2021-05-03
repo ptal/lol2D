@@ -17,4 +17,6 @@ public abstract class Destructible {
   public int y() {
     return yCoord;
   }
+
+  public abstract void accept(TileVisitor visitor, int x, int y);
 }
