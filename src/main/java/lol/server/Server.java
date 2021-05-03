@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 import lol.common.*;
 import lol.game.*;
-import lol.game.gui.*;
+import lol.game.ui.*;
 
 /* The server is stopped whenever a player leaves or the game is over.
 */
@@ -16,10 +16,10 @@ public class Server implements Runnable {
   private final Thread acceptTask;
   private ServerSocket server;
   private Arena arena;
-  private LOL2D gui;
+  private LOL2D ui;
 
-  public Server(LOL2D gui) {
-    this.gui = gui;
+  public Server(LOL2D ui) {
+    this.ui = ui;
     players = new ArrayList<>();
     acceptTask = Thread.currentThread();
     arena = new Arena();
