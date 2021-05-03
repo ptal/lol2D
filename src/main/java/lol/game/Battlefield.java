@@ -36,6 +36,7 @@ public class Battlefield {
     }
   }
 
+  // /!\ NOTE: Accessing position (x, y) is done with reversed indices ground[y][x].
   private GroundTile[][] ground;
   private Optional<Destructible>[][] battlefield;
 
@@ -44,19 +45,31 @@ public class Battlefield {
   @SuppressWarnings("unchecked")
   public Battlefield(GroundTile[][] ground) {
     this.ground = ground;
-    battlefield = new Optional[ground.length][ground[0].length];
-    for(int i = 0; i < ground.length; ++i) {
-      for(int j = 0; j < ground[i].length; ++j) {
+    battlefield = new Optional[height()][width()];
+    for(int i = 0; i < height(); ++i) {
+      for(int j = 0; j < width(); ++j) {
         battlefield[i][j] = Optional.empty();
       }
     }
+  }
+
+  public int width() {
+    return ground[0].length;
+  }
+
+  public int height() {
+    return ground.length;
+  }
+
+  public GroundTile groundAt(int x, int y) {
+    return ground[y][x];
   }
 
   // We can place something at (x, y) if:
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
   public boolean canPlaceAt(int x, int y) {
-    return GroundTile.walkable(ground[x][y]) && battlefield[x][y].isEmpty();
+    return GroundTile.walkable(ground[y][x]) && battlefield[y][x].isEmpty();
   }
 
   // Place a destructible object on the battlefield *for the first time*.
@@ -65,7 +78,7 @@ public class Battlefield {
   // Otherwise no action is performed.
   public boolean placeAt(Destructible d, int x, int y) {
     if(canPlaceAt(x, y)) {
-      battlefield[x][y] = Optional.of(d);
+      battlefield[y][x] = Optional.of(d);
       d.place(x, y);
       return true;
     }
@@ -77,7 +90,7 @@ public class Battlefield {
     int oldX = d.x();
     int oldY = d.y();
     if(placeAt(d, x, y)) {
-      battlefield[oldX][oldY] = Optional.empty();
+      battlefield[oldY][oldX] = Optional.empty();
       return false;
     }
     return true;
@@ -86,13 +99,13 @@ public class Battlefield {
   // Visit the battlefield map from top left to bottom right in order.
   // If a destructible is present on the map, we visit it, otherwise we visit the ground tile.
   public void visitFullMap(TileVisitor visitor) {
-    for(int x = 0; x < ground.length; ++x) {
-      for(int y = 0; y < ground[x].length; ++y) {
-        if(battlefield[x][y].isEmpty()) {
-          visitor.visitGround(ground[x][y], x, y);
+    for(int y = 0; y < width(); ++y) {
+      for(int x = 0; x < height(); ++x) {
+        if(battlefield[y][x].isEmpty()) {
+          visitor.visitGround(ground[y][x], x, y);
         }
         else {
-          battlefield[x][y].get().accept(visitor, x, y);
+          battlefield[y][x].get().accept(visitor, x, y);
         }
       }
     }
@@ -102,20 +115,20 @@ public class Battlefield {
     StringBuilder map = new StringBuilder();
     // The following TileVisitor construction is called an "anonymous class", check it out :-)
     visitFullMap(new TileVisitor(){
-      void newline(int y) {
-        if(y == ground[0].length - 1) {
+      void newline(int x) {
+        if(x == width() - 1) {
           map.append('\n');
         }
       }
 
       public void visitGround(GroundTile groundTile, int x, int y) {
         map.append(GroundTile.stringOf(groundTile));
-        newline(y);
+        newline(x);
       }
 
       public void visitChampion(Champion c, int x, int y) {
         map.append('C');
-        newline(y);
+        newline(x);
       }
 
       public void visitNexus(Nexus n, int x, int y) {
@@ -124,7 +137,7 @@ public class Battlefield {
           case RED: map.append('R'); break;
           default: throw new RuntimeException("Unknown Nexus Color in Battlefield.toString");
         }
-        newline(y);
+        newline(x);
       }
     });
     return map.toString();

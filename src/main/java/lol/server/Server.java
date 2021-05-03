@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 import lol.common.*;
 import lol.game.*;
-import lol.game.ui.*;
+import lol.ui.*;
 
 /* The server is stopped whenever a player leaves or the game is over.
 */

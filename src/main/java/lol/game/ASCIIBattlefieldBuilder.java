@@ -28,23 +28,23 @@ public class ASCIIBattlefieldBuilder {
 
   private Battlefield.GroundTile[][] buildGround() {
     ground = new Battlefield.GroundTile[groundASCIIMap.length][groundASCIIMap[0].length];
-    for(int i = 0; i < ground.length; ++i) {
-      for(int j = 0; j < ground[i].length; ++j) {
-        ground[i][j] = Battlefield.GroundTile.fromASCII(groundASCIIMap[i][j]);
+    for(int y = 0; y < ground.length; ++y) {
+      for(int x = 0; x < ground[y].length; ++x) {
+        ground[y][x] = Battlefield.GroundTile.fromASCII(groundASCIIMap[y][x]);
       }
     }
     return ground;
   }
 
   private void buildDestructible() {
-    for(int i = 0; i < ground.length; ++i) {
-      for(int j = 0; j < ground[i].length; ++j) {
-        initDestructibleTile(destructibleASCIIMap[i][j], i, j);
+    for(int y = 0; y < ground.length; ++y) {
+      for(int x = 0; x < ground[y].length; ++x) {
+        initDestructibleTile(destructibleASCIIMap[y][x], x, y);
       }
     }
   }
 
-  private void initDestructibleTile(char destructibleASCII, int x, int y) {
+  private void initDestructibleTile(char destructibleASCII, int y, int x) {
     switch(destructibleASCII) {
       case 'B':
         battlefield.placeAt(new Nexus(Nexus.Color.BLUE), x, y);
