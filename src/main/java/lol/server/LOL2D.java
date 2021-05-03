@@ -13,8 +13,13 @@ import javafx.geometry.Pos;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
+import lol.game.*;
+
 public class LOL2D extends Application {
   public static void main(String[] args) {
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    Battlefield battlefield = battlefieldBuilder.build();
+    System.out.println(battlefield);
     launch(args);
   }
 
