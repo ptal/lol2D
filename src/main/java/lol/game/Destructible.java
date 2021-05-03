@@ -38,5 +38,5 @@ public abstract class Destructible {
     place(x, y);
   }
 
-  public abstract void accept(TileVisitor visitor, int x, int y);
+  public abstract void accept(TileVisitor visitor);
 }

@@ -47,9 +47,9 @@ public class Battlefield {
   public Battlefield(GroundTile[][] ground) {
     this.ground = ground;
     battlefield = new Optional[height()][width()];
-    for(int i = 0; i < height(); ++i) {
-      for(int j = 0; j < width(); ++j) {
-        battlefield[i][j] = Optional.empty();
+    for(int y = 0; y < height(); ++y) {
+      for(int x = 0; x < width(); ++x) {
+        battlefield[y][x] = Optional.empty();
       }
     }
     nexuses = new ArrayList<>();
@@ -75,6 +75,15 @@ public class Battlefield {
 
   public int numberOfTeams() {
     return nexuses.size();
+  }
+
+  public boolean allNexusAlive() {
+    for(Nexus nexus : nexuses) {
+      if(!nexus.isAlive()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // We can place something at (x, y) if:
@@ -118,15 +127,15 @@ public class Battlefield {
       visitor.visitGround(ground[y][x], x, y);
     }
     else {
-      battlefield[y][x].get().accept(visitor, x, y);
+      battlefield[y][x].get().accept(visitor);
     }
   }
 
   // Visit the battlefield map from top left to bottom right in order.
   // If a destructible is present on the map, we visit it, otherwise we visit the ground tile.
   public void visitFullMap(TileVisitor visitor) {
-    for(int y = 0; y < width(); ++y) {
-      for(int x = 0; x < height(); ++x) {
+    for(int y = 0; y < height(); ++y) {
+      for(int x = 0; x < width(); ++x) {
         visit(visitor, x, y);
       }
     }
@@ -163,7 +172,7 @@ public class Battlefield {
     }
   }
 
-  public String toString() {
+  @Override public String toString() {
     StringBuilder map = new StringBuilder();
     // The following TileVisitor construction is called an "anonymous class", check it out :-)
     visitFullMap(new TileVisitor(){
@@ -173,23 +182,23 @@ public class Battlefield {
         }
       }
 
-      public void visitGround(GroundTile groundTile, int x, int y) {
+      @Override public void visitGround(GroundTile groundTile, int x, int y) {
         map.append(GroundTile.stringOf(groundTile));
         newline(x);
       }
 
-      public void visitChampion(Champion c, int x, int y) {
+      @Override public void visitChampion(Champion c) {
         map.append('C');
-        newline(x);
+        newline(c.x());
       }
 
-      public void visitNexus(Nexus n, int x, int y) {
+      @Override public void visitNexus(Nexus n) {
         switch(n.teamOfNexus()) {
           case Nexus.BLUE: map.append('B'); break;
           case Nexus.RED: map.append('R'); break;
           default: throw new RuntimeException("Unknown Nexus Color in Battlefield.toString");
         }
-        newline(x);
+        newline(n.x());
       }
     });
     return map.toString();

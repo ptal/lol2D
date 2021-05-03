@@ -9,21 +9,26 @@ import lol.game.action.*;
 import lol.client.ai.*;
 
 public class Client implements Runnable {
+  public static int MAX_TURNS = 10;
+
   public static void main(String[] args) {
     ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
     Battlefield battlefield = battlefieldBuilder.build();
     Arena arena = new Arena(battlefield);
-    new Client(new RandomAI(arena), arena).run();
+    RandomAI ai = new RandomAI(arena, battlefield);
+    new Client(ai, arena, battlefield).run();
   }
 
   private AIBase ai;
   private int teamID;
   private Arena arena;
+  private Battlefield battlefield;
   private Socket socket;
 
-  public Client(AIBase ai, Arena arena) {
+  public Client(AIBase ai, Arena arena, Battlefield battlefield) {
     this.ai = ai;
     this.arena = arena;
+    this.battlefield = battlefield;
   }
 
   @Override
@@ -45,9 +50,22 @@ public class Client implements Runnable {
       System.out.println("Champion selection phase done.");
       // Now the turn-based game starts until the game is over.
       arena.startGamePhase();
+      gameLoop();
     }
     catch (IOException e) {
       System.err.println(e);
+    }
+  }
+
+  private void gameLoop() throws IOException {
+    for(int turns = 0; battlefield.allNexusAlive() && turns < MAX_TURNS; ++turns) {
+      for(int i = 0; i < arena.numberOfTeams(); ++i) {
+        if(i == teamID) {
+          Turn turn = ai.turn();
+          turn.send(socket);
+        }
+        oneTurn();
+      }
     }
   }
 

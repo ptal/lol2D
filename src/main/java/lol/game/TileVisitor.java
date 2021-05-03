@@ -12,6 +12,6 @@ public interface TileVisitor {
     }
   }
 
-  default void visitChampion(Champion c, int x, int y) {}
-  default void visitNexus(Nexus n, int x, int y) {}
+  default void visitChampion(Champion c) {}
+  default void visitNexus(Nexus n) {}
 }

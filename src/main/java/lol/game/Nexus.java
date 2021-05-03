@@ -15,7 +15,11 @@ public class Nexus extends Destructible {
     return teamID;
   }
 
-  @Override public void accept(TileVisitor visitor, int x, int y) {
-    visitor.visitNexus(this, x, y);
+  @Override public void accept(TileVisitor visitor) {
+    visitor.visitNexus(this);
+  }
+
+  @Override public String toString() {
+    return (teamID == BLUE ? "Blue" : "Red") + " nexus";
   }
 }

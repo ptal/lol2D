@@ -1,6 +1,7 @@
 package lol.ui;
 
 import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -70,21 +71,22 @@ public class BattlefieldView implements TileVisitor
     }
   }
 
-  public void visitGround(Battlefield.GroundTile tile, int x, int y) {
+  @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
     tiles.getChildren().add(groundView(tile));
   }
 
-  public void visitChampion(Champion champion, int x, int y) {
+  private void displayDestructible(Destructible d, Node dView) {
     StackPane stack = new StackPane();
-    stack.getChildren().add(groundView(battlefield.groundAt(x, y)));
-    stack.getChildren().add(championView(champion));
+    stack.getChildren().add(groundView(battlefield.groundAt(d.x(), d.y())));
+    stack.getChildren().add(dView);
     tiles.getChildren().add(stack);
   }
 
-  public void visitNexus(Nexus nexus, int x, int y) {
-    StackPane stack = new StackPane();
-    stack.getChildren().add(groundView(battlefield.groundAt(x, y)));
-    stack.getChildren().add(nexusView(nexus));
-    tiles.getChildren().add(stack);
+  @Override public void visitChampion(Champion champion) {
+    displayDestructible(champion, championView(champion));
+  }
+
+  @Override public void visitNexus(Nexus nexus) {
+    displayDestructible(nexus, nexusView(nexus));
   }
 }

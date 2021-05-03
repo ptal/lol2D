@@ -4,14 +4,14 @@ public class Champion extends Destructible {
   private String name;
   private int attackRange;
   private int damages;
-  private int walkSpeed;
+  private int speed;
 
-  private Champion(String name, int hp, int attackRange, int damages, int walkSpeed) {
+  private Champion(String name, int hp, int attackRange, int damages, int speed) {
     super(hp);
     this.name = name;
     this.attackRange = attackRange;
     this.damages = damages;
-    this.walkSpeed = walkSpeed;
+    this.speed = speed;
   }
 
   public static Champion makeArcher() {
@@ -34,16 +34,20 @@ public class Champion extends Destructible {
     return name;
   }
 
+  public int walkSpeed() {
+    return speed;
+  }
+
   public boolean canWalkTo(int toX, int toY) {
     int distance = Math.max(Math.abs(toX - x()), Math.abs(toY - y()));
-    return distance <= walkSpeed;
+    return distance <= speed;
   }
 
   @Override public String toString() {
     return name();
   }
 
-  @Override public void accept(TileVisitor visitor, int x, int y) {
-    visitor.visitChampion(this, x, y);
+  @Override public void accept(TileVisitor visitor) {
+    visitor.visitChampion(this);
   }
 }

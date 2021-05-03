@@ -3,6 +3,7 @@ package lol.game;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.util.function.BiConsumer;
 import lol.common.*;
 import lol.game.action.*;
 
@@ -23,23 +24,31 @@ public class Team {
     champions.add(c);
   }
 
-  public void spawnChampion(int championID, int x, int y) {
+  public void forEachChampion(BiConsumer<Champion, Integer> f) {
+    for(int i = 0; i < champions.size(); ++i) {
+      f.accept(champions.get(i), i);
+    }
+  }
+
+  public boolean spawnChampion(int championID, int x, int y) {
     Champion champion = champions.get(championID);
     boolean placed = battlefield.placeAt(champion, x, y);
     if(!placed) {
       System.out.println("Invalid spawn position of champion " + champion.name());
     }
+    return placed;
   }
 
-  public void moveChampion(int championID, int x, int y) {
+  public boolean moveChampion(int championID, int x, int y) {
     Champion champion = champions.get(championID);
-    boolean placed = false;
+    boolean moved = false;
     if(champion.canWalkTo(x, y)) {
-      placed = battlefield.moveTo(champion, x, y);
+      moved = battlefield.moveTo(champion, x, y);
     }
-    if(!placed) {
+    if(!moved) {
       System.out.println("Invalid move position of champion " + champion.name());
     }
+    return moved;
   }
 
   // Simple int holder for `champIdx` in makeSpawnTurn ("local variables referenced from an inner class must be final").

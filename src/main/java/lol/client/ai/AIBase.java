@@ -6,9 +6,11 @@ import lol.game.action.*;
 public abstract class AIBase {
   protected int teamID;
   protected Arena arena;
+  protected Battlefield battlefield;
 
-  public AIBase(Arena arena) {
+  public AIBase(Arena arena, Battlefield battlefield) {
     this.arena = arena;
+    this.battlefield = battlefield;
   }
 
   public void initTeamID(int teamID) {

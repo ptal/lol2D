@@ -1,11 +1,15 @@
 package lol.client.ai;
 
+import java.util.*;
 import lol.game.*;
 import lol.game.action.*;
 
 public class RandomAI extends AIBase {
-  public RandomAI(Arena arena) {
-    super(arena);
+  private Random random;
+
+  public RandomAI(Arena arena, Battlefield battlefield) {
+    super(arena, battlefield);
+    random = new Random();
   }
 
   public Turn championSelect() {
@@ -23,6 +27,15 @@ public class RandomAI extends AIBase {
   }
 
   public Turn turn() {
-    return null;
+    Turn turn = new Turn();
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      battlefield.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
+        public void visitGrass(int x, int y) {
+          if(random.nextInt() % 3 == 0) {
+            turn.registerAction(new Move(teamID, id, x, y));
+          }
+        }
+      }));
+    return turn;
   }
 }

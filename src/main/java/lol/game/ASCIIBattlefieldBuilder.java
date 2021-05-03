@@ -44,13 +44,17 @@ public class ASCIIBattlefieldBuilder {
     }
   }
 
-  private void initDestructibleTile(char destructibleASCII, int y, int x) {
+  private void initDestructibleTile(char destructibleASCII, int x, int y) {
+    String errorMsg = "Impossible to place the nexus on this tile.";
+    boolean placed;
     switch(destructibleASCII) {
       case 'B':
-        battlefield.placeAt(battlefield.nexusOf(Nexus.BLUE), x, y);
+        placed = battlefield.placeAt(battlefield.nexusOf(Nexus.BLUE), x, y);
+        assert placed: errorMsg;
         break;
       case 'R':
-        battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
+        placed =  battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
+        assert placed : errorMsg;
         break;
       case '.': break;
       default:

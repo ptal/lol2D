@@ -37,12 +37,31 @@ public class Arena {
   }
 
   private class ApplyAction implements ActionVisitor {
+    ArrayList<Integer> championsWhoActed;
+
+    public ApplyAction() {
+      championsWhoActed = new ArrayList<>();
+    }
+
     public void visitSpawn(int teamID, int championID, int x, int y) {
-      teams.get(teamID).spawnChampion(championID, x, y);
+      if(!championsWhoActed.contains(championID)) {
+        if(teams.get(teamID).spawnChampion(championID, x, y)) {
+          championsWhoActed.add(championID);
+        }
+      }
     }
 
     public void visitMove(int teamID, int championID, int x, int y) {
-      teams.get(teamID).moveChampion(championID, x, y);
+      if(phase == Phase.GAME) {
+        if(!championsWhoActed.contains(championID)) {
+          if(teams.get(teamID).moveChampion(championID, x, y)) {
+            championsWhoActed.add(championID);
+          }
+        }
+      }
+      else {
+        System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
+      }
     }
 
     public void visitChampionSelect(int teamID, String championName) {

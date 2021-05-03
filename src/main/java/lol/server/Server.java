@@ -10,7 +10,6 @@ import lol.ui.*;
 
 public class Server implements Runnable {
   private final ArrayList<Player> players;
-  private final Thread acceptTask;
   private ServerSocket server;
   private Arena arena;
   private LOL2D ui;
@@ -19,7 +18,6 @@ public class Server implements Runnable {
   public Server(LOL2D ui, Battlefield battlefield) {
     this.ui = ui;
     players = new ArrayList<>();
-    acceptTask = Thread.currentThread();
     this.battlefield = battlefield;
     arena = new Arena(battlefield);
   }
@@ -33,6 +31,7 @@ public class Server implements Runnable {
         waitNewPlayer();
       }
       startGame();
+      gameLoop();
     }
     catch (IOException e) {
       System.err.println(e);
@@ -52,6 +51,26 @@ public class Server implements Runnable {
     spawnPhase();
     arena.startGamePhase();
     ui.update();
+  }
+
+  private void wait(int timeInMS) {
+    try {
+      Thread.sleep(timeInMS); // wait time in milliseconds to control duration
+    } catch(InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void gameLoop() throws IOException {
+    for(int turns = 0; battlefield.allNexusAlive() && turns < lol.client.Client.MAX_TURNS; ++turns) {
+      for(Player player : players) {
+        Turn turn = player.askTurn();
+        arena.applyTurn(turn);
+        ui.update();
+        broadcast(turn);
+        wait(2000);
+      }
+    }
   }
 
   private void championSelectionPhase() throws IOException {
