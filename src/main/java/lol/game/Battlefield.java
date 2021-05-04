@@ -191,6 +191,15 @@ public class Battlefield {
         newline(c.x());
       }
 
+      @Override public void visitTower(Tower t) {
+        switch(t.teamOfTower()) {
+          case Nexus.BLUE: map.append('t'); break;
+          case Nexus.RED: map.append('T'); break;
+          default: throw new RuntimeException("Unknown Tower Color in Battlefield.toString");
+        }
+        newline(t.x());
+      }
+
       @Override public void visitNexus(Nexus n) {
         switch(n.teamOfNexus()) {
           case Nexus.BLUE: map.append('B'); break;
