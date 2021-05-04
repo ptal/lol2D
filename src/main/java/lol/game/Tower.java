@@ -47,7 +47,7 @@ public class Tower extends Destructible{
     }
 
     @Override public void accept(TileVisitor visitor) {
-        visitor.visitDestructible(this);
+        visitor.visitTower(this);
     }
 
     @Override public void hit(int damage) {
