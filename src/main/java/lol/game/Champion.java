@@ -60,10 +60,6 @@ public class Champion extends Destructible {
     }
     return false;
   }
-  @Override public void hit(int damage) {
-    super.hit(damage);
-    System.out.println(this);
-  }
 
   @Override public String toString() {
     return name();
