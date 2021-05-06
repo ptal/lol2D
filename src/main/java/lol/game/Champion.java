@@ -4,14 +4,13 @@ public class Champion extends Destructible {
   private String name;
   private int rangeOfAttack;
   private int damages;
-  private int speed;
-
+  private int speed;  
   private Champion(String name, int hp, int rangeOfAttack, int damages, int speed) {
     super(hp);
     this.name = name;
     this.rangeOfAttack = rangeOfAttack;
     this.damages = damages;
-    this.speed = speed;
+    this.speed = speed;    
   }
 
   public static Champion makeArcher() {
@@ -60,6 +59,10 @@ public class Champion extends Destructible {
       return true;
     }
     return false;
+  }
+  @Override public void hit(int damage) {
+    super.hit(damage);
+    System.out.println(this);
   }
 
   @Override public String toString() {
