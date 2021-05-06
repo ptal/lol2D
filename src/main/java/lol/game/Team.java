@@ -6,6 +6,7 @@ import java.net.*;
 import java.util.function.BiConsumer;
 import lol.common.*;
 import lol.game.action.*;
+import lol.ui.Sound;
 
 public class Team {
   private int teamID;
@@ -13,12 +14,13 @@ public class Team {
   private Nexus nexus;
   private Battlefield battlefield;
   private boolean logInvalidMove = false;
-
+  private Sound sound;
   public Team(int teamID, Battlefield battlefield) {
     this.teamID = teamID;
     this.champions = new ArrayList<>();
     this.nexus = battlefield.nexusOf(teamID);
     this.battlefield = battlefield;
+    this.sound = new Sound();
   }
 
   public void addChampion(Champion c) {
@@ -58,6 +60,7 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
+        sound.attackSound(champion.name());
       }
     });
     if(!attacked[0]) {
