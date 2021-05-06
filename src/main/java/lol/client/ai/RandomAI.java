@@ -33,7 +33,8 @@ public class RandomAI extends AIBase {
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitNexus(Nexus nexus) {
           if(nexus.teamOfNexus() != teamID) {
-            sound.soundToPlay("Archer");            
+           if(champion.name().equals("Archer")){sound.attackSound("Archer");} 
+           else{sound.attackSound("Warrior");}
             turn.registerAction(new Attack(teamID, id, nexus.x(), nexus.y()));
           }
         }

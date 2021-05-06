@@ -10,20 +10,24 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import java.io.File;
 import java.io.IOException;
-
-public class Sound  {
-  
-    public void soundToPlay(String champion){
+//Source: Sound from Zapsplat.com
+public class Sound  {  
+   public void attackSound(String champion){
       switch (champion.toLowerCase()) {
-         case "archer":arrowSound();break;      
+         case "archer":arrowSound();break;
+         case "warrior":swordSound();break;      
          default:throw new RuntimeException("The sound for this champion doesn't exist");            
       }
     }
-    private void arrowSound(){
-      File shootArrow = new File("src\\main\\resources\\arrow.wav");
+   private void arrowSound(){
+      File shootArrow = new File("src\\main\\resources\\attack_sounds\\arrow.wav");
       playSound(shootArrow);     
-}  
-    private void playSound(File sound){
+   }
+   private void swordSound(){
+      File swordHit = new File("src\\main\\resources\\attack_sounds\\sword.wav");
+      playSound(swordHit);     
+   }   
+   private void playSound(File sound){
       try {                 
          AudioInputStream audioIn = AudioSystem.getAudioInputStream(sound.toURI().toURL());         
          Clip clip = AudioSystem.getClip();         
