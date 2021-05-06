@@ -3,14 +3,12 @@ package lol.client.ai;
 import java.util.*;
 import lol.game.*;
 import lol.game.action.*;
-import lol.ui.Sound;
+
 public class RandomAI extends AIBase {
-  private Random random;
-  private Sound sound;
+  private Random random;  
   public RandomAI(Arena arena, Battlefield battlefield) {
     super(arena, battlefield);
-    random = new Random();
-    this.sound = new Sound();
+    random = new Random();    
   }
   public Turn championSelect() {
     Turn turn = new Turn();
