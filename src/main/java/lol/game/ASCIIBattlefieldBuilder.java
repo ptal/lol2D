@@ -7,6 +7,7 @@ import java.io.*;
 // The textual battlefield is an ASCII representation:
 //   - '~' is a grass tile (groundASCIIMap).
 //   - '*' is a rock tile (groundASCIIMap).
+//   - 'T' is a tree tile (groundASCIIMap).
 //   - 'B' is a blue Nexus tile (destructibleASCIIMap).
 //   - 'R' is a red Nexus tile (destructibleASCIIMap).
 //   - '.' indicates no destructible is present there (destructibleASCIIMap).

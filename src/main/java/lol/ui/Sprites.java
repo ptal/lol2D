@@ -9,6 +9,9 @@ public class Sprites {
   private Image warriorImage;
   private Image blueNexusImage;
   private Image redNexusImage;
+  private Image treeImage;
+  private Image rockImage;
+
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -16,6 +19,8 @@ public class Sprites {
     warriorImage = new Image("sprites/warrior.png");
     blueNexusImage = new Image("sprites/blue-nexus.png");
     redNexusImage = new Image("sprites/red-nexus.png");
+    rockImage = new Image("sprites/rock-tile.png");
+    treeImage = new Image("sprites/tree-tile.png");
   }
 
   private ImageView makeView(Image image) {
@@ -42,5 +47,13 @@ public class Sprites {
 
   public ImageView redNexus() {
     return makeView(redNexusImage);
+  }
+
+  public ImageView tree() {
+    return makeView(treeImage);
+  }
+
+  public ImageView rock() {
+    return makeView(rockImage);
   }
 }

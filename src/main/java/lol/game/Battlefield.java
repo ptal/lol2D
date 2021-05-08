@@ -10,11 +10,13 @@ import java.util.*;
 public class Battlefield {
   public enum GroundTile {
     GRASS,
-    ROCK;
+    ROCK,
+    TREE;
     public static GroundTile fromASCII(char c) {
       switch(c) {
         case '~': return GroundTile.GRASS;
         case '*': return GroundTile.ROCK;
+        case 'T': return GroundTile.TREE;
         default: throw new RuntimeException("No ground tile with the representation `" + c + "`.");
       }
     }
@@ -23,14 +25,17 @@ public class Battlefield {
       switch(groundTile) {
         case GRASS: return true;
         case ROCK: return false;
+        case TREE: return false;
         default: throw new RuntimeException("Missing GroundTile case in walkable.");
       }
     }
+
 
     public static char stringOf(GroundTile groundTile) {
       switch(groundTile) {
         case GRASS: return '~';
         case ROCK: return '*';
+        case TREE: return 'T';
         default: throw new RuntimeException("Missing GroundTile case in stringOf.");
       }
     }
