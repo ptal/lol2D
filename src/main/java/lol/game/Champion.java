@@ -22,10 +22,13 @@ public class Champion extends Destructible {
     return new Champion("Warrior", 15, 1, 3, 2);
   }
 
+  public static Champion makeScientist() { return new Champion("Scientist", 3, 2, 15, 2);}
+
   public static Champion make(String name) {
     switch(name) {
       case "Archer": return makeArcher();
       case "Warrior": return makeWarrior();
+      case "Scientist" : return makeScientist();
       default: throw new RuntimeException("The champion " + name + " does not exist.");
     }
   }
