@@ -52,7 +52,7 @@ public class BattlefieldView implements TileVisitor
       case ROCK: return sprites.rock();
       case PATH: return sprites.path();
       default: throw new UnsupportedOperationException(
-        "Displaying ground tile `" + tile.name() + "` is not yet supported.");
+              "Displaying ground tile `" + tile.name() + "` is not yet supported.");
     }
   }
 
@@ -60,9 +60,10 @@ public class BattlefieldView implements TileVisitor
     String name = champion.name();
     if(name.equals("Archer")) { return sprites.archer(); }
     else if (name.equals("Warrior")) { return sprites.warrior(); }
+    else if (name.equals("Scientist")) { return  sprites.scientist();}
     else {
       throw new UnsupportedOperationException(
-        "Displaying Champion tile `" + name + "` is not yet supported.");
+              "Displaying Champion tile `" + name + "` is not yet supported.");
     }
   }
 

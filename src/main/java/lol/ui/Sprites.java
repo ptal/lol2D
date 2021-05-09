@@ -9,6 +9,7 @@ public class Sprites {
   private Image pathImage;
   private Image archerImage;
   private Image warriorImage;
+  private Image scientistImage;
   private Image blueNexusImage;
   private Image redNexusImage;
 
@@ -19,6 +20,7 @@ public class Sprites {
     pathImage = new Image("sprites/path-tile.png");
     archerImage = new Image("sprites/archer.png");
     warriorImage = new Image("sprites/warrior.png");
+    scientistImage = new Image("sprites/scientist.png");
     blueNexusImage = new Image("sprites/blue-nexus.png");
     redNexusImage = new Image("sprites/red-nexus.png");
   }
@@ -52,6 +54,8 @@ public class Sprites {
   public ImageView warrior() {
     return makeView(warriorImage);
   }
+
+  public ImageView scientist() {return  makeView(scientistImage);}
 
   public ImageView blueNexus() {
     return makeView(blueNexusImage);
