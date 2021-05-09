@@ -48,6 +48,9 @@ public class BattlefieldView implements TileVisitor
   ImageView groundView(Battlefield.GroundTile tile) {
     switch(tile) {
       case GRASS: return sprites.grass();
+      case WATER: return sprites.water();
+      case ROCK: return sprites.rock();
+      case PATH: return sprites.path();
       default: throw new UnsupportedOperationException(
         "Displaying ground tile `" + tile.name() + "` is not yet supported.");
     }
