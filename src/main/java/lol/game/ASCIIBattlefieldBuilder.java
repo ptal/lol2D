@@ -5,11 +5,14 @@ import java.io.*;
 
 // Initialize the battlefield with the given textual battlefield.
 // The textual battlefield is an ASCII representation:
-//   - '~' is a grass tile (groundASCIIMap).
+//   - ',' is a grass tile (groundASCIIMap).
+//   - '~' is a water tile (groundASCIIMap).
+//   - '-' is a path tile (groundASCIIMap).
 //   - '*' is a rock tile (groundASCIIMap).
 //   - 'B' is a blue Nexus tile (destructibleASCIIMap).
 //   - 'R' is a red Nexus tile (destructibleASCIIMap).
 //   - '.' indicates no destructible is present there (destructibleASCIIMap).
+
 public class ASCIIBattlefieldBuilder {
   private Battlefield battlefield;
   private char[][] groundASCIIMap;
@@ -57,6 +60,7 @@ public class ASCIIBattlefieldBuilder {
         assert placed : errorMsg;
         break;
       case '.': break;
+      case ',': break;
       default:
         throw new RuntimeException("No destructible object with the representation `" + destructibleASCII + "`.");
     }
