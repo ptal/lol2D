@@ -87,7 +87,7 @@ public class Arena {
       }
       else {
         System.out.println("Champion selection action outside of the champion selection phase (teamID = "
-          + teamID + ", championName = " + championName + ".");
+                + teamID + ", championName = " + championName + ".");
       }
     }
   }
