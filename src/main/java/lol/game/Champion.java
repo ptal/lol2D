@@ -5,6 +5,7 @@ public class Champion extends Destructible {
   private int rangeOfAttack;
   private int damages;
   private int speed;
+  private int deathTimer = 0;
 
   private Champion(String name, int hp, int rangeOfAttack, int damages, int speed) {
     super(hp);
@@ -60,6 +61,14 @@ public class Champion extends Destructible {
       return true;
     }
     return false;
+  }
+
+  public void increaseTimer() {
+    deathTimer = deathTimer + 1;
+  }
+
+  public boolean reachedTimer() {
+    return deathTimer==3;
   }
 
   @Override public String toString() {

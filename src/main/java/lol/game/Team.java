@@ -40,6 +40,22 @@ public class Team {
     return placed;
   }
 
+  public boolean reviveChampion(int championID ,int x ,int y) {
+    Champion champion = champions.get(championID);
+    boolean revived = false;
+    if(champion.reachedTimer()) {
+      revived = battlefield.moveTo(champion, x, y);
+      champion.revive();
+    }
+    else {
+      champion.increaseTimer();
+    }
+    if(!revived && logInvalidMove) {
+      System.out.println("Invalid respawn position of champion " + champion.name());
+    }
+    return revived;
+  }
+
   public boolean moveChampion(int championID, int x, int y) {
     Champion champion = champions.get(championID);
     boolean moved = false;

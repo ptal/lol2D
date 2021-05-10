@@ -50,6 +50,14 @@ public class Arena {
       }
     }
 
+    public void visitRevive(int teamID, int championID, int x, int y) {
+      if(!championsWhoActed.contains(championID)) {
+        if(teams.get(teamID).reviveChampion(championID, x, y)) {
+          championsWhoActed.add(championID);
+        }
+      }
+    }
+
     public void visitMove(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
         if(!championsWhoActed.contains(championID)) {
