@@ -86,6 +86,12 @@ public class Battlefield {
     return true;
   }
 
+  public void removeChampion(Destructible d, int x, int y) {
+    if (d instanceof Champion && !d.isAlive()) {
+      battlefield[y][x] = Optional.empty(); 
+    }
+  }
+
   // We can place something at (x, y) if:
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).

@@ -50,6 +50,19 @@ public class Arena {
       }
     }
 
+    public void visitRevive(int teamID, int championID, int x, int y) {
+      if(phase == Phase.GAME) {
+        if(!championsWhoActed.contains(championID)) {
+          if(teams.get(teamID).reviveChampion(championID, x, y)) {
+            championsWhoActed.add(championID);
+          }
+        }
+        else {
+          System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
+        }
+      }
+    }
+
     public void visitMove(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
         if(!championsWhoActed.contains(championID)) {

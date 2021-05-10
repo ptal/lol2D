@@ -33,6 +33,10 @@ public abstract class Destructible {
     return currentHP > 0;
   }
 
+  public void revive() {
+    currentHP = initialHP;
+  }
+
   public void reviveAt(int x, int y) {
     currentHP = initialHP;
     place(x, y);
