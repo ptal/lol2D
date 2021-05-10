@@ -5,8 +5,10 @@ import javafx.scene.image.ImageView;
 
 public class Sprites {
   private Image grassImage;
-  private Image archerImage;
-  private Image warriorImage;
+  private Image redArcherImage;
+  private Image blueArcherImage;
+  private Image redWarriorImage;
+  private Image blueWarriorImage;
   private Image blueNexusImage;
   private Image redNexusImage;
   private Image treeImage;
@@ -15,8 +17,10 @@ public class Sprites {
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
-    archerImage = new Image("sprites/archer.png");
-    warriorImage = new Image("sprites/warrior.png");
+    blueArcherImage = new Image("sprites/blue-archer.png");
+    redArcherImage = new Image("sprites/red-archer.png");
+    blueWarriorImage = new Image("sprites/blue-warrior.png");
+    redWarriorImage = new Image("sprites/red-warrior.png");
     blueNexusImage = new Image("sprites/blue-nexus.png");
     redNexusImage = new Image("sprites/red-nexus.png");
     rockImage = new Image("sprites/rock-tile.png");
@@ -33,12 +37,20 @@ public class Sprites {
     return makeView(grassImage);
   }
 
-  public ImageView archer() {
-    return makeView(archerImage);
+  public ImageView redArcher() {
+    return makeView(redArcherImage);
   }
 
-  public ImageView warrior() {
-    return makeView(warriorImage);
+  public ImageView blueArcher() {
+    return makeView(blueArcherImage);
+  }
+
+  public ImageView blueWarrior() {
+    return makeView(blueWarriorImage);
+  }
+
+  public ImageView redWarrior() {
+    return makeView(redWarriorImage);
   }
 
   public ImageView blueNexus() {

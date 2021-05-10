@@ -21,6 +21,10 @@ public class Team {
     this.battlefield = battlefield;
   }
 
+  public int teamID(){
+    return teamID;
+  }
+
   public void addChampion(Champion c) {
     champions.add(c);
   }

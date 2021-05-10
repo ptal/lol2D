@@ -39,10 +39,10 @@ public class BattlefieldView implements TileVisitor
   public void update() {
     Platform.runLater(() -> {
       System.out.println("Updating battefield view...");
-      initTilePane();
       battlefield.visitFullMap(this);
       scene = new Scene(tiles);
       stage.setScene(scene);});
+      initTilePane();
   }
 
   ImageView groundView(Battlefield.GroundTile tile) {
@@ -57,8 +57,11 @@ public class BattlefieldView implements TileVisitor
 
   ImageView championView(Champion champion) {
     String name = champion.name();
-    if(name.equals("Archer")) { return sprites.archer(); }
-    else if (name.equals("Warrior")) { return sprites.warrior(); }
+    int teamID = champion.teamID();
+    if(name.equals("Archer") && teamID == 0) { return sprites.blueArcher(); }
+    else if (name.equals("Warrior") && teamID == 0) { return sprites.blueWarrior(); }
+    else if (name.equals("Archer") && teamID == 1) { return sprites.redArcher(); }
+    else if (name.equals("Warrior") && teamID == 1) { return sprites.redWarrior(); }
     else {
       throw new UnsupportedOperationException(
         "Displaying Champion tile `" + name + "` is not yet supported.");
@@ -97,7 +100,6 @@ public class BattlefieldView implements TileVisitor
     stack.getChildren().add(lifeBarStatic);
     stack.getChildren().add(lifeBar);
   }
-
   @Override public void visitChampion(Champion champion) {
     displayDestructible(champion, championView(champion));
   }
