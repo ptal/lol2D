@@ -21,10 +21,6 @@ public class Team {
     this.battlefield = battlefield;
   }
 
-  public int teamID(){
-    return teamID;
-  }
-
   public void addChampion(Champion c) {
     champions.add(c);
   }
@@ -75,8 +71,10 @@ public class Team {
     battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
-          turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
-          champIdx[0] = champIdx[0] + 1;
+          while(!battlefield.canPlaceAt(x,y)){
+            turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
+            }
+        champIdx[0] = champIdx[0] + 1;
         }
       }
     });
