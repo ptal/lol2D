@@ -31,6 +31,10 @@ public class Team {
     }
   }
 
+  public boolean belongsToTeam(Champion champion) {
+    return champions.contains(champion);
+  }
+
   public boolean spawnChampion(int championID, int x, int y) {
     Champion champion = champions.get(championID);
     boolean placed = battlefield.placeAt(champion, x, y);
@@ -40,15 +44,21 @@ public class Team {
     return placed;
   }
 
+  public void removeChampion(Destructible d ,int x ,int y) {
+    battlefield.removeChampion(d, x, y);
+  }
+
   public boolean reviveChampion(int championID ,int x ,int y) {
     Champion champion = champions.get(championID);
     boolean revived = false;
     if(champion.reachedTimer()) {
-      revived = battlefield.moveTo(champion, x, y);
+      revived = battlefield.placeAt(champion, x, y);
       champion.revive();
+      champion.resetTimer();
     }
     else {
       champion.increaseTimer();
+      revived = true;
     }
     if(!revived && logInvalidMove) {
       System.out.println("Invalid respawn position of champion " + champion.name());
@@ -74,6 +84,7 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
+        removeChampion(d, x ,y);
       }
     });
     if(!attacked[0]) {

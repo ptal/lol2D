@@ -71,6 +71,10 @@ public class Champion extends Destructible {
     return deathTimer==3;
   }
 
+  public void resetTimer() {
+    deathTimer = 0;
+  }
+
   @Override public String toString() {
     return name();
   }

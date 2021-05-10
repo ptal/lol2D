@@ -31,9 +31,18 @@ public class RandomAI extends AIBase {
     // First check if a champion needs to be revived.
     arena.teamOf(teamID).forEachChampion((champion, id) -> {
       if (!champion.isAlive()){
-        turn.registerAction(new Revive(teamID, id, 0, 0));
+        turn.registerAction(new Revive(teamID, id, (int) (Math.random()*9), (int) (Math.random()*9)));
       }
     });
+    // Try to attack ennemies next.
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+        public void visitChampion(Champion otherChampion) {
+          if(arena.teamOf(1-teamID).belongsToTeam(otherChampion)) {
+            turn.registerAction(new Attack(teamID, id, otherChampion.x(), otherChampion.y()));
+          }
+        }
+      }));
     // Try to attack the Nexus next.
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
