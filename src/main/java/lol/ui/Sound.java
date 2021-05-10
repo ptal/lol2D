@@ -6,26 +6,24 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-
 import java.io.File;
 import java.io.IOException;
+
 //Source: Sound from Zapsplat.com
+//Mp3 is not supported
 public class Sound  {  
-   public void attackSound(String champion){
-      switch (champion.toLowerCase()) {
-         case "archer":arrowSound();break;
-         case "warrior":swordSound();break;      
-         default:throw new RuntimeException("The sound for this champion doesn't exist");            
-      }
-    }
-   private void arrowSound(){
-      File shootArrow = new File("src\\main\\resources\\attack_sounds\\arrow.wav");
-      playSound(shootArrow);     
+   private File shootArrow;
+   private File swordHit;
+   public Sound(){
+      this.shootArrow = new File("src\\main\\resources\\attack_sounds\\arrow.wav");
+      this.swordHit = new File("src\\main\\resources\\attack_sounds\\sword.wav");
    }
-   private void swordSound(){
-      File swordHit = new File("src\\main\\resources\\attack_sounds\\sword.wav");
-      playSound(swordHit);     
+   public void attackSound(String entity){
+      switch (entity.toLowerCase()) {
+         case "archer":playSound(this.shootArrow);break;
+         case "warrior":playSound(this.swordHit);break;      
+         default:throw new RuntimeException("The sound for " + entity + " doesn't exist");            
+      }
    }   
    private void playSound(File sound){
       try {                 
@@ -42,5 +40,5 @@ public class Sound  {
          System.out.println("The line cannot be opened.Check if its used by another application");
          e.printStackTrace();
       }
-    }
+   }
 }
