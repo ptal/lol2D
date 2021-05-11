@@ -73,8 +73,8 @@ public class Team {
         if(champIdx[0] < champions.size()) {
           while(!battlefield.canPlaceAt(x,y)){
             turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
-            }
-        champIdx[0] = champIdx[0] + 1;
+          }
+          champIdx[0] = champIdx[0] + 1;
         }
       }
     });

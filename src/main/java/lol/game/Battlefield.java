@@ -95,7 +95,7 @@ public class Battlefield {
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
   public boolean canPlaceAt(int x, int y) {
-    return (GroundTile.walkable(ground[y][x]) && battlefield[y][x].isEmpty());
+    return GroundTile.walkable(ground[y][x]) && battlefield[y][x].isEmpty();
   }
 
   // Place a destructible object on the battlefield *for the first time*.

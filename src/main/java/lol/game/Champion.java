@@ -57,7 +57,7 @@ public class Champion extends Destructible {
   }
 
   public boolean canAttack(int toX, int toY) {
-    return distanceFrom(toX, toY) <= rangeOfAttack ;
+    return distanceFrom(toX, toY) <= rangeOfAttack;
   }
 
   public boolean attack(Destructible d) {
