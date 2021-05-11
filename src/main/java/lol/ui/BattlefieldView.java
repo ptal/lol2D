@@ -79,13 +79,13 @@ public class BattlefieldView implements TileVisitor
     StackPane stack = new StackPane();
     stack.getChildren().add(groundView(battlefield.groundAt(d.x(), d.y())));
     stack.getChildren().add(dView);
-    tiles.getChildren().add(stack);
     drawLifeBar(stack, d);
+    tiles.getChildren().add(stack);
   }
 
   private void drawLifeBar(StackPane stack, Destructible d){
     double width = d.currentHP()*1.0/d.initialHP();
-    Rectangle lifeBar = new Rectangle(0, 0, (int) (50*width), 4); 
+    Rectangle lifeBar = new Rectangle(0, 0, (int) (50*width), 4);
     Rectangle lifeBarStatic = new Rectangle(0, 0, 50, 4);
     stack.setAlignment(Pos.TOP_LEFT);
     lifeBar.setFill(Color.GREEN);
@@ -95,8 +95,9 @@ public class BattlefieldView implements TileVisitor
     stack.getChildren().add(lifeBarStatic);
     stack.getChildren().add(lifeBar);
   }
-  
+
   @Override public void visitChampion(Champion champion) {
+    System.out.println("Display champion ");
     displayDestructible(champion, championView(champion));
   }
 

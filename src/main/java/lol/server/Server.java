@@ -52,6 +52,7 @@ public class Server implements Runnable {
     spawnPhase();
     arena.startGamePhase();
     ui.update();
+    wait(2000);
   }
 
   private void wait(int timeInMS) {

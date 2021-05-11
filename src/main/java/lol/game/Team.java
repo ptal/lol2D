@@ -72,6 +72,7 @@ public class Team {
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
           turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
+          System.out.println("Spawn hero " + champIdx[0] + " at " + x + ", " + y + " team " + teamID);
           champIdx[0] = champIdx[0] + 1;
         }
       }
