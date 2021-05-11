@@ -52,7 +52,7 @@ public class Sprites {
       else{throw new RuntimeException("No such team of number `" + teamID + "`.");}
     }
 
-    else {throw new RuntimeException("No champion named `" + teamID + "`.");}
+    else {throw new RuntimeException("No champion named `" + name + "`.");}
 
   }
 
