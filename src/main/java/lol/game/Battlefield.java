@@ -127,10 +127,8 @@ public class Battlefield {
     return true;
   }
 
-  public void destroyDestructible(Destructible d) {
-
+  public void destroy(Destructible d) {
       battlefield[d.y()][d.x()] = Optional.empty();
-
   }
 
   // Visit a tile using the visitor.

@@ -32,6 +32,6 @@ public class Tower extends Attacker{
     }
 
     @Override public String toString() {
-        return (teamID == BLUE ? "Blue" : "Red") + " Tower: " + currentHP + "hp left";
+        return (teamID == BLUE ? "Blue" : "Red") + " Tower: " + currentHP() + "hp left";
     }
 }
