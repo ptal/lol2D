@@ -2,6 +2,7 @@ package lol.ui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.util.ArrayList;
 
 public class Sprites {
   private Image grassImage;
@@ -25,6 +26,7 @@ public class Sprites {
     redNexusImage = new Image("sprites/red-nexus.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
+
   }
 
   private ImageView makeView(Image image) {
@@ -37,21 +39,23 @@ public class Sprites {
     return makeView(grassImage);
   }
 
-  public ImageView redArcher() {
-    return makeView(redArcherImage);
+  public ImageView championsView(String name, int teamID) {
+    if(name.equals("Archer")){
+      if (teamID ==0) {return makeView(redArcherImage);}
+      else if(teamID ==1){return makeView(blueArcherImage);}
+      else{throw new RuntimeException("No such team of number `" + teamID + "`.");}
+    }
+
+    else if(name.equals("Warrior")){
+      if (teamID ==0) {return makeView(redWarriorImage);}
+      else if(teamID ==1){return makeView(blueWarriorImage);}
+      else{throw new RuntimeException("No such team of number `" + teamID + "`.");}
+    }
+
+    else {throw new RuntimeException("No champion named `" + teamID + "`.");}
+
   }
 
-  public ImageView blueArcher() {
-    return makeView(blueArcherImage);
-  }
-
-  public ImageView blueWarrior() {
-    return makeView(blueWarriorImage);
-  }
-
-  public ImageView redWarrior() {
-    return makeView(redWarriorImage);
-  }
 
   public ImageView blueNexus() {
     return makeView(blueNexusImage);

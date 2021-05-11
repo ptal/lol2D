@@ -58,14 +58,7 @@ public class BattlefieldView implements TileVisitor
   ImageView championView(Champion champion) {
     String name = champion.name();
     int teamID = champion.teamID();
-    if(name.equals("Archer") && teamID == 0) { return sprites.blueArcher(); }
-    else if (name.equals("Warrior") && teamID == 0) { return sprites.blueWarrior(); }
-    else if (name.equals("Archer") && teamID == 1) { return sprites.redArcher(); }
-    else if (name.equals("Warrior") && teamID == 1) { return sprites.redWarrior(); }
-    else {
-      throw new UnsupportedOperationException(
-        "Displaying Champion tile `" + name + "` is not yet supported.");
-    }
+    return(sprites.championsView(name, teamID));
   }
 
   ImageView nexusView(Nexus nexus) {
