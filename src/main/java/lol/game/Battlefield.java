@@ -8,7 +8,7 @@ import java.util.*;
 // When a destructible entity is destroyed, the ground tile is shown instead.
 // The coordinate (0, 0) is the top left corner of the battlefield.
 public class Battlefield {
-  public enum GroundTile {
+  public static enum GroundTile {
     GRASS,
     ROCK;
     public static GroundTile fromASCII(char c) {
@@ -112,9 +112,9 @@ public class Battlefield {
     int oldY = d.y();
     if(placeAt(d, x, y)) {
       battlefield[oldY][oldX] = Optional.empty();
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   // Visit a tile using the visitor.
