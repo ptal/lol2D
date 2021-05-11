@@ -56,6 +56,14 @@ public class ASCIIBattlefieldBuilder {
         placed =  battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
         assert placed : errorMsg;
         break;
+      case 't':
+        placed = battlefield.placeAt(battlefield.towerOf(Tower.BLUE), x, y);
+        assert placed: errorMsg;
+        break;
+      case 'T':
+        placed =  battlefield.placeAt(battlefield.towerOf(Tower.RED), x, y);
+        assert placed : errorMsg;
+        break;
       case '.': break;
       default:
         throw new RuntimeException("No destructible object with the representation `" + destructibleASCII + "`.");
