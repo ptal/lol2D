@@ -90,7 +90,7 @@ public class Battlefield {
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
   public boolean canPlaceAt(int x, int y) {
-    return GroundTile.walkable(ground[y][x]) && battlefield[y][x].isEmpty();
+    return GroundTile.walkable(ground[y][x]) && !battlefield[y][x].isPresent();
   }
 
   // Place a destructible object on the battlefield *for the first time*.
@@ -123,7 +123,7 @@ public class Battlefield {
     if(x >= width() || x < 0 || y >= height() || y < 0) {
       return;
     }
-    if(battlefield[y][x].isEmpty()) {
+    if(!battlefield[y][x].isPresent()) {
       visitor.visitGround(ground[y][x], x, y);
     }
     else {
