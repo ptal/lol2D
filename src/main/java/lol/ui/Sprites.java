@@ -2,7 +2,7 @@ package lol.ui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.util.ArrayList;
+import lol.game.Nexus;
 
 public class Sprites {
   private Image grassImage;
@@ -14,7 +14,8 @@ public class Sprites {
   private Image redNexusImage;
   private Image treeImage;
   private Image rockImage;
-
+  private Image[] archerImages = new Image[2];
+  private Image[] warriorImages = new Image[2];
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -26,7 +27,10 @@ public class Sprites {
     redNexusImage = new Image("sprites/red-nexus.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
-
+    archerImages[Nexus.BLUE] = blueArcherImage;
+    archerImages[Nexus.RED] = redArcherImage;
+    warriorImages[Nexus.BLUE] = blueWarriorImage;
+    warriorImages[Nexus.RED] = redWarriorImage;
   }
 
   private ImageView makeView(Image image) {
@@ -39,23 +43,17 @@ public class Sprites {
     return makeView(grassImage);
   }
 
-  public ImageView championsView(String name, int teamID) {
+  public ImageView championsView(String name, int teamID){
+    assert teamID < 2 : "Sprites are only provided for two teams at most.";
+
     if(name.equals("Archer")){
-      if (teamID ==0) {return makeView(redArcherImage);}
-      else if(teamID ==1){return makeView(blueArcherImage);}
-      else{throw new RuntimeException("No such team of number `" + teamID + "`.");}
+      return makeView(archerImages[teamID]);
     }
-
     else if(name.equals("Warrior")){
-      if (teamID ==0) {return makeView(redWarriorImage);}
-      else if(teamID ==1){return makeView(blueWarriorImage);}
-      else{throw new RuntimeException("No such team of number `" + teamID + "`.");}
+      return makeView(warriorImages[teamID]);
     }
-
     else {throw new RuntimeException("No champion named `" + name + "`.");}
-
   }
-
 
   public ImageView blueNexus() {
     return makeView(blueNexusImage);

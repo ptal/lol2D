@@ -16,10 +16,6 @@ public class ASCIIBattlefieldBuilder {
   private char[][] groundASCIIMap;
   private char[][] destructibleASCIIMap;
   private Battlefield.GroundTile[][] ground;
-  static int XRED;
-  static int YRED;
-  static int XBLUE;
-  static int YBLUE;
 
   public Battlefield build() {
     groundASCIIMap = loadMapFile("/maps/ground.map");
@@ -55,14 +51,10 @@ public class ASCIIBattlefieldBuilder {
     switch(destructibleASCII) {
       case 'B':
         placed = battlefield.placeAt(battlefield.nexusOf(Nexus.BLUE), x, y);
-        XBLUE = x;
-        YBLUE = y;
         assert placed: errorMsg;
         break;
       case 'R':
         placed =  battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
-        XRED = x;
-        YRED = y;
         assert placed : errorMsg;
         break;
       case '.': break;

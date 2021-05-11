@@ -71,9 +71,7 @@ public class Team {
     battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
-          while(!battlefield.canPlaceAt(x,y)){
-            turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
-          }
+          turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
           champIdx[0] = champIdx[0] + 1;
         }
       }
