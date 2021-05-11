@@ -23,7 +23,12 @@ public class Tower extends Attacker{
     }
 
     @Override public void accept(TileVisitor visitor) {
-        visitor.visitTower(this);
+        if(isAlive()) {
+            visitor.visitTower(this);
+        }
+        else {
+            visitor.visitGround(Battlefield.GroundTile.fromASCII('~'), x(), y());
+        }
     }
 
     @Override public void hit(int damage) {

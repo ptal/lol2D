@@ -37,15 +37,6 @@ public class RandomAI extends AIBase {
           }
         }
       }));
-    // Try to attack a Tower.
-    arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
-        public void visitTower(Tower tower) {
-          if(tower.teamOfTower() != teamID) {
-            turn.registerAction(new Attack(teamID, id, tower.x(), tower.y()));
-          }
-        }
-      }));
     // Add a move action in case we could not attack the Nexus.
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){

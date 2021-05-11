@@ -1,5 +1,6 @@
 package lol.game;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 // The battlefield is the place where teams compete.
@@ -117,6 +118,10 @@ public class Battlefield {
     return true;
   }
 
+  public void destroyTower(Tower t) {
+    battlefield[t.x()][t.y()] = Optional.empty();
+  }
+
   // Visit a tile using the visitor.
   // Do nothing if x or y is out of bounds.
   public void visit(int x, int y, TileVisitor visitor) {
@@ -193,8 +198,8 @@ public class Battlefield {
 
       @Override public void visitTower(Tower t) {
         switch(t.teamOfTower()) {
-          case Nexus.BLUE: map.append('t'); break;
-          case Nexus.RED: map.append('T'); break;
+          case Tower.BLUE: map.append('t'); break;
+          case Tower.RED: map.append('T'); break;
           default: throw new RuntimeException("Unknown Tower Color in Battlefield.toString");
         }
         newline(t.x());
