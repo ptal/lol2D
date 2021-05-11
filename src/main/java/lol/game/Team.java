@@ -10,6 +10,7 @@ import lol.game.action.*;
 public class Team {
   private int teamID;
   private ArrayList<Champion> champions;
+  private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
   private boolean logInvalidMove = false;
@@ -18,6 +19,7 @@ public class Team {
     this.teamID = teamID;
     this.champions = new ArrayList<>();
     this.nexus = battlefield.nexusOf(teamID);
+    this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
   }
 
@@ -40,6 +42,14 @@ public class Team {
     return placed;
   }
 
+  public boolean spawnTower(int x, int y) {
+    boolean placed = battlefield.placeAt(tower, x, y);
+    if(!placed) {
+      System.out.println("Invalid spawn position of tower");
+    }
+    return placed;
+  }
+
   public boolean moveChampion(int championID, int x, int y) {
     Champion champion = champions.get(championID);
     boolean moved = false;
@@ -58,6 +68,9 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
+        if(d.currentHP <= 0) {
+          battlefield.destroyDestructible(d);
+        }
       }
     });
     if(!attacked[0]) {
@@ -76,6 +89,12 @@ public class Team {
         }
       }
     });
+    if(teamID == 0) {
+      turn.registerAction(new TowerSpawn(teamID, 3, 6));
+    }
+    else if(teamID == 1) {
+      turn.registerAction(new TowerSpawn(teamID, 6, 3));
+    }
     if(champIdx[0] != champions.size()) {
       throw new RuntimeException("Cannot place all champions because all spawned spots next to the Nexus are already taken.");
     }

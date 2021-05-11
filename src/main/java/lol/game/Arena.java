@@ -50,6 +50,10 @@ public class Arena {
       }
     }
 
+    public void visitTowerSpawn(int teamID, int x, int y) {
+        teams.get(teamID).spawnTower(x, y);
+    }
+
     public void visitMove(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
         if(!championsWhoActed.contains(championID)) {

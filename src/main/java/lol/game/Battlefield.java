@@ -41,6 +41,7 @@ public class Battlefield {
   private GroundTile[][] ground;
   private Optional<Destructible>[][] battlefield;
   private ArrayList<Nexus> nexuses;
+  private ArrayList<Tower> towers;
 
   // Initialize a battlefield with a ground tiles map.
   // See `ASCIIBattlefieldBuilder` for a class initializing the battlefield using ASCII map.
@@ -56,6 +57,10 @@ public class Battlefield {
     nexuses = new ArrayList<>();
     nexuses.add(new Nexus(0));
     nexuses.add(new Nexus(1));
+
+    towers = new ArrayList<>();
+    towers.add(new Tower(0));
+    towers.add(new Tower(1));
   }
 
   public int width() {
@@ -72,6 +77,10 @@ public class Battlefield {
 
   public Nexus nexusOf(int teamID) {
     return nexuses.get(teamID);
+  }
+
+  public Tower towerOf(int teamID) {
+    return towers.get(teamID);
   }
 
   public int numberOfTeams() {
@@ -118,8 +127,10 @@ public class Battlefield {
     return true;
   }
 
-  public void destroyTower(Tower t) {
-    battlefield[t.x()][t.y()] = Optional.empty();
+  public void destroyDestructible(Destructible d) {
+
+      battlefield[d.y()][d.x()] = Optional.empty();
+
   }
 
   // Visit a tile using the visitor.
