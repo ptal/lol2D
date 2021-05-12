@@ -73,8 +73,8 @@ public class BattlefieldView implements TileVisitor
 
   ImageView towerView(Tower tower){
     switch (tower.teamOfTower()){
-      case Tower.BLUE: return sprites.blueTower();
-      case Tower.RED: return sprites.redTower();
+      case Nexus.BLUE: return sprites.blueTower();
+      case Nexus.RED: return sprites.redTower();
       default: throw new RuntimeException("Unsupported Tower color");
     }
   }

@@ -57,11 +57,11 @@ public class ASCIIBattlefieldBuilder {
         assert placed : errorMsg;
         break;
       case 't':
-        placed = battlefield.placeAt(battlefield.towerOf(Tower.BLUE), x, y);
+        placed = battlefield.placeAt(battlefield.towerOf(Nexus.BLUE), x, y);
         assert placed: errorMsg;
         break;
       case 'T':
-        placed =  battlefield.placeAt(battlefield.towerOf(Tower.RED), x, y);
+        placed =  battlefield.placeAt(battlefield.towerOf(Nexus.RED), x, y);
         assert placed : errorMsg;
         break;
       case '.': break;

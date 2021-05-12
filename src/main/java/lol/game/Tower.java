@@ -4,8 +4,6 @@ public class Tower extends Attacker{
     public static final int HP_TOWER = 5;
     public static final int RANGE_OF_ATTACK = 2;
     public static final int DAMAGE_TOWER = 4;
-    public static final int BLUE = 0;
-    public static final int RED = 1;
     private int teamID;
 
     // we let the attributes be constants for now
@@ -32,6 +30,6 @@ public class Tower extends Attacker{
     }
 
     @Override public String toString() {
-        return (teamID == BLUE ? "Blue" : "Red") + " Tower: " + currentHP() + "hp left";
+        return (teamID == Nexus.BLUE ? "Blue" : "Red") + " Tower: " + currentHP() + "hp left";
     }
 }
