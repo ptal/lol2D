@@ -62,11 +62,8 @@ public class BattlefieldView implements TileVisitor
   }
 
   ImageView nexusView(Nexus nexus) {
-    switch(nexus.teamOfNexus()) {
-      case Nexus.BLUE: return sprites.blueNexus();
-      case Nexus.RED: return sprites.redNexus();
-      default: throw new RuntimeException("Unsupported Nexus color");
-    }
+    int teamID = nexus.teamOfNexus();
+    return(sprites.nexusesView(teamID));
   }
 
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {

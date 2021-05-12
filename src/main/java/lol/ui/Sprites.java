@@ -16,6 +16,7 @@ public class Sprites {
   private Image rockImage;
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
+  private Image[] nexusImages = new Image[2];
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -27,6 +28,8 @@ public class Sprites {
     redNexusImage = new Image("sprites/red-nexus.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
+    nexusImages[Nexus.BLUE] = blueNexusImage;
+    nexusImages[Nexus.RED] = redNexusImage;
     archerImages[Nexus.BLUE] = blueArcherImage;
     archerImages[Nexus.RED] = redArcherImage;
     warriorImages[Nexus.BLUE] = blueWarriorImage;
@@ -55,12 +58,9 @@ public class Sprites {
     else {throw new RuntimeException("No champion named `" + name + "`.");}
   }
 
-  public ImageView blueNexus() {
-    return makeView(blueNexusImage);
-  }
-
-  public ImageView redNexus() {
-    return makeView(redNexusImage);
+  public ImageView nexusesView(int teamID) {
+    if(teamID >2 ){ throw new RuntimeException("Unsupported Nexus color. There is only 2 teams.");}
+    else {return makeView(nexusImages[teamID]);}
   }
 
   public ImageView tree() {
