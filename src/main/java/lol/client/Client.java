@@ -15,7 +15,7 @@ public class Client implements Runnable {
     ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
     Battlefield battlefield = battlefieldBuilder.build();
     Arena arena = new Arena(battlefield);
-    RandomAI ai = new RandomAI(arena, battlefield);
+    RandomAITower ai = new RandomAITower(arena, battlefield);
     new Client(ai, arena, battlefield).run();
   }
 
