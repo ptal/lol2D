@@ -7,9 +7,11 @@ import java.io.*;
 // The textual battlefield is an ASCII representation:
 //   - '~' is a grass tile (groundASCIIMap).
 //   - '*' is a rock tile (groundASCIIMap).
-//   - 'T' is a tree tile (groundASCIIMap).
+//   - '|' is a tree tile (groundASCIIMap).
 //   - 'B' is a blue Nexus tile (destructibleASCIIMap).
 //   - 'R' is a red Nexus tile (destructibleASCIIMap).
+//   - 'b' is a blue Tower tile (destructibleASCIIMap).
+//   - 'r' is a red Tower tile (destructibleASCIIMap).
 //   - '.' indicates no destructible is present there (destructibleASCIIMap).
 public class ASCIIBattlefieldBuilder {
   private Battlefield battlefield;
@@ -46,7 +48,7 @@ public class ASCIIBattlefieldBuilder {
   }
 
   private void initDestructibleTile(char destructibleASCII, int x, int y) {
-    String errorMsg = "Impossible to place the nexus on this tile.";
+    String errorMsg = "Impossible to place the destructible on this tile.";
     boolean placed;
     switch(destructibleASCII) {
       case 'B':
@@ -55,6 +57,14 @@ public class ASCIIBattlefieldBuilder {
         break;
       case 'R':
         placed =  battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
+        assert placed : errorMsg;
+        break;
+      case 'b':
+        placed = battlefield.placeAt(battlefield.towerOf(Nexus.BLUE), x, y);
+        assert placed: errorMsg;
+        break;
+      case 'r':
+        placed =  battlefield.placeAt(battlefield.towerOf(Nexus.RED), x, y);
         assert placed : errorMsg;
         break;
       case '.': break;

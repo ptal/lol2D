@@ -1,18 +1,14 @@
 package lol.game;
 
-public class Champion extends Destructible {
+public class Champion extends Attacker {
   private String name;
-  private int rangeOfAttack;
-  private int damages;
   private int speed;
   private int teamID;
 
   private Champion(int teamID, String name, int hp, int rangeOfAttack, int damages, int speed) {
-    super(hp);
+    super(hp, rangeOfAttack, damages);
     this.teamID = teamID;
     this.name = name;
-    this.rangeOfAttack = rangeOfAttack;
-    this.damages = damages;
     this.speed = speed;
   }
 
@@ -44,28 +40,8 @@ public class Champion extends Destructible {
     return speed;
   }
 
-  public int attackRange() {
-    return rangeOfAttack;
-  }
-
-  private int distanceFrom(int toX, int toY) {
-    return Math.max(Math.abs(toX - x()), Math.abs(toY - y()));
-  }
-
   public boolean canWalkTo(int toX, int toY) {
     return distanceFrom(toX, toY) <= speed;
-  }
-
-  public boolean canAttack(int toX, int toY) {
-    return distanceFrom(toX, toY) <= rangeOfAttack;
-  }
-
-  public boolean attack(Destructible d) {
-    if(canAttack(d.x(), d.y())) {
-      d.hit(damages);
-      return true;
-    }
-    return false;
   }
 
   @Override public String toString() {

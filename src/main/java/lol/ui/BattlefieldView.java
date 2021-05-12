@@ -66,6 +66,11 @@ public class BattlefieldView implements TileVisitor
     return(sprites.nexusesView(teamID));
   }
 
+  ImageView towerView(Tower tower){
+    int teamID = tower.teamOfTower();
+    return(sprites.towersView(teamID));
+  }
+
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
     tiles.getChildren().add(groundView(tile));
   }
@@ -74,8 +79,8 @@ public class BattlefieldView implements TileVisitor
     StackPane stack = new StackPane();
     stack.getChildren().add(groundView(battlefield.groundAt(d.x(), d.y())));
     stack.getChildren().add(dView);
-    tiles.getChildren().add(stack);
     drawLifeBar(stack, d);
+    tiles.getChildren().add(stack);
   }
 
   private void drawLifeBar(StackPane stack, Destructible d){
@@ -90,11 +95,17 @@ public class BattlefieldView implements TileVisitor
     stack.getChildren().add(lifeBarStatic);
     stack.getChildren().add(lifeBar);
   }
+
   @Override public void visitChampion(Champion champion) {
+    System.out.println("Display champion ");
     displayDestructible(champion, championView(champion));
   }
 
   @Override public void visitNexus(Nexus nexus) {
     displayDestructible(nexus, nexusView(nexus));
+  }
+
+  @Override public void visitTower(Tower tower) {
+    displayDestructible(tower, towerView(tower));
   }
 }
