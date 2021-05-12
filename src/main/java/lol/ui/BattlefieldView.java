@@ -85,10 +85,13 @@ public class BattlefieldView implements TileVisitor
 
   private void drawLifeBar(StackPane stack, Destructible d){
     double width = d.currentHP()*1.0/d.initialHP();
-    Rectangle lifeBar = new Rectangle(0, 0, (int) (50*width), 4);
-    Rectangle lifeBarStatic = new Rectangle(0, 0, 50, 4);
+    double fixedWidth = 50;
+    Rectangle lifeBar = new Rectangle(0, 0, (int) (fixedWidth*width), 4);
+    Rectangle lifeBarStatic = new Rectangle(0, 0, fixedWidth, 4);
     stack.setAlignment(Pos.TOP_LEFT);
-    lifeBar.setFill(Color.GREEN);
+    double greenColor = width*1.0/1;
+    double redColor = 1.0-greenColor;
+    lifeBar.setFill(Color.color(redColor,greenColor,0));
     lifeBarStatic.setFill(Color.GRAY);
     lifeBarStatic.setStroke(Color.BLACK);
     lifeBarStatic.setStrokeWidth(1);
