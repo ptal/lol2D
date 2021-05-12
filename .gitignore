@@ -28,6 +28,4 @@ hs_err_pid*
 # .DStore files
 *.DS_Store
 
-# maps
-*.map
 

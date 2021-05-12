@@ -6,14 +6,6 @@ import lol.game.Nexus;
 
 public class Sprites {
   private Image grassImage;
-  private Image redArcherImage;
-  private Image blueArcherImage;
-  private Image redWarriorImage;
-  private Image blueWarriorImage;
-  private Image blueNexusImage;
-  private Image redNexusImage;
-  private Image blueTowerImage;
-  private Image redTowerImage;
   private Image treeImage;
   private Image rockImage;
   private Image[] archerImages = new Image[2];
@@ -26,25 +18,17 @@ public class Sprites {
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
 
-    blueArcherImage = new Image("sprites/blue-archer.png");
-    redArcherImage = new Image("sprites/red-archer.png");
-    archerImages[Nexus.BLUE] = blueArcherImage;
-    archerImages[Nexus.RED] = redArcherImage;
+    archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
+    archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
 
-    blueWarriorImage = new Image("sprites/blue-warrior.png");
-    redWarriorImage = new Image("sprites/red-warrior.png");
-    warriorImages[Nexus.BLUE] = blueWarriorImage;
-    warriorImages[Nexus.RED] = redWarriorImage;
+    warriorImages[Nexus.BLUE] = new Image("sprites/blue-warrior.png");
+    warriorImages[Nexus.RED] = new Image("sprites/red-warrior.png");
 
-    blueNexusImage = new Image("sprites/blue-nexus.png");
-    redNexusImage = new Image("sprites/red-nexus.png");
-    nexusImages[Nexus.BLUE] = blueNexusImage;
-    nexusImages[Nexus.RED] = redNexusImage;
+    nexusImages[Nexus.BLUE] = new Image("sprites/blue-nexus.png");
+    nexusImages[Nexus.RED] = new Image("sprites/red-nexus.png");
 
-    blueTowerImage = new Image("sprites/blue-tower.png");
-    redTowerImage = new Image("sprites/red-tower.png");
-    towerImages[Nexus.BLUE] = blueTowerImage;
-    towerImages[Nexus.RED] = redTowerImage;
+    towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
+    towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
 
   }
 
@@ -54,12 +38,15 @@ public class Sprites {
     return view;
   }
 
-  public ImageView grass() {
-    return makeView(grassImage);
+  private boolean checkTeamID(int teamID, String errorMessage){
+    if (teamID > 2){
+      throw new RuntimeException(errorMessage);
+    }
+    return true;
   }
 
   public ImageView championsView(String name, int teamID){
-    assert teamID < 2 : "Sprites are only provided for two teams at most.";
+    checkTeamID(teamID,"Sprites are only provided for two teams at most.");
 
     if(name.equals("Archer")){
       return makeView(archerImages[teamID]);
@@ -71,20 +58,24 @@ public class Sprites {
   }
 
   public ImageView nexusesView(int teamID) {
-    if(teamID >2 ){ throw new RuntimeException("Unsupported Nexus color. There is only 2 teams.");}
-    else {return makeView(nexusImages[teamID]);}
+    checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
+    return makeView(nexusImages[teamID]);
   }
 
   public ImageView towersView(int teamID) {
-    if(teamID >2 ){ throw new RuntimeException("Unsupported Tower's color. There is only 2 teams.");}
-    else {return makeView(towerImages[teamID]);}
+    checkTeamID(teamID, "Unsupported Tower's color. There is only 2 teams.");
+    return makeView(towerImages[teamID]);
   }
 
-  public ImageView tree() {
+  public ImageView treeView() {
     return makeView(treeImage);
   }
 
-  public ImageView rock() {
+  public ImageView rockView() {
     return makeView(rockImage);
+  }
+
+  public ImageView grassView() {
+    return makeView(grassImage);
   }
 }
