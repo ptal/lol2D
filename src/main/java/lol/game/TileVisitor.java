@@ -19,4 +19,7 @@ public interface TileVisitor {
   default void visitNexus(Nexus n) {
     visitDestructible(n);
   }
+  default void visitTower(Tower t){
+    visitDestructible(t);
+  }
 }

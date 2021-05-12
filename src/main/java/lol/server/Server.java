@@ -35,7 +35,7 @@ public class Server implements Runnable {
       endOfGameMessage();
     }
     catch (IOException e) {
-      System.err.println(e);
+      e.printStackTrace();
     }
     stop();
     System.out.println("Server shutted down.");
@@ -52,6 +52,7 @@ public class Server implements Runnable {
     spawnPhase();
     arena.startGamePhase();
     ui.update();
+    wait(2000);
   }
 
   private void wait(int timeInMS) {
