@@ -120,6 +120,7 @@ public class Battlefield {
     return false;
   }
 
+
   // Move a destructible object on the battlefield if `placeAt(d, x, y)` succeeds.
   public boolean moveTo(Destructible d, int x, int y) {
     int oldX = d.x();
@@ -158,6 +159,48 @@ public class Battlefield {
       }
     }
   }
+
+  public boolean diagonalCheck(int x, int y, int toX, int toY) {
+    if(x < toX && y < toY) {
+      for(x = 0; x < toX; x++) {
+        for(y = 0; y < toY; y++) {
+          if(!canPlaceAt(x, y)) {
+            return false;
+          }
+        }
+      }
+    }
+    else if(x < toX && y > toY) {
+      for(x = 0; x < toX; x++) {
+        for(y = 0; y < toY; y--) {
+          if(!canPlaceAt(x, y)) {
+            return false;
+          }
+        }
+      }
+    }
+    else if(x > toX && y > toY) {
+      for(x = 0; x < toX; x--) {
+        for(y = 0; y < toY; y--) {
+          if(!canPlaceAt(x, y)) {
+            return false;
+          }
+        }
+      }
+    }
+    else if(x > toX && y < toY) {
+      for(x = 0; x < toX; x--) {
+        for(y = 0; y < toY; y++) {
+          if(!canPlaceAt(x, y)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  //public boolean horizontalCheck(int x, int y, int toX, int toY) {}
 
   // Clockwise shifted coordinates, for each corner of a square with center of (0, 0).
   static int[] xDirection = {-1, 1, 1, -1};
