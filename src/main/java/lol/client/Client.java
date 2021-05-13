@@ -38,7 +38,7 @@ public class Client implements Runnable {
       socket = s;
       System.out.println("Connection succeeds.");
       receiveUID();
-      ai.initTeamID(teamID);
+      ai.initTeamID(teamID%2);
       System.out.println("UID received: " + teamID);
       Turn turn = ai.championSelect();
       System.out.println("champion selected");
