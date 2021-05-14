@@ -65,6 +65,7 @@ public class Team {
         sound.attackSound(champion.name());
         if(d.isDead()) {
           battlefield.destroy(d);
+          sound.destroyBuilding();
         }
       }
     });
