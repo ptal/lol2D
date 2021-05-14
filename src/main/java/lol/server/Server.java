@@ -12,10 +12,10 @@ public class Server implements Runnable {
   private final ArrayList<Player> players;
   private ServerSocket server;
   private Arena arena;
-  private LOL2D ui;
+  private StartMenu ui;
   private Battlefield battlefield;
 
-  public Server(LOL2D ui, Battlefield battlefield) {
+  public Server(StartMenu ui, Battlefield battlefield) {
     this.ui = ui;
     players = new ArrayList<>();
     this.battlefield = battlefield;
