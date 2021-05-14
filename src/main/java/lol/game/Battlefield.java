@@ -8,13 +8,15 @@ import java.util.*;
 // When a destructible entity is destroyed, the ground tile is shown instead.
 // The coordinate (0, 0) is the top left corner of the battlefield.
 public class Battlefield {
-  public enum GroundTile {
+  public static enum GroundTile {
     GRASS,
-    ROCK;
+    ROCK,
+    TREE;
     public static GroundTile fromASCII(char c) {
       switch(c) {
         case '~': return GroundTile.GRASS;
         case '*': return GroundTile.ROCK;
+        case '|': return GroundTile.TREE;
         default: throw new RuntimeException("No ground tile with the representation `" + c + "`.");
       }
     }
@@ -23,14 +25,17 @@ public class Battlefield {
       switch(groundTile) {
         case GRASS: return true;
         case ROCK: return false;
+        case TREE: return false;
         default: throw new RuntimeException("Missing GroundTile case in walkable.");
       }
     }
+
 
     public static char stringOf(GroundTile groundTile) {
       switch(groundTile) {
         case GRASS: return '~';
         case ROCK: return '*';
+        case TREE: return '|';
         default: throw new RuntimeException("Missing GroundTile case in stringOf.");
       }
     }
@@ -40,6 +45,7 @@ public class Battlefield {
   private GroundTile[][] ground;
   private Optional<Destructible>[][] battlefield;
   private ArrayList<Nexus> nexuses;
+  private ArrayList<Tower> towers;
 
   // Initialize a battlefield with a ground tiles map.
   // See `ASCIIBattlefieldBuilder` for a class initializing the battlefield using ASCII map.
@@ -55,6 +61,10 @@ public class Battlefield {
     nexuses = new ArrayList<>();
     nexuses.add(new Nexus(0));
     nexuses.add(new Nexus(1));
+
+    towers = new ArrayList<>();
+    towers.add(new Tower(0));
+    towers.add(new Tower(1));
   }
 
   public int width() {
@@ -71,6 +81,10 @@ public class Battlefield {
 
   public Nexus nexusOf(int teamID) {
     return nexuses.get(teamID);
+  }
+
+  public Tower towerOf(int teamID) {
+    return towers.get(teamID);
   }
 
   public int numberOfTeams() {
@@ -90,7 +104,7 @@ public class Battlefield {
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
   public boolean canPlaceAt(int x, int y) {
-    return GroundTile.walkable(ground[y][x]) && battlefield[y][x].isEmpty();
+    return GroundTile.walkable(ground[y][x]) && !battlefield[y][x].isPresent();
   }
 
   // Place a destructible object on the battlefield *for the first time*.
@@ -112,9 +126,13 @@ public class Battlefield {
     int oldY = d.y();
     if(placeAt(d, x, y)) {
       battlefield[oldY][oldX] = Optional.empty();
-      return false;
+      return true;
     }
-    return true;
+    return false;
+  }
+
+  public void destroy(Destructible d) {
+      battlefield[d.y()][d.x()] = Optional.empty();
   }
 
   // Visit a tile using the visitor.
@@ -123,7 +141,7 @@ public class Battlefield {
     if(x >= width() || x < 0 || y >= height() || y < 0) {
       return;
     }
-    if(battlefield[y][x].isEmpty()) {
+    if(!battlefield[y][x].isPresent()) {
       visitor.visitGround(ground[y][x], x, y);
     }
     else {
@@ -189,6 +207,15 @@ public class Battlefield {
       @Override public void visitChampion(Champion c) {
         map.append('C');
         newline(c.x());
+      }
+
+      @Override public void visitTower(Tower t) {
+        switch(t.teamOfTower()) {
+          case Nexus.BLUE: map.append('b'); break;
+          case Nexus.RED: map.append('r'); break;
+          default: throw new RuntimeException("Unknown Tower Color in Battlefield.toString");
+        }
+        newline(t.x());
       }
 
       @Override public void visitNexus(Nexus n) {

@@ -11,6 +11,7 @@ import lol.ui.Sound;
 public class Team {
   private int teamID;
   private ArrayList<Champion> champions;
+  private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
   private boolean logInvalidMove = false;
@@ -19,6 +20,7 @@ public class Team {
     this.teamID = teamID;
     this.champions = new ArrayList<>();
     this.nexus = battlefield.nexusOf(teamID);
+    this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
     this.sound = new Sound();
   }
@@ -61,6 +63,9 @@ public class Team {
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
         sound.attackSound(champion.name());
+        if(d.isDead()) {
+          battlefield.destroy(d);
+        }
       }
     });
     if(!attacked[0]) {
@@ -75,6 +80,7 @@ public class Team {
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
           turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
+          System.out.println("Spawn hero " + champIdx[0] + " at " + x + ", " + y + " team " + teamID);
           champIdx[0] = champIdx[0] + 1;
         }
       }
