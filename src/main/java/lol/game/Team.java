@@ -59,7 +59,7 @@ public class Team {
     boolean[] attacked = {false};
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
-        attacked[0] = champion.attack(d);
+        attacked[0] = champion.attack(d, battlefield);
         if(d.isDead()) {
           battlefield.destroy(d);
         }
