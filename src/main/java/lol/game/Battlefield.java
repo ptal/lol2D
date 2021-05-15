@@ -112,9 +112,9 @@ public class Battlefield {
     int oldY = d.y();
     if(placeAt(d, x, y)) {
       battlefield[oldY][oldX] = Optional.empty();
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   // Visit a tile using the visitor.
