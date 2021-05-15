@@ -30,18 +30,16 @@ public abstract class Attacker extends Destructible {
 
 
   public boolean canAttack(int toX, int toY, Battlefield battlefield) {
-    if(rangeOfAttack <= 1){
-      return distanceFrom(toX, toY) <= rangeOfAttack;
-    }
-    else{
     return distanceFrom(toX, toY) <= rangeOfAttack && noObstacles(toX,toY, battlefield);
-    }
   }
 
   public boolean noObstacles(int toX, int toY, Battlefield battlefield) {
     int dx = Math.abs(toX - x());
     int dy = Math.abs(toY - y());
-    if(dy == dx){
+    if(dy <= 1 || dx <= 1){
+      return true;
+    }
+    else if(dy == dx){
       if(!diagonalCheck(x(), y(), toX, toY, battlefield)) {
         System.out.println("Obstacle on the way to the target of pos "+ toX +" "+ toY +" ! Can't shoot.");
         return false;
