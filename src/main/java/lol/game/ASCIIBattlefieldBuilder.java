@@ -12,6 +12,7 @@ import java.io.*;
 //   - 'R' is a red Nexus tile (destructibleASCIIMap).
 //   - 'b' is a blue Tower tile (destructibleASCIIMap).
 //   - 'r' is a red Tower tile (destructibleASCIIMap).
+//   - 'd' is a dragon tile (destructibleASCIIMap).
 //   - '.' indicates no destructible is present there (destructibleASCIIMap).
 public class ASCIIBattlefieldBuilder {
   private Battlefield battlefield;
@@ -65,6 +66,10 @@ public class ASCIIBattlefieldBuilder {
         break;
       case 'r':
         placed =  battlefield.placeAt(battlefield.towerOf(Nexus.RED), x, y);
+        assert placed : errorMsg;
+        break;
+      case 'd':
+        placed =  battlefield.placeAt(battlefield.monsterOf(Monster.DRAGON), x, y);
         assert placed : errorMsg;
         break;
       case '.': break;

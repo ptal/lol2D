@@ -8,6 +8,7 @@ public class Sprites {
   private Image grassImage;
   private Image treeImage;
   private Image rockImage;
+  private Image dragonImage;
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
@@ -17,6 +18,7 @@ public class Sprites {
     grassImage = new Image("sprites/grass-tile.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
+    dragonImage = new Image("sprites/dragon.png");
 
     archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
     archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
@@ -77,5 +79,12 @@ public class Sprites {
 
   public ImageView grassView() {
     return makeView(grassImage);
+  }
+
+  public ImageView monsterView(String name) {
+    switch(name) {
+      case "Dragon": return makeView(dragonImage);
+      default: throw new RuntimeException("No monster named" + name + ".");
+    }
   }
 }
