@@ -74,7 +74,7 @@ public class BattlefieldView implements TileVisitor
   }
 
   ImageView monsterView(Monster monster) {
-    return sprites.monsterView(monster.name());
+    return sprites.monsterView(monster.monsterID());
   }
 
 

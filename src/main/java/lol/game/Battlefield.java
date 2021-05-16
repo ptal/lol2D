@@ -69,6 +69,7 @@ public class Battlefield {
 
     monsters = new ArrayList<>();
     monsters.add(Monster.makeDragon());
+    monsters.add(Monster.makeNashor());
   }
 
   public int width() {
@@ -94,6 +95,7 @@ public class Battlefield {
   public Monster monsterOf(int monsterID) {
     return monsters.get(monsterID);
   }
+
   public int numberOfTeams() {
     return nexuses.size();
   }
@@ -186,7 +188,11 @@ public class Battlefield {
       }
 
       @Override public void visitMonster(Monster monster) {
-        map.append('d');
+        switch(monster.monsterID()) {
+          case Monster.DRAGON: map.append('d'); break;
+          case Monster.NASHOR: map.append('n'); break;
+          default: throw new RuntimeException("Unknown Monster in Battlefield.tower");
+        }
         newline(monster.x());
       }
 
