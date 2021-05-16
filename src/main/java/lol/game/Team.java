@@ -61,7 +61,6 @@ public class Team {
   public boolean championAttack(int championID, int x, int y) {
     Champion champion = champions.get(championID);
     boolean[] attacked = {false};
-    Team currentTeam = this;
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
@@ -69,7 +68,7 @@ public class Team {
         if(d.isDead()) {
           battlefield.destroy(d);
           sound.destroyBuilding();
-          d.boostTeam(currentTeam);
+          d.boostTeam(Team.this);
         }
       }
     });
