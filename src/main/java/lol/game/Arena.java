@@ -92,7 +92,7 @@ public class Arena {
     public void visitChampionSelect(int teamID, String championName) {
       if(phase == Phase.CHAMP_SELECT) {
         try {
-          teams.get(teamID).addChampion(Champion.make(championName));
+          teams.get(teamID).addChampion(Champion.make(teamID, championName));
         }
         catch(RuntimeException e) {
           System.out.println(e);
