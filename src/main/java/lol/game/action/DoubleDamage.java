@@ -14,6 +14,6 @@ public abstract class DoubleDamage extends Spell implements Serializable {
   }
 
   public void accept(ActionVisitor visitor) {
-    visitor.visitAttack(teamID, championID, x, y);
+    visitor.visitDoubleDamage(teamID, championID, x, y);
   }
 }
