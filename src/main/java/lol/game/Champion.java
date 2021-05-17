@@ -42,12 +42,27 @@ public class Champion extends Destructible {
     return rangeOfAttack;
   }
 
+  //for spells that change the range of attack
+  public int attackRangeEnhanced(int factor) {
+    return rangeOfAttack*factor;
+  }
+
   private int distanceFrom(int toX, int toY) {
     return Math.max(Math.abs(toX - x()), Math.abs(toY - y()));
   }
 
   public boolean canWalkTo(int toX, int toY) {
     return distanceFrom(toX, toY) <= speed;
+  }
+
+  //for speed spells
+  public boolean canWalkToEnhanced(int toX, int toY, int factor) {
+    return distanceFrom(toX, toY) <= speed*factor;
+  }
+
+  //for healing spells
+  public void heal(int hp) {
+    super.currentHP = Math.min(super.currentHP + hp, super.initialHP);
   }
 
   public boolean canAttack(int toX, int toY) {
@@ -57,6 +72,15 @@ public class Champion extends Destructible {
   public boolean attack(Destructible d) {
     if(canAttack(d.x(), d.y())) {
       d.hit(damages);
+      return true;
+    }
+    return false;
+  }
+
+  //for damage spells
+  public boolean attackEnhanced(Destructible d, int factor) {
+    if(canAttack(d.x(), d.y())) {
+      d.hit(damages*factor);
       return true;
     }
     return false;
