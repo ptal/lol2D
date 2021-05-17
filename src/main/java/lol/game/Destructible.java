@@ -2,10 +2,10 @@ package lol.game;
 
 // The coordinates are the position of the destructible in the battlefield.
 public abstract class Destructible {
-  private int xCoord;
-  private int yCoord;
-  private int initialHP;
-  private int currentHP;
+  protected int xCoord;
+  protected int yCoord;
+  protected int initialHP;
+  protected int currentHP;
 
   public Destructible(int hp) {
     this.initialHP = hp;
@@ -49,6 +49,6 @@ public abstract class Destructible {
   public int initialHP(){
     return initialHP;
   }
-  
+
   public abstract void accept(TileVisitor visitor);
 }
