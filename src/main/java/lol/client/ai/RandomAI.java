@@ -63,7 +63,7 @@ public class RandomAI extends AIBase {
 
   protected void tryAttackMonster(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitMonster(Monster monster) {
           turn.registerAction(new Attack(teamID, id, monster.x(), monster.y()));
         }
@@ -72,7 +72,7 @@ public class RandomAI extends AIBase {
 
   private void tryAttackTower(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitTower(Tower tower) {
         if(tower.teamOfTower() != teamID) {
           turn.registerAction(new Attack(teamID, id, tower.x(), tower.y()));
