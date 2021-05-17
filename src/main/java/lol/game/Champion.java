@@ -42,11 +42,6 @@ public class Champion extends Destructible {
     return rangeOfAttack;
   }
 
-  //for spells that change the range of attack
-  public int attackRangeEnhanced(int factor) {
-    return rangeOfAttack*factor;
-  }
-
   private int distanceFrom(int toX, int toY) {
     return Math.max(Math.abs(toX - x()), Math.abs(toY - y()));
   }
@@ -67,6 +62,11 @@ public class Champion extends Destructible {
 
   public boolean canAttack(int toX, int toY) {
     return distanceFrom(toX, toY) <= rangeOfAttack;
+  }
+
+  //for changing the range of attack in spells
+  public boolean canAttackEnhanced(int toX, int toY, int factor) {
+    return distanceFrom(toX, toY) <= rangeOfAttack*factor;
   }
 
   public boolean attack(Destructible d) {
