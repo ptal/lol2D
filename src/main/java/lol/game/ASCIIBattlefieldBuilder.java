@@ -7,8 +7,11 @@ import java.io.*;
 // The textual battlefield is an ASCII representation:
 //   - '~' is a grass tile (groundASCIIMap).
 //   - '*' is a rock tile (groundASCIIMap).
+//   - '|' is a tree tile (groundASCIIMap).
 //   - 'B' is a blue Nexus tile (destructibleASCIIMap).
 //   - 'R' is a red Nexus tile (destructibleASCIIMap).
+//   - 'b' is a blue Tower tile (destructibleASCIIMap).
+//   - 'r' is a red Tower tile (destructibleASCIIMap).
 //   - '.' indicates no destructible is present there (destructibleASCIIMap).
 public class ASCIIBattlefieldBuilder {
   private Battlefield battlefield;
@@ -56,11 +59,11 @@ public class ASCIIBattlefieldBuilder {
         placed =  battlefield.placeAt(battlefield.nexusOf(Nexus.RED), x, y);
         assert placed : errorMsg;
         break;
-      case 't':
+      case 'b':
         placed = battlefield.placeAt(battlefield.towerOf(Nexus.BLUE), x, y);
         assert placed: errorMsg;
         break;
-      case 'T':
+      case 'r':
         placed =  battlefield.placeAt(battlefield.towerOf(Nexus.RED), x, y);
         assert placed : errorMsg;
         break;
