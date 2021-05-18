@@ -16,7 +16,8 @@ public class Player {
   public Player(Socket socket, Server server) {
     this.socket = socket;
     this.server = server;
-    this.uid = UID++;
+    UID++;
+    this.uid = UID;
   }
 
   public Turn askTurn() throws IOException {
@@ -37,5 +38,13 @@ public class Player {
     OutputStream outputStream = socket.getOutputStream();
     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
     objectOutputStream.writeObject(this.uid);
+  }
+
+  public void setRoundUID(int pUID) {
+    this.uid = pUID;
+  }
+
+  public int getGeneralUID() {
+    return this.uid;
   }
 }

@@ -9,8 +9,9 @@ import lol.game.action.*;
 import lol.ui.*;
 
 public class Server implements Runnable {
-  private final ArrayList<Player> players;
-  private ArrayList<Player> connectedUsers;
+  private ArrayList<Player> players;
+  private final ArrayList<Player> connectedUsers;
+  private ArrayList<Integer> playerScores;
   private ServerSocket server;
   private Arena arena;
   private LOL2D ui;
@@ -20,7 +21,15 @@ public class Server implements Runnable {
     this.ui = ui;
     players = new ArrayList<>();
     connectedUsers = new ArrayList<>();
+    playerScores = new ArrayList<>();
     this.battlefield = battlefield;
+    arena = new Arena(battlefield);
+  }
+
+  public void resetEnvironment() {
+    System.out.println("Resetting the arena and battlefield for the next round.");
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    battlefield = battlefieldBuilder.build();
     arena = new Arena(battlefield);
   }
 
@@ -50,10 +59,11 @@ public class Server implements Runnable {
     if(connectedUsers.size() > 2) { //tourney
       System.out.println("A tourney will be started.");
       tourneyOrganization();
+      printScores();
     }
     else {  //single match
       System.out.println("There were only 2 players. A single match will be held.");
-      for(Player p: connectedUsers) {
+      for(Player p : connectedUsers) {
         players.add(p);
       }
       startGame();
@@ -65,39 +75,67 @@ public class Server implements Runnable {
   private void waitNewPlayer() throws IOException {
     Socket socket = server.accept();
     System.out.println("New player at " + socket);
-    players.add(new Player(socket, this));
+    connectedUsers.add(new Player(socket, this));
+    playerScores.add(0);
   }
 
+  //tourney seeded into 2 groups depending on the sign up order.
   private void tourneyOrganization() throws IOException {
-    ArrayList<Integer> set1Index = new ArrayList<Integer>();
-    ArrayList<Integer> set2Index = new ArrayList<Integer>();
+    ArrayList<Player> group1 = new ArrayList<Player>();
+    ArrayList<Player> group2 = new ArrayList<Player>();
     for (int i = 0; i < connectedUsers.size(); i++) {
       if(i % 2 == 0)
-        set1Index.add(i);
+        group1.add(connectedUsers.get(i));
       else
-        set2Index.add(i);
+        group2.add(connectedUsers.get(i));
     }
-    if(set2Index.size() < set1Index.size())
-      set2Index.add(-1);
-    for(int set = 0; set < set1Index.size(); set++) {
-      for (int round = 0; round < set2Index.size(); round++) {
-        int help = set2Index.get(0);
-        set2Index.add(0, set2Index.get(size() - 1));
-        set2Index.add(set2Index.get(size() - 1), help);
-        if(set2Index.get(round) != -1) {
-          roundOrganizer(set1Index.get(round));
+    //round robin rules according to wikipedia explanation.
+    //Dummy player round is skipped.
+    for(int set = 0; set < group1.size(); set++) {
+      for (int round = 0; round < group2.size(); round++) {
+        group1.add(1, group2.get(0));
+        group2.remove(0);
+        group2.add(group1.get(group1.size()-1));
+        group1.remove(group1.size()-1);
+        //group 2 will be the smaller one if uneven user size.
+        if(round < group2.size()) {
+          roundOrganizer(group1.get(round), group2.get(round));
+        resetEnvironment();
         }
       }
     }
   }
 
-  private void roundOrganizer(int playerIndex) throws IOException {
+  private void roundOrganizer(Player playerGroup1, Player playerGroup2) throws IOException {
     players.clear();
-    players.add(connectedUsers.get(playerIndex));
-    players.add(connectedUsers.get(playerIndex));
+    Player bluePlayer = playerGroup1;
+    Player redPlayer = playerGroup2;
+    bluePlayer.setRoundUID(0);
+    redPlayer.setRoundUID(1);
+    players.add(bluePlayer);
+    players.add(redPlayer);
     startGame();
     gameLoop();
-    endOfGameMessage();
+    int winner = endOfGameMessage();
+    if(winner == 0)
+      updateScores(playerGroup1);
+    else
+      updateScores(playerGroup2);
+  }
+
+  //updates number of matches that a team won in the tourney.
+  private void updateScores(Player winningPlayer) {
+    int scoreIndex = connectedUsers.indexOf(winningPlayer);
+    int oldScore = playerScores.get(scoreIndex);
+    playerScores.set(scoreIndex, oldScore++);
+  }
+
+  private void printScores() {
+    int scoreIndex = 0;
+    for(Player p : connectedUsers){
+      System.out.println("Team: " + p.getGeneralUID() + " won: " + playerScores.get(scoreIndex) + " rounds.");
+      scoreIndex++;
+    }
   }
 
   private void startGame() throws IOException {
@@ -116,16 +154,19 @@ public class Server implements Runnable {
     }
   }
 
-  private void endOfGameMessage() {
+  private int endOfGameMessage() {
+    int winner = -1;
     for(int i = 0; i < battlefield.numberOfTeams(); ++i) {
       Nexus nexus = battlefield.nexusOf(i);
       if(nexus.isAlive()) {
         System.out.println("WINNER: " + nexus);
+        winner = i;
       }
       else {
         System.out.println("LOSER: " + nexus);
       }
     }
+    return winner;
   }
 
   private void gameLoop() throws IOException {

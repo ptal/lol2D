@@ -49,6 +49,6 @@ public abstract class Destructible {
   public int initialHP(){
     return initialHP;
   }
-  
+
   public abstract void accept(TileVisitor visitor);
 }
