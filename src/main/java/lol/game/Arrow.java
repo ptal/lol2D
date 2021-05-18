@@ -4,8 +4,8 @@ package lol.game;
 public class Arrow extends Projectile {
     private int rotation;
 
-    public Arrow(int xCoord, int yCoord, int rotation) {
-        super(xCoord, yCoord);
+    public Arrow(int rotation) {
+        super();
         this.rotation = rotation;
     }
 

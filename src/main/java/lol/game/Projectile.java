@@ -5,7 +5,9 @@ public abstract class Projectile {
   private int xCoord;
   private int yCoord;
 
-  public Projectile(int xCoord, int yCoord) {
+  public Projectile() {}
+
+  public void place(int xCoord, int yCoord) {
     this.xCoord = xCoord;
     this.yCoord = yCoord;
   }
