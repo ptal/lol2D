@@ -13,6 +13,7 @@ public class Team {
   private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
+  private BattlefieldTraversal traversal;
   private boolean logInvalidMove = false;
 
   public Team(int teamID, Battlefield battlefield) {
@@ -21,6 +22,7 @@ public class Team {
     this.nexus = battlefield.nexusOf(teamID);
     this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
+    this.traversal = new BattlefieldTraversal(battlefield);
   }
 
   public void addChampion(Champion c) {
@@ -59,7 +61,7 @@ public class Team {
     boolean[] attacked = {false};
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
-        attacked[0] = champion.attack(d, battlefield);
+        attacked[0] = champion.attack(d, battlefield, traversal);
         if(d.isDead()) {
           battlefield.destroy(d);
         }
@@ -73,7 +75,7 @@ public class Team {
 
   public void makeSpawnTurn(final Turn turn) {
     int[] champIdx = {0};
-    battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
+    traversal.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
           turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
