@@ -5,8 +5,8 @@ import lol.game.*;
 import lol.game.action.*;
 
 public class RandomAI extends AIBase {
-  private Random random;
-  private BattlefieldTraversal traversal;
+  protected Random random;
+  protected BattlefieldTraversal traversal;
 
   public RandomAI(Arena arena, Battlefield battlefield) {
     super(arena, battlefield);
@@ -31,6 +31,13 @@ public class RandomAI extends AIBase {
   public Turn turn() {
     Turn turn = new Turn();
     // Try to attack the Nexus first.
+    tryAttackNexus(turn);
+    // Add a move action in case we could not attack the Nexus.
+    tryMove(turn);
+    return turn;
+  }
+
+  protected void tryAttackNexus(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitNexus(Nexus nexus) {
@@ -39,7 +46,9 @@ public class RandomAI extends AIBase {
           }
         }
       }));
-    // Add a move action in case we could not attack the Nexus.
+  }
+
+  protected void tryMove(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       traversal.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
         public void visitGrass(int x, int y) {
@@ -48,6 +57,5 @@ public class RandomAI extends AIBase {
           }
         }
       }));
-    return turn;
   }
 }

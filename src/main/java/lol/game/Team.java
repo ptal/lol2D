@@ -10,6 +10,7 @@ import lol.game.action.*;
 public class Team {
   private int teamID;
   private ArrayList<Champion> champions;
+  private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
   private BattlefieldTraversal traversal;
@@ -19,6 +20,7 @@ public class Team {
     this.teamID = teamID;
     this.champions = new ArrayList<>();
     this.nexus = battlefield.nexusOf(teamID);
+    this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
     this.traversal = new BattlefieldTraversal(battlefield);
   }
@@ -60,6 +62,9 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
+        if(d.isDead()) {
+          battlefield.destroy(d);
+        }
       }
     });
     if(!attacked[0]) {
