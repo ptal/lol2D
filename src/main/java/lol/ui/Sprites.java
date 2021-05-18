@@ -8,6 +8,7 @@ public class Sprites {
   private Image grassImage;
   private Image treeImage;
   private Image rockImage;
+  private Image arrowImage;
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
@@ -17,6 +18,8 @@ public class Sprites {
     grassImage = new Image("sprites/grass-tile.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
+
+    arrowImage = new Image("sprites/arrow.png");
 
     archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
     archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
@@ -65,6 +68,10 @@ public class Sprites {
   public ImageView towersView(int teamID) {
     checkTeamID(teamID, "Unsupported Tower's color. There is only 2 teams.");
     return makeView(towerImages[teamID]);
+  }
+
+  public ImageView arrowView() {
+    return makeView(arrowImage);
   }
 
   public ImageView treeView() {

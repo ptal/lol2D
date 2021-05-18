@@ -44,6 +44,7 @@ public class Battlefield {
   // /!\ NOTE: Accessing position (x, y) is done with reversed indices ground[y][x].
   private GroundTile[][] ground;
   private Optional<Destructible>[][] battlefield;
+  private Optional<Projectile>[][] air;
   private ArrayList<Nexus> nexuses;
   private ArrayList<Tower> towers;
 
@@ -53,9 +54,11 @@ public class Battlefield {
   public Battlefield(GroundTile[][] ground) {
     this.ground = ground;
     battlefield = new Optional[height()][width()];
+    air = new Optional[height()][width()];
     for(int y = 0; y < height(); ++y) {
       for(int x = 0; x < width(); ++x) {
         battlefield[y][x] = Optional.empty();
+        air[y][x] = Optional.empty();
       }
     }
     nexuses = new ArrayList<>();
@@ -107,6 +110,10 @@ public class Battlefield {
     return GroundTile.walkable(ground[y][x]) && !battlefield[y][x].isPresent();
   }
 
+  public boolean canFlyAt(int x, int y) {
+    return !air[y][x].isPresent();
+  }
+
   // Place a destructible object on the battlefield *for the first time*.
   // To move a destructible object, use `moveTo`.
   // The move is allowed (return `true`) if `canPlaceAt(x,y)`.
@@ -115,6 +122,15 @@ public class Battlefield {
     if(canPlaceAt(x, y)) {
       battlefield[y][x] = Optional.of(d);
       d.place(x, y);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean flyAt(Projectile p, int x, int y) {
+    if(canFlyAt(x, y)) {
+      air[y][x] = Optional.of(p);
+      p.place(x, y);
       return true;
     }
     return false;
@@ -135,6 +151,10 @@ public class Battlefield {
       battlefield[d.y()][d.x()] = Optional.empty();
   }
 
+  public void destroy(Projectile p) {
+      air[p.y()][p.x()] = Optional.empty();
+  }
+
   // Visit a tile using the visitor.
   // Do nothing if x or y is out of bounds.
   public void visit(int x, int y, TileVisitor visitor) {
@@ -146,6 +166,9 @@ public class Battlefield {
     }
     else {
       battlefield[y][x].get().accept(visitor);
+    }
+    if(!air[y][x].isPresent()) {
+      air[y][x].get().accept(visitor);
     }
   }
 
