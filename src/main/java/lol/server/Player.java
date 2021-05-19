@@ -16,8 +16,7 @@ public class Player {
   public Player(Socket socket, Server server) {
     this.socket = socket;
     this.server = server;
-    UID++;
-    this.uid = UID;
+    this.uid = UID++;
   }
 
   public Turn askTurn() throws IOException {
@@ -42,9 +41,5 @@ public class Player {
 
   public void setRoundUID(int pUID) {
     this.uid = pUID;
-  }
-
-  public int getGeneralUID() {
-    return this.uid;
   }
 }

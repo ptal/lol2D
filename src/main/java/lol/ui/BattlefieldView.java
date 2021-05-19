@@ -36,6 +36,12 @@ public class BattlefieldView implements TileVisitor
     sprites = new Sprites();
   }
 
+  public void generateNewBattlefieldView(Battlefield battlefield) {
+    this.battlefield = battlefield;
+    sprites = new Sprites();
+    update();
+  }
+
   public void update() {
     Platform.runLater(() -> {
       System.out.println("Updating battefield view...");

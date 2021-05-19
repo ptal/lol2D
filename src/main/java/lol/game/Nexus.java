@@ -25,6 +25,6 @@ public class Nexus extends Destructible {
   }
 
   @Override public String toString() {
-    return ((teamID) == BLUE ? "Blue" : "Red") + " nexus: " + currentHP() + "hp left";
+    return (teamID == BLUE ? "Blue" : "Red") + " nexus: " + currentHP() + "hp left";
   }
 }

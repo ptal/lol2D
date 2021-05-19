@@ -39,7 +39,14 @@ public class LOL2D extends Application {
   }
 
   private void startServer() {
-    Thread t = new Thread(new Server(this, battlefield));
+    Thread t = new Thread(new Server(this));
     t.start();
+  }
+
+  public Battlefield makeNewGame() {
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    battlefield = battlefieldBuilder.build();
+    battlefieldView.generateNewBattlefieldView(battlefield);
+    return battlefield;
   }
 }
