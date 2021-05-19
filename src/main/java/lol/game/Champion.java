@@ -52,6 +52,9 @@ public class Champion extends Attacker {
     return name() + "  (speed: " + this.speed + " - damages: " + this.damages() + ")";
   }
 
+  @Override public void boostTeam(Team team) {
+  }
+
   @Override public void accept(TileVisitor visitor) {
     visitor.visitChampion(this);
   }

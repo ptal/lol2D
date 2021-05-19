@@ -24,6 +24,9 @@ public class Tower extends Attacker{
             visitor.visitTower(this);
     }
 
+    @Override public void boostTeam(Team team) {
+  }
+
     @Override public void hit(int damage) {
         super.hit(damage);
         System.out.println(this);
