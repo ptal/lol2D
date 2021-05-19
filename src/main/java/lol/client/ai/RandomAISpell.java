@@ -21,6 +21,17 @@ public class RandomAISpell extends RandomAI {
     return turn;
   }
 
+  protected void tryDoubleDamageOnNexus(Turn turn) {
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+        public void visitNexus(Nexus nexus) {
+        if(nexus.teamOfNexus() != teamID) {
+          turn.registerAction(new DoubleDamage(teamID, id, tower.x(), tower.y()));
+        }
+        }
+      }));
+  }
+
   private void tryDoubleDamageOnTower(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
