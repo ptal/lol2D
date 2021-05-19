@@ -18,6 +18,7 @@ import lol.game.*;
 public class BattlefieldView implements TileVisitor
 {
   Battlefield battlefield;
+  BattlefieldTraversal battlefieldTraversal;
   Sprites sprites;
   TilePane tiles;
   Stage stage;
@@ -32,6 +33,7 @@ public class BattlefieldView implements TileVisitor
 
   public BattlefieldView(Battlefield battlefield, Stage stage) {
     this.battlefield = battlefield;
+    this.battlefieldTraversal = new BattlefieldTraversal(battlefield);
     this.stage = stage;
     sprites = new Sprites();
   }
@@ -39,10 +41,10 @@ public class BattlefieldView implements TileVisitor
   public void update() {
     Platform.runLater(() -> {
       System.out.println("Updating battefield view...");
-      battlefield.visitFullMap(this);
+      initTilePane();
+      battlefieldTraversal.visitFullMap(this);
       scene = new Scene(tiles);
       stage.setScene(scene);});
-      initTilePane();
   }
 
   ImageView groundView(Battlefield.GroundTile tile) {

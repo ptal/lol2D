@@ -6,6 +6,7 @@ import java.net.*;
 import java.util.function.BiConsumer;
 import lol.common.*;
 import lol.game.action.*;
+import lol.ui.Sound;
 
 public class Team {
   private int teamID;
@@ -13,14 +14,17 @@ public class Team {
   private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
+  private BattlefieldTraversal traversal;
   private boolean logInvalidMove = false;
-
+  private Sound sound;
   public Team(int teamID, Battlefield battlefield) {
     this.teamID = teamID;
     this.champions = new ArrayList<>();
     this.nexus = battlefield.nexusOf(teamID);
     this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
+    this.sound = new Sound();
+    this.traversal = new BattlefieldTraversal(battlefield);
   }
 
   public void addChampion(Champion c) {
@@ -60,8 +64,10 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attack(d);
+        sound.attackSound(champion.name());
         if(d.isDead()) {
           battlefield.destroy(d);
+          sound.destroyBuilding();
         }
       }
     });
@@ -73,7 +79,7 @@ public class Team {
 
   public void makeSpawnTurn(final Turn turn) {
     int[] champIdx = {0};
-    battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
+    traversal.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
           turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
