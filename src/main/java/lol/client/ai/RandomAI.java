@@ -6,10 +6,12 @@ import lol.game.action.*;
 
 public class RandomAI extends AIBase {
   protected Random random;
+  protected BattlefieldTraversal traversal;
 
   public RandomAI(Arena arena, Battlefield battlefield) {
     super(arena, battlefield);
-    random = new Random();    
+    traversal = new BattlefieldTraversal(battlefield);
+    random = new Random();
   }
   public Turn championSelect() {
     Turn turn = new Turn();
@@ -36,22 +38,22 @@ public class RandomAI extends AIBase {
 
   protected void tryAttackNexus(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitNexus(Nexus nexus) {
-        if(nexus.teamOfNexus() != teamID) {
-          turn.registerAction(new Attack(teamID, id, nexus.x(), nexus.y()));
-        }
+          if(nexus.teamOfNexus() != teamID) {
+            turn.registerAction(new Attack(teamID, id, nexus.x(), nexus.y()));
+          }
         }
       }));
   }
 
   protected void tryMove(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
         public void visitGrass(int x, int y) {
-        if(random.nextInt() % 3 == 0) {
-          turn.registerAction(new Move(teamID, id, x, y));
-        }
+          if(random.nextInt() % 3 == 0) {
+            turn.registerAction(new Move(teamID, id, x, y));
+          }
         }
       }));
   }

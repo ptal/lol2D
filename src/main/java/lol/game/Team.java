@@ -14,6 +14,7 @@ public class Team {
   private Tower tower;
   private Nexus nexus;
   private Battlefield battlefield;
+  private BattlefieldTraversal traversal;
   private boolean logInvalidMove = false;
   private Sound sound;
   public Team(int teamID, Battlefield battlefield) {
@@ -23,6 +24,7 @@ public class Team {
     this.tower = battlefield.towerOf(teamID);
     this.battlefield = battlefield;
     this.sound = new Sound();
+    this.traversal = new BattlefieldTraversal(battlefield);
   }
 
   public void addChampion(Champion c) {
@@ -77,7 +79,7 @@ public class Team {
 
   public void makeSpawnTurn(final Turn turn) {
     int[] champIdx = {0};
-    battlefield.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
+    traversal.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){
       @Override public void visitGrass(int x, int y) {
         if(champIdx[0] < champions.size()) {
           turn.registerAction(new Spawn(teamID, champIdx[0], x, y));
