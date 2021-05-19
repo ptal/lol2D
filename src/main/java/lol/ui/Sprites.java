@@ -12,6 +12,7 @@ public class Sprites {
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
   private Image[] nexusImages = new Image[2];
+  private Image[] nexusImagesLowHP = new Image[2];
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -30,6 +31,8 @@ public class Sprites {
     towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
     towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
 
+    nexusImagesLowHP[Nexus.BLUE] = new Image("sprites/nexusFire2.png");
+    nexusImagesLowHP[Nexus.RED] = new Image("sprites/nexusRedFire.png");
   }
 
   private ImageView makeView(Image image) {
@@ -61,7 +64,10 @@ public class Sprites {
     checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
     return makeView(nexusImages[teamID]);
   }
-
+  public ImageView nexusesLowHpView(int teamID) {
+    checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
+    return makeView(nexusImagesLowHP[teamID]);
+  }
   public ImageView towersView(int teamID) {
     checkTeamID(teamID, "Unsupported Tower's color. There is only 2 teams.");
     return makeView(towerImages[teamID]);

@@ -65,7 +65,9 @@ public class BattlefieldView implements TileVisitor
 
   ImageView nexusView(Nexus nexus) {
     int teamID = nexus.teamOfNexus();
-    return(sprites.nexusesView(teamID));
+    if(nexus.isLowHP())
+      return(sprites.nexusesLowHpView(teamID));
+    return sprites.nexusesView(teamID);
   }
 
   ImageView towerView(Tower tower){
