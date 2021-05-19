@@ -68,6 +68,13 @@ public class Server implements Runnable {
       Nexus nexus = battlefield.nexusOf(i);
       if(nexus.isAlive()) {
         System.out.println("WINNER: " + nexus);
+        String winner = "WINNER: " + nexus;
+        if((Character.toString(winner.charAt(8))).equals("B")) {
+          new WinnerScreen("Blue");
+        }
+        else {
+          new WinnerScreen("Red");
+        }
       }
       else {
         System.out.println("LOSER: " + nexus);
