@@ -71,8 +71,9 @@ public class BattlefieldView implements TileVisitor
     return(sprites.towersView(teamID));
   }
 
-  ImageView arrowView() {
-    return(sprites.arrowView());
+  ImageView projectileView(Projectile projectile) {
+    int typeID = projectile.typeOfProjectile();
+    return(sprites.projectileView(typeID));
   }
 
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
@@ -87,10 +88,10 @@ public class BattlefieldView implements TileVisitor
     tiles.getChildren().add(stack);
   }
 
-  private void displayProjectile(Projectile p, Node pView) {
+  private void displayIndestructible(Indestructible i, Node iView) {
     StackPane stack = new StackPane();
-    stack.getChildren().add(groundView(battlefield.groundAt(p.x(), p.y())));
-    stack.getChildren().add(pView);
+    stack.getChildren().add(groundView(battlefield.groundAt(i.x(), i.y())));
+    stack.getChildren().add(iView);
     tiles.getChildren().add(stack);
   }
 
@@ -123,7 +124,7 @@ public class BattlefieldView implements TileVisitor
     displayDestructible(tower, towerView(tower));
   }
 
-  @Override public void visitArrow(Arrow arrow) {
-    displayProjectile(arrow, arrowView());
+  @Override public void visitProjectile(Projectile projectile) {
+    displayIndestructible(projectile, projectileView(projectile));
   }
 }

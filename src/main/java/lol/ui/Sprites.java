@@ -3,12 +3,13 @@ package lol.ui;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lol.game.Nexus;
+import lol.game.Projectile;
 
 public class Sprites {
   private Image grassImage;
   private Image treeImage;
   private Image rockImage;
-  private Image arrowImage;
+  private Image[] projectileImages = new Image[1];
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
@@ -19,7 +20,7 @@ public class Sprites {
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
 
-    arrowImage = new Image("sprites/arrow.png");
+    projectileImages[Projectile.ARROW] = new Image("sprites/arrow.png");
 
     archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
     archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
@@ -48,6 +49,13 @@ public class Sprites {
     return true;
   }
 
+  private boolean checkTypeID(int typeID, String errorMessage){
+    if (typeID > 1){
+      throw new RuntimeException(errorMessage);
+    }
+    return true;
+  }
+
   public ImageView championsView(String name, int teamID){
     checkTeamID(teamID,"Sprites are only provided for two teams at most.");
 
@@ -70,8 +78,9 @@ public class Sprites {
     return makeView(towerImages[teamID]);
   }
 
-  public ImageView arrowView() {
-    return makeView(arrowImage);
+  public ImageView projectileView(int typeID) {
+    checkTypeID(typeID, "Unsupported projectile type. There is only 1 type.");
+    return makeView(projectileImages[typeID]);
   }
 
   public ImageView treeView() {

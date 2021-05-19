@@ -1,24 +1,19 @@
 package lol.game;
 
-// The coordinates are the position of the projectile in the battlefield.
-public abstract class Projectile {
-  private int xCoord;
-  private int yCoord;
+public class Projectile extends Indestructible {
+  public static final int ARROW = 0;
+  private int typeID;
 
-  public Projectile() {}
-
-  public void place(int xCoord, int yCoord) {
-    this.xCoord = xCoord;
-    this.yCoord = yCoord;
+  public Projectile(int typeID) {
+    super();
+    this.typeID = typeID;
   }
 
-  public int x() {
-    return xCoord;
+  public int typeOfProjectile() {
+    return typeID;
   }
 
-  public int y() {
-    return yCoord;
+  @Override public void accept(TileVisitor visitor) {
+    visitor.visitProjectile(this);
   }
-
-  public abstract void accept(TileVisitor visitor);
 }
