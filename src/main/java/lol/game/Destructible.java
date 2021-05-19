@@ -50,5 +50,7 @@ public abstract class Destructible {
     return initialHP;
   }
 
+  public abstract void boostTeam(Team team);
+
   public abstract void accept(TileVisitor visitor);
 }

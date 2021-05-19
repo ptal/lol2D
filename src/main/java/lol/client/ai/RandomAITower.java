@@ -23,11 +23,11 @@ public class RandomAITower extends RandomAI {
 
   protected void tryAttackTower(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
-      battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitTower(Tower tower) {
-        if(tower.teamOfTower() != teamID) {
-          turn.registerAction(new Attack(teamID, id, tower.x(), tower.y()));
-        }
+          if(tower.teamOfTower() != teamID) {
+            turn.registerAction(new Attack(teamID, id, tower.x(), tower.y()));
+          }
         }
       }));
   }
