@@ -90,13 +90,6 @@ public class BattlefieldView implements TileVisitor
     tiles.getChildren().add(stack);
   }
 
-  private void displayIndestructible(Indestructible i, Node iView) {
-    StackPane stack = new StackPane();
-    stack.getChildren().add(groundView(battlefield.groundAt(i.x(), i.y())));
-    stack.getChildren().add(iView);
-    tiles.getChildren().add(stack);
-  }
-
   private void drawLifeBar(StackPane stack, Destructible d){
     double width = d.currentHP()*1.0/d.initialHP();
     double fixedWidth = 50;
@@ -127,6 +120,6 @@ public class BattlefieldView implements TileVisitor
   }
 
   @Override public void visitProjectile(Projectile projectile) {
-    displayIndestructible(projectile, projectileView(projectile));
+    displayDestructible(projectile, projectileView(projectile));
   }
 }

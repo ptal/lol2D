@@ -15,7 +15,6 @@ public interface TileVisitor {
   }
 
   default void visitDestructible(Destructible d) {}
-  default void visitIndestructible(Indestructible i) {}
   default void visitChampion(Champion c) {
     visitDestructible(c);
   }
@@ -26,6 +25,6 @@ public interface TileVisitor {
     visitDestructible(t);
   }
   default void visitProjectile(Projectile p) {
-    visitIndestructible(p);
+    visitDestructible(p);
   }
 }
