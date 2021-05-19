@@ -14,8 +14,6 @@ public class Sprites {
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
   private Image[] nexusImages = new Image[2];
-  private Image[] finalScene = new Image[2];
-
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -37,8 +35,6 @@ public class Sprites {
     towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
     towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
 
-    finalScene[Nexus.BLUE] = new Image("sprites/BlueWin.png", 640, 640, true, true);
-    finalScene[Nexus.RED] = new Image("sprites/RedWin.png", 640 ,640 ,true, true);
   }
 
   private ImageView makeView(Image image) {
@@ -74,11 +70,6 @@ public class Sprites {
   public ImageView towersView(int teamID) {
     checkTeamID(teamID, "Unsupported Tower's color. There is only 2 teams.");
     return makeView(towerImages[teamID]);
-  }
-
-  public ImageView finalSceneView(int teamID) {
-    checkTeamID(teamID, "Unsupported Winner's color. There is only 2 teams.");
-    return makeView(finalScene[teamID]);
   }
 
   public ImageView treeView() {
