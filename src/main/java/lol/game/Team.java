@@ -77,6 +77,9 @@ public class Team {
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
         attacked[0] = champion.attackEnhanced(d,2);
+        if(d.isDead()){
+          battlefield.destroy(d);
+        }
       }
     });
     if(!attacked[0]) {
