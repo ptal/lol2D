@@ -21,7 +21,7 @@ public class RandomAITower extends RandomAI {
     return turn;
   }
 
-  private void tryAttackTower(Turn turn) {
+  protected void tryAttackTower(Turn turn) {
     arena.teamOf(teamID).forEachChampion((champion, id) ->
       battlefield.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
         public void visitTower(Tower tower) {

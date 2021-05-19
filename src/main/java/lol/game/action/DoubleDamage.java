@@ -3,7 +3,7 @@ package lol.game.action;
 import lol.game.*;
 import java.io.Serializable;
 
-public abstract class DoubleDamage extends Spell implements Serializable {
+public class DoubleDamage extends Spell implements Serializable {
   protected int x;
   protected int y;
 
