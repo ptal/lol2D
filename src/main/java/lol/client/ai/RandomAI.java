@@ -31,6 +31,9 @@ public class RandomAI extends AIBase {
     Turn turn = new Turn();
     // Try to attack the Nexus first.
     tryAttackNexus(turn);
+    //
+    tryAttackMonster(turn);
+    tryAttackTower(turn);
     // Add a move action in case we could not attack the Nexus.
     tryMove(turn);
     return turn;
@@ -54,6 +57,26 @@ public class RandomAI extends AIBase {
           if(random.nextInt() % 3 == 0) {
             turn.registerAction(new Move(teamID, id, x, y));
           }
+        }
+      }));
+  }
+
+  protected void tryAttackMonster(Turn turn) {
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+        public void visitMonster(Monster monster) {
+          turn.registerAction(new Attack(teamID, id, monster.x(), monster.y()));
+        }
+      }));
+  }
+
+  private void tryAttackTower(Turn turn) {
+    arena.teamOf(teamID).forEachChampion((champion, id) ->
+      traversal.visitAdjacent(champion.x(), champion.y(), champion.attackRange(), new TileVisitor(){
+        public void visitTower(Tower tower) {
+        if(tower.teamOfTower() != teamID) {
+          turn.registerAction(new Attack(teamID, id, tower.x(), tower.y()));
+        }
         }
       }));
   }
