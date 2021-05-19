@@ -14,6 +14,10 @@ public class Sprites {
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
   private Image[] nexusImages = new Image[2];
+  private Image blueNexusOnfire;
+  private Image redNexusOnfire;
+  private Image redNexusDestroyed;
+  private Image blueNexusDestroyed;
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -34,6 +38,11 @@ public class Sprites {
 
     towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
     towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
+
+    redNexusOnfire = new Image("sprites/red-nexus-onfire.png");
+    blueNexusOnfire = new Image("sprites/blue-nexus-onfire.png");
+    redNexusDestroyed = new Image("sprites/red-nexus-destroyed.png");
+    blueNexusDestroyed = new Image("sprites/blue-nexus-destroyed.png");
 
   }
 
@@ -86,6 +95,22 @@ public class Sprites {
 
   public ImageView monsterView(int monsterId) {
     return makeView(monsterImages[monsterId]);
+  }
+
+  public ImageView blueNexusOnfire(){
+    return makeView(blueNexusOnfire);
+  }
+
+  public ImageView redNexusOnfire(){
+    return makeView(redNexusOnfire);
+  }
+
+  public ImageView blueNexusDestroyed(){
+    return makeView(blueNexusDestroyed);
+  }
+
+  public ImageView redNexusDestroyed(){
+    return makeView(redNexusDestroyed);
   }
 
 }
