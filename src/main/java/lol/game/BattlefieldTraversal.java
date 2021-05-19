@@ -49,7 +49,7 @@ public class BattlefieldTraversal {
   public boolean noObstacles(int fromX, int fromY, int toX, int toY, Battlefield battlefield) {
     int dx = Math.abs(toX - fromX);
     int dy = Math.abs(toY - fromY);
-    if(dy <= 1 || dx <= 1){
+    if(Math.max(dy, dx) <= 1 ){
       return true;
     }
     else if(dy == dx){
@@ -75,14 +75,13 @@ public class BattlefieldTraversal {
 
 
   public boolean diagonalCheck(int x, int y, int toX, int toY, Battlefield battlefield) {
-    boolean emptyTile = battlefield.canPlaceAt(x, y);
     System.out.println(x);
     System.out.println(y);
     System.out.println("------------------------");
     if(x < toX && y < toY) {
       for(int i = x; i < toX; i++) {
         for(int j = y; j < toY; j++) {
-          if(!emptyTile) {
+          if(!battlefield.canPlaceAt(i, j)) {
             return false;
           }
         }
@@ -91,7 +90,7 @@ public class BattlefieldTraversal {
     else if(x < toX && y > toY) {
       for(int i = x; i < toX; i++) {
         for(int j = y; j > toY; j--) {
-          if(!emptyTile) {
+          if(!battlefield.canPlaceAt(i, j)) {
             return false;
           }
         }
@@ -100,7 +99,7 @@ public class BattlefieldTraversal {
     else if(x > toX && y > toY) {
       for(int i = x; i > toX; i--) {
         for(int j = y; j > toY; j--) {
-          if(!emptyTile) {
+          if(!battlefield.canPlaceAt(i, j)) {
             return false;
           }
         }
@@ -109,7 +108,7 @@ public class BattlefieldTraversal {
     else if(x > toX && y < toY) {
       for(int i = x; i > toX; i--) {
         for(int j = y; j < toY; j++) {
-          if(!emptyTile) {
+          if(!battlefield.canPlaceAt(i, j)) {
             return false;
           }
         }
@@ -120,20 +119,19 @@ public class BattlefieldTraversal {
 
   // - Case when y = toY
   public boolean verticalCheck(int x, int y, int toX, int toY, Battlefield battlefield) {
-    boolean emptyTile = battlefield.canPlaceAt(x, y);
     System.out.println(x);
     System.out.println(y);
     System.out.println("------------------------");
     if( x>toX ) {
       for(int i = x; i > toX; i--){
-        if(!emptyTile){
+        if(!battlefield.canPlaceAt(i, y)){
           return false;
         }
       }
     }
     else if( x < toX) {
       for(int i = x; i > toX; i++){
-        if(!emptyTile){
+        if(!battlefield.canPlaceAt(i, y)){
           return false;
         }
       }
@@ -143,20 +141,21 @@ public class BattlefieldTraversal {
 
   // - Case when x = toX
   public boolean horizontalCheck(int x, int y, int toX, int toY, Battlefield battlefield) {
-    boolean emptyTile = battlefield.canPlaceAt(x, y);
     System.out.println(x);
     System.out.println(y);
     System.out.println("------------------------");
-    if( y>toY ) {
-      for(int i = y; i > toY; i--){
-        if(!emptyTile){
+    if( y>=toY ) {
+      for(int j = y; j > toY; j--){
+        if(!battlefield.canPlaceAt(x, j)){
+          System.out.println("Obstacle on the way to the target of pos "+ toX +" "+ toY +" ! Can't shoot.");
           return false;
         }
       }
     }
-    else if( y < toY) {
-      for(int i = y; i < toY; i++){
-        if(!emptyTile){
+    else if( y <= toY) {
+      for(int j = y; j < toY; j++){
+        System.out.println("Obstacle on the way to the target of pos "+ toX +" "+ toY +" ! Can't shoot.");
+        if(!battlefield.canPlaceAt(x, j)){
           return false;
         }
       }

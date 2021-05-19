@@ -13,7 +13,6 @@ public class RandomAI extends AIBase {
     traversal = new BattlefieldTraversal(battlefield);
     random = new Random();
   }
-
   public Turn championSelect() {
     Turn turn = new Turn();
     String championName;
