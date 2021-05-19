@@ -14,11 +14,11 @@ public class Monster extends Attacker {
   }
 
   public static Monster makeDragon() {
-    return new Monster(DRAGON, "Dragon", 10, 5, 5);
+    return new Monster(DRAGON, "Dragon", 10, 7, 5);
   }
 
   public static Monster makeNashor() {
-    return new Monster(NASHOR, "Nashor", 10, 5, 5);
+    return new Monster(NASHOR, "Nashor", 15, 5, 7);
   }
 
   public static Monster make(int monsterID) {
@@ -37,13 +37,26 @@ public class Monster extends Attacker {
     return monsterID;
   }
 
+  @Override public void boostTeam(Team team) {
+    if (isDead()) {
+      if (monsterID == DRAGON) {
+        team.forEachChampion((champion, id) -> champion.boostDamages(3));
+        System.out.println("Boost Damage team " + team.toString());
+      }
+      else if (monsterID == NASHOR) {
+        team.forEachChampion((champion, id) -> champion.boostSpeed(3));
+        System.out.println("Boost Speed team " + team.toString());
+      }
+    }
+  }
+
   @Override public void hit(int damage) {
     super.hit(damage);
     System.out.println(this);
   }
 
   @Override public String toString() {
-    return name();
+    return name() + ": " + currentHP() + "hp left";
   }
 
   @Override public void accept(TileVisitor visitor) {

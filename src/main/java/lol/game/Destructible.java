@@ -49,6 +49,9 @@ public abstract class Destructible {
   public int initialHP(){
     return initialHP;
   }
-  
+
+  public void boostTeam(Team team) {
+  }
+
   public abstract void accept(TileVisitor visitor);
 }

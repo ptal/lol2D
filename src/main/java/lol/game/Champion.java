@@ -28,6 +28,10 @@ public class Champion extends Attacker {
     }
   }
 
+  public void boostSpeed(int boost) {
+    this.speed += boost;
+  }
+
   public int teamID() {
     return teamID;
   }
@@ -45,7 +49,7 @@ public class Champion extends Attacker {
   }
 
   @Override public String toString() {
-    return name();
+    return name() + "  (speed: " + this.speed + " - damages: " + this.damages() + ")";
   }
 
   @Override public void accept(TileVisitor visitor) {
