@@ -101,13 +101,15 @@ public class Team {
     boolean placed = false;
     int deltaX = xA - xB;
     int deltaY = yA - yB;
-    int rotation = angleBetweenTiles(deltaX, deltaY) + 90;
+    int rotation = angleBetweenTiles(deltaX, deltaY) + 90;// The 90 is here as a constant because the arrow sprite is looking 270 degrees down
     Projectile p = new Projectile(typeID, rotation);
-    for (int j = (int) Math.round(Math.abs(deltaX)/2); j < Math.abs(deltaX); j++) {
-      for (int i = (int) Math.round(Math.abs(deltaY)/2); i < Math.abs(deltaY); i++) {
-        if(battlefield.placeAt(p, Math.max(xA, xB) - j, Math.max(yA, yB) - i)) {
-          placed = true;
-          break;
+    for (int j = 0; j < Math.abs(deltaX) + 1; j++) {
+      for (int i = 0; i < Math.abs(deltaY) + 1; i++) {
+        if (!(Math.max(xA, xB) - j == xA && Math.max(yA, yB) - i == yB) && !(Math.max(xA, xB) - j == xB && Math.max(yA, yB) - i == yA)) {
+          if(battlefield.placeAt(p, Math.max(xA, xB) - j, Math.max(yA, yB) - i)) {
+            placed = true;
+            break;
+          }
         }
       }
       if(placed) {
