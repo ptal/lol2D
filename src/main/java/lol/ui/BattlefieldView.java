@@ -66,30 +66,17 @@ public class BattlefieldView implements TileVisitor
   ImageView nexusView(Nexus nexus) {
     int teamID = nexus.teamOfNexus();
     double hpPercentage = (nexus.currentHP())/(double)(nexus.initialHP());
-    switch(nexus.teamOfNexus()) {
-      case Nexus.BLUE:{
-        if (hpPercentage<=1.0 && hpPercentage>=0.5){
-          return(sprites.nexusesView(teamID));
-        }
-        else if(hpPercentage< 0.5 && hpPercentage> 0.0){
-          return sprites.blueNexusOnfire();
-        }
-        else if(hpPercentage == 0.0){
-          return sprites.blueNexusDestroyed();
-        }
-      }
-      case Nexus.RED:{
-        if (hpPercentage<=1.0 && hpPercentage>=0.5){
-          return(sprites.nexusesView(teamID));
-        }
-        else if(hpPercentage< 0.5 && hpPercentage> 0.0){
-          return sprites.redNexusOnfire();
-        }
-        else if(hpPercentage == 0.0){
-          return sprites.redNexusDestroyed();
-        }
-      }
-      default: throw new RuntimeException("Unsupported Nexus color");
+    if (hpPercentage<=1.0 && hpPercentage>=0.5){
+      return(sprites.nexusesView(teamID));
+    }
+    else if(hpPercentage< 0.5 && hpPercentage> 0.0){
+      return (sprites.nexusesOnfire(teamID));
+    }
+    else if(hpPercentage == 0.0){
+      return (sprites.nexusesDestroyed(teamID));
+    }
+    else{
+      throw new RuntimeException("Unsupported Nexus color");
     }
   }
 

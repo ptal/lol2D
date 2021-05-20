@@ -14,10 +14,8 @@ public class Sprites {
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
   private Image[] nexusImages = new Image[2];
-  private Image blueNexusOnfire;
-  private Image redNexusOnfire;
-  private Image redNexusDestroyed;
-  private Image blueNexusDestroyed;
+  private Image[] nexusOnfire = new Image[2];
+  private Image[] nexusDestroyed = new Image[2];
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -39,10 +37,11 @@ public class Sprites {
     towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
     towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
 
-    redNexusOnfire = new Image("sprites/red-nexus-onfire.png");
-    blueNexusOnfire = new Image("sprites/blue-nexus-onfire.png");
-    redNexusDestroyed = new Image("sprites/red-nexus-destroyed.png");
-    blueNexusDestroyed = new Image("sprites/blue-nexus-destroyed.png");
+    nexusOnfire[Nexus.BLUE] = new Image("sprites/blue-nexus-onfire.png");
+    nexusOnfire[Nexus.RED] = new Image("sprites/red-nexus-onfire.png");
+
+    nexusDestroyed[Nexus.BLUE] = new Image("sprites/blue-nexus-destroyed.png");
+    nexusDestroyed[Nexus.RED] = new Image("sprites/red-nexus-destroyed.png");
 
   }
 
@@ -97,20 +96,14 @@ public class Sprites {
     return makeView(monsterImages[monsterId]);
   }
 
-  public ImageView blueNexusOnfire(){
-    return makeView(blueNexusOnfire);
+  public ImageView nexusesOnfire(int teamID) {
+    checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
+    return makeView(nexusOnfire[teamID]);
   }
 
-  public ImageView redNexusOnfire(){
-    return makeView(redNexusOnfire);
-  }
-
-  public ImageView blueNexusDestroyed(){
-    return makeView(blueNexusDestroyed);
-  }
-
-  public ImageView redNexusDestroyed(){
-    return makeView(redNexusDestroyed);
-  }
+  public ImageView nexusesDestroyed(int teamID) {
+    checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
+    return makeView(nexusDestroyed[teamID]);
+  }  
 
 }
