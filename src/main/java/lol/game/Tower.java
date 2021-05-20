@@ -1,14 +1,13 @@
 package lol.game;
 
+import lol.config.Config;
+
 public class Tower extends Attacker{
-    public static final int HP_TOWER = 5;
-    public static final int RANGE_OF_ATTACK = 2;
-    public static final int DAMAGE_TOWER = 4;
     private int teamID;
 
     // we let the attributes be constants for now
     public Tower(int teamID) {
-        super(HP_TOWER, RANGE_OF_ATTACK, DAMAGE_TOWER);
+        super(Config.HP_TOWER, Config.RANGE_OF_ATTACK_TOWER, Config.DAMAGE_TOWER);
         this.teamID = teamID;
     }
 
