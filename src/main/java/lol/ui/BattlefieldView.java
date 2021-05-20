@@ -75,7 +75,8 @@ public class BattlefieldView implements TileVisitor
 
   ImageView projectileView(Projectile projectile) {
     int typeID = projectile.typeOfProjectile();
-    return(sprites.projectileView(typeID));
+    int rotation = projectile.rotationOfProjectile();
+    return(sprites.projectileView(typeID, rotation));
   }
 
   ImageView monsterView(Monster monster) {

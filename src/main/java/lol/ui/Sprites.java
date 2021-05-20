@@ -52,6 +52,13 @@ public class Sprites {
     return view;
   }
 
+  private ImageView makeViewWithRotation(Image image, int rotation) {
+    ImageView view = new ImageView();
+    view.setImage(image);
+    view.setRotate(rotation);
+    return view;
+  }
+
   private boolean checkTeamID(int teamID, String errorMessage){
     if (teamID > 2){
       throw new RuntimeException(errorMessage);
@@ -88,9 +95,9 @@ public class Sprites {
     return makeView(towerImages[teamID]);
   }
 
-  public ImageView projectileView(int typeID) {
+  public ImageView projectileView(int typeID, int rotation) {
     checkTypeID(typeID, "Unsupported projectile type. There is only 1 type.");
-    return makeView(projectileImages[typeID]);
+    return makeViewWithRotation(projectileImages[typeID], rotation);
   }
 
   public ImageView treeView() {

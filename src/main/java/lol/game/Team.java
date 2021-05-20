@@ -98,13 +98,14 @@ public class Team {
   }
 
   private void flyProjectile(int xA, int yA, int xB, int yB, int typeID) {
-    Projectile p = new Projectile(typeID);
     boolean placed = false;
-    int horizontalDifference = Math.abs(xA - xB);
-    int verticalDifference = Math.abs(yA - yB);
-    for (int i = 1; i < horizontalDifference; i++) {
-      for (int j = 1; i < verticalDifference; j++) {
-        if(battlefield.placeAt(p, Math.max(xA, xB) - i, Math.max(yA, yB) - j)) {
+    int deltaX = xA - xB;
+    int deltaY = yA - yB;
+    int rotation = angleBetweenTiles(deltaX, deltaY) + 90;
+    Projectile p = new Projectile(typeID, rotation);
+    for (int j = (int) Math.round(Math.abs(deltaX)/2); j < Math.abs(deltaX); j++) {
+      for (int i = (int) Math.round(Math.abs(deltaY)/2); i < Math.abs(deltaY); i++) {
+        if(battlefield.placeAt(p, Math.max(xA, xB) - j, Math.max(yA, yB) - i)) {
           placed = true;
           break;
         }
@@ -113,6 +114,12 @@ public class Team {
         break;
       }
     }
+  }
+
+  private int angleBetweenTiles(int dX, int dY) {
+    double angle = Math.atan2(dY, dX) * 180 / Math.PI;
+    int roundedAngle = (int) Math.round(angle);
+    return roundedAngle;
   }
 
   @Override public String toString() {
