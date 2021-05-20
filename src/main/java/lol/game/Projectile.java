@@ -20,6 +20,7 @@ public class Projectile extends Destructible {
 
   @Override public void hit(int hp) {}
   @Override public void reviveAt(int x, int y) {}
+  @Override public void boostTeam(Team team) {}
 
   @Override public boolean isAlive() {
     return true;

@@ -78,6 +78,10 @@ public class BattlefieldView implements TileVisitor
     return(sprites.projectileView(typeID));
   }
 
+  ImageView monsterView(Monster monster) {
+    return sprites.monsterView(monster.monsterID());
+  }
+
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
     tiles.getChildren().add(groundView(tile));
   }
@@ -123,5 +127,9 @@ public class BattlefieldView implements TileVisitor
 
   @Override public void visitProjectile(Projectile projectile) {
     displayDestructible(projectile, projectileView(projectile));
+  }
+
+  @Override public void visitMonster(Monster monster) {
+    displayDestructible(monster, monsterView(monster));
   }
 }

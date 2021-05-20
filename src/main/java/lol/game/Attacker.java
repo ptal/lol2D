@@ -16,6 +16,14 @@ public abstract class Attacker extends Destructible {
         return rangeOfAttack;
     }
 
+    public int damages() {
+        return damages;
+    }
+
+    public void boostDamages(int boost) {
+        this.damages += boost;
+    }
+
     public boolean attack(Destructible d) {
         if(canAttack(d.x(), d.y())) {
             d.hit(damages);

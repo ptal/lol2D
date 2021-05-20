@@ -46,6 +46,7 @@ public class Battlefield {
   private Optional<Destructible>[][] battlefield;
   private ArrayList<Nexus> nexuses;
   private ArrayList<Tower> towers;
+  private ArrayList<Monster> monsters;
 
   // Initialize a battlefield with a ground tiles map.
   // See `ASCIIBattlefieldBuilder` for a class initializing the battlefield using ASCII map.
@@ -65,6 +66,10 @@ public class Battlefield {
     towers = new ArrayList<>();
     towers.add(new Tower(0));
     towers.add(new Tower(1));
+
+    monsters = new ArrayList<>();
+    monsters.add(Monster.makeDragon());
+    monsters.add(Monster.makeNashor());
   }
 
   public int width() {
@@ -85,6 +90,10 @@ public class Battlefield {
 
   public Tower towerOf(int teamID) {
     return towers.get(teamID);
+  }
+
+  public Monster monsterOf(int monsterID) {
+    return monsters.get(monsterID);
   }
 
   public int numberOfTeams() {
@@ -184,6 +193,15 @@ public class Battlefield {
           default: throw new RuntimeException("Unknown Tower Color in Battlefield.toString");
         }
         newline(t.x());
+      }
+
+      @Override public void visitMonster(Monster monster) {
+        switch(monster.monsterID()) {
+          case Monster.DRAGON: map.append('d'); break;
+          case Monster.NASHOR: map.append('n'); break;
+          default: throw new RuntimeException("Unknown Monster in Battlefield.tower");
+        }
+        newline(monster.x());
       }
 
       @Override public void visitNexus(Nexus n) {

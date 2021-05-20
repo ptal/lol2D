@@ -69,6 +69,7 @@ public class Team {
         if(d.isDead()) {
           battlefield.destroy(d);
           sound.destroyBuilding();
+          d.boostTeam(Team.this);
         }
       }
     });

@@ -15,6 +15,9 @@ public class Nexus extends Destructible {
     return teamID;
   }
 
+  @Override public void boostTeam(Team team) {
+  }
+
   @Override public void accept(TileVisitor visitor) {
     visitor.visitNexus(this);
   }
