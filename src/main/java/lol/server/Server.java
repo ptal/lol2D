@@ -82,7 +82,7 @@ public class Server implements Runnable {
         arena.applyTurn(turn);
         ui.update();
         broadcast(turn);
-        wait(2000);
+        wait(500);
       }
     }
   }

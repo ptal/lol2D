@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 import lol.game.*;
 import lol.ui.*;
 
-public class LOL2D extends Application {
+public class LOL2D extends Application implements TileVisitor {
   public static void main(String[] args) {
     launch(args);
   }
@@ -42,4 +42,5 @@ public class LOL2D extends Application {
     Thread t = new Thread(new Server(this, battlefield));
     t.start();
   }
+
 }

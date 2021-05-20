@@ -1,11 +1,12 @@
 package lol.game;
 
+import lol.config.Config;
+
 public class Monster extends Attacker {
-  private String name;
-  private int monsterID;
   public static final int DRAGON = 0;
   public static final int NASHOR = 1;
-
+  private String name;
+  private int monsterID;
 
   private Monster(int monsterID, String name, int hp, int rangeOfAttack, int damages) {
     super(hp, rangeOfAttack, damages);
@@ -14,11 +15,11 @@ public class Monster extends Attacker {
   }
 
   public static Monster makeDragon() {
-    return new Monster(DRAGON, "Dragon", 10, 7, 5);
+    return new Monster(DRAGON, "Dragon", Config.HP_DRAGON, Config.RANGE_OF_ATTACK_DRAGON, Config.DAMAGE_DRAGON);
   }
 
   public static Monster makeNashor() {
-    return new Monster(NASHOR, "Nashor", 15, 5, 7);
+    return new Monster(NASHOR, "Nashor", Config.HP_NASHOR, Config.RANGE_OF_ATTACK_NASHOR, Config.DAMAGE_NASHOR);
   }
 
   public static Monster make(int monsterID) {
@@ -40,11 +41,11 @@ public class Monster extends Attacker {
   @Override public void boostTeam(Team team) {
     if (isDead()) {
       if (monsterID == DRAGON) {
-        team.forEachChampion((champion, id) -> champion.boostDamages(3));
+        team.forEachChampion((champion, id) -> champion.boostDamages(Config.BOOST_DAMAGES));
         System.out.println("Boost Damage team " + team.toString());
       }
       else if (monsterID == NASHOR) {
-        team.forEachChampion((champion, id) -> champion.boostSpeed(3));
+        team.forEachChampion((champion, id) -> champion.boostSpeed(Config.BOOST_SPEED));
         System.out.println("Boost Speed team " + team.toString());
       }
     }
