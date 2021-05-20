@@ -60,6 +60,7 @@ public class Team {
 
   public boolean championAttack(int championID, int x, int y) {
     Champion champion = champions.get(championID);
+    boolean championIsArcher = "Archer".equals(champion.name());
     boolean[] attacked = {false};
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
@@ -73,6 +74,8 @@ public class Team {
     });
     if(!attacked[0]) {
       System.out.println("Invalid attack target of champion " + champion.name());
+    } else if(championIsArcher) {
+      flyProjectile(champion.x(), champion.y(), x, y, Projectile.ARROW);
     }
     return attacked[0];
   }
@@ -90,6 +93,24 @@ public class Team {
     });
     if(champIdx[0] != champions.size()) {
       throw new RuntimeException("Cannot place all champions because all spawned spots next to the Nexus are already taken.");
+    }
+  }
+
+  private void flyProjectile(int xA, int yA, int xB, int yB, int typeID) {
+    Projectile p = new Projectile(typeID);
+    boolean placed = false;
+    int horizontalDifference = Math.abs(xA - xB);
+    int verticalDifference = Math.abs(yA - yB);
+    for (int i = 1; i < horizontalDifference; i++) {
+      for (int j = 1; i < verticalDifference; j++) {
+        if(battlefield.placeAt(p, Math.max(xA, xB) - i, Math.max(yA, yB) - j)) {
+          placed = true;
+          break;
+        }
+      }
+      if(placed) {
+        break;
+      }
     }
   }
 

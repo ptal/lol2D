@@ -86,7 +86,9 @@ public class BattlefieldView implements TileVisitor
     StackPane stack = new StackPane();
     stack.getChildren().add(groundView(battlefield.groundAt(d.x(), d.y())));
     stack.getChildren().add(dView);
-    drawLifeBar(stack, d);
+    if(!(d instanceof Projectile)) {
+      drawLifeBar(stack, d);
+    }
     tiles.getChildren().add(stack);
   }
 

@@ -1,7 +1,7 @@
 package lol.game;
 
 public class Projectile extends Destructible {
-  public static final int HP_PROJECTILE = 1000;
+  public static final int HP_PROJECTILE = 9999;
   public static final int ARROW = 0;
   private int typeID;
 
