@@ -3,11 +3,13 @@ package lol.ui;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lol.game.Nexus;
+import lol.game.Monster;
 
 public class Sprites {
   private Image grassImage;
   private Image treeImage;
   private Image rockImage;
+  private Image[] monsterImages = new Image[2];
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
@@ -17,6 +19,9 @@ public class Sprites {
     grassImage = new Image("sprites/grass-tile.png");
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
+
+    monsterImages[Monster.DRAGON] = new Image("sprites/dragon.png");
+    monsterImages[Monster.NASHOR] = new Image("sprites/nashor.png");
 
     archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
     archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
@@ -78,4 +83,9 @@ public class Sprites {
   public ImageView grassView() {
     return makeView(grassImage);
   }
+
+  public ImageView monsterView(int monsterId) {
+    return makeView(monsterImages[monsterId]);
+  }
+
 }

@@ -1,5 +1,7 @@
 package lol.game;
 
+import lol.config.Config;
+
 public class Champion extends Attacker {
   private String name;
   private int speed;
@@ -13,11 +15,11 @@ public class Champion extends Attacker {
   }
 
   public static Champion makeArcher(int teamID) {
-    return new Champion(teamID, "Archer", 10, 3, 2, 2);
+    return new Champion(teamID, "Archer", Config.HP_ARCHER, Config.RANGE_OF_ATTACK_ARCHER, Config.DAMAGE_ARCHER, Config.SPEED_ARCHER);
   }
 
   public static Champion makeWarrior(int teamID) {
-    return new Champion(teamID, "Warrior", 15, 1, 3, 2);
+    return new Champion(teamID, "Warrior", Config.HP_WARRIOR, Config.RANGE_OF_ATTACK_WARRIOR, Config.DAMAGE_WARRIOR, Config.SPEED_WARRIOR);
   }
 
   public static Champion make(int teamID, String name) {
@@ -26,6 +28,10 @@ public class Champion extends Attacker {
       case "Warrior": return makeWarrior(teamID);
       default: throw new RuntimeException("The champion " + name + " does not exist.");
     }
+  }
+
+  public void boostSpeed(int boost) {
+    this.speed += boost;
   }
 
   public int teamID() {
@@ -45,7 +51,10 @@ public class Champion extends Attacker {
   }
 
   @Override public String toString() {
-    return name();
+    return name() + "  (speed: " + this.speed + " - damages: " + this.damages() + ")";
+  }
+
+  @Override public void boostTeam(Team team) {
   }
 
   @Override public void accept(TileVisitor visitor) {
