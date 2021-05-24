@@ -51,7 +51,7 @@ public class Team {
     boolean moved = false;
     if(champion.canWalkTo(x, y)) {
       moved = battlefield.moveTo(champion, x, y);
-      }
+    }
     if(!moved && logInvalidMove) {
       System.out.println("Invalid move position of champion " + champion.name());
     }

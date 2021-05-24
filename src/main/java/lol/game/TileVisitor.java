@@ -28,5 +28,4 @@ public interface TileVisitor {
   default void visitMonster(Monster monster) {
     visitDestructible(monster);
   }
-
 }

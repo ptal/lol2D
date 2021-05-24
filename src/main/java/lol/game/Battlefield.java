@@ -72,8 +72,8 @@ public class Battlefield {
   public Battlefield(GroundTile[][] ground) {
     this.ground = ground;
     battlefield = new Optional[height()][width()];
-    for (int y = 0; y < height(); ++y) {
-      for (int x = 0; x < width(); ++x) {
+    for(int y = 0; y < height(); ++y) {
+      for(int x = 0; x < width(); ++x) {
         battlefield[y][x] = Optional.empty();
       }
     }
@@ -119,8 +119,8 @@ public class Battlefield {
   }
 
   public boolean allNexusAlive() {
-    for (Nexus nexus : nexuses) {
-      if (!nexus.isAlive()) {
+    for(Nexus nexus : nexuses) {
+      if(!nexus.isAlive()) {
         return false;
       }
     }
@@ -139,7 +139,7 @@ public class Battlefield {
   // The move is allowed (return `true`) if `canPlaceAt(x,y)`.
   // Otherwise no action is performed.
   public boolean placeAt(Destructible d, int x, int y) {
-    if (canPlaceAt(x, y)) {
+    if(canPlaceAt(x, y)) {
       battlefield[y][x] = Optional.of(d);
       d.place(x, y);
       return true;
@@ -152,7 +152,7 @@ public class Battlefield {
   public boolean moveTo(Destructible d, int x, int y) {
     int oldX = d.x();
     int oldY = d.y();
-    if (placeAt(d, x, y)) {
+    if(placeAt(d, x, y)) {
       battlefield[oldY][oldX] = Optional.empty();
       return true;
     }
@@ -166,14 +166,64 @@ public class Battlefield {
   // Visit a tile using the visitor.
   // Do nothing if x or y is out of bounds.
   public void visit(int x, int y, TileVisitor visitor) {
-    if (x >= width() || x < 0 || y >= height() || y < 0) {
+    if(x >= width() || x < 0 || y >= height() || y < 0) {
       return;
     }
     if (!battlefield[y][x].isPresent()) {
       visitor.visitGround(ground[y][x], x, y);
-    } else {
+    }
+    else {
       battlefield[y][x].get().accept(visitor);
     }
+  }
+    @Override public String toString() {
+    StringBuilder map = new StringBuilder();
+    // The following TileVisitor construction is called an "anonymous class", check it out :-)
+    new BattlefieldTraversal(this).visitFullMap(new TileVisitor(){
+      void newline(int x) {
+        if(x == width() - 1) {
+          map.append('\n');
+        }
+      }
+
+      @Override public void visitGround(GroundTile groundTile, int x, int y) {
+        map.append(GroundTile.stringOf(groundTile));
+        newline(x);
+      }
+
+      @Override public void visitChampion(Champion c) {
+        map.append('C');
+        newline(c.x());
+      }
+
+      @Override public void visitTower(Tower t) {
+        switch(t.teamOfTower()) {
+          case Nexus.BLUE: map.append('b'); break;
+          case Nexus.RED: map.append('r'); break;
+          default: throw new RuntimeException("Unknown Tower Color in Battlefield.toString");
+        }
+        newline(t.x());
+      }
+
+      @Override public void visitMonster(Monster monster) {
+        switch(monster.monsterID()) {
+          case Monster.DRAGON: map.append('d'); break;
+          case Monster.NASHOR: map.append('n'); break;
+          default: throw new RuntimeException("Unknown Monster in Battlefield.tower");
+        }
+        newline(monster.x());
+      }
+
+      @Override public void visitNexus(Nexus n) {
+        switch(n.teamOfNexus()) {
+          case Nexus.BLUE: map.append('B'); break;
+          case Nexus.RED: map.append('R'); break;
+          default: throw new RuntimeException("Unknown Nexus Color in Battlefield.toString");
+        }
+        newline(n.x());
+      }
+    });
+    return map.toString();
   }
 }
 
