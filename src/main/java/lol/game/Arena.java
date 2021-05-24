@@ -43,18 +43,24 @@ public class Arena {
     }
 
     public void visitSpawn(int teamID, int championID, int x, int y) {
-      if(!championsWhoActed.contains(championID)) {
+      int teamChampionID = getTeamChampionID(teamID, championID);
+      if(!championsWhoActed.contains(teamChampionID)) {
         if(teams.get(teamID).spawnChampion(championID, x, y)) {
-          championsWhoActed.add(championID);
+          championsWhoActed.add(teamChampionID);
         }
       }
     }
 
+    private int getTeamChampionID(int teamID, int championID) {
+      return teamID * 100 + championID;
+    }
+
     public void visitMove(int teamID, int championID, int x, int y) {
+      int teamChampionID = getTeamChampionID(teamID, championID);
       if(phase == Phase.GAME) {
-        if(!championsWhoActed.contains(championID)) {
+        if(!championsWhoActed.contains(teamChampionID)) {
           if(teams.get(teamID).moveChampion(championID, x, y)) {
-            championsWhoActed.add(championID);
+            championsWhoActed.add(teamChampionID);
           }
         }
       }
