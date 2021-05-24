@@ -1,10 +1,10 @@
 package lol.ui;
 
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -15,12 +15,12 @@ import javafx.scene.paint.Color;
 
 import lol.game.*;
 
-public class BattlefieldView implements TileVisitor{
+public class BattlefieldView implements TileVisitor
+{
   Battlefield battlefield;
   BattlefieldTraversal battlefieldTraversal;
   Sprites sprites;
   TilePane tiles;
-  TilePane wt = new TilePane();
   Stage stage;
   Scene scene;
 
@@ -43,8 +43,8 @@ public class BattlefieldView implements TileVisitor{
       System.out.println("Updating battefield view...");
       initTilePane();
       battlefieldTraversal.visitFullMap(this);
-      displayWinningScreen();
-    });
+      scene = new Scene(tiles);
+      stage.setScene(scene);});
   }
 
   ImageView groundView(Battlefield.GroundTile tile) {
@@ -100,40 +100,6 @@ public class BattlefieldView implements TileVisitor{
     stack.getChildren().add(dView);
     drawLifeBar(stack, d);
     tiles.getChildren().add(stack);
-  }
-
-  private void displayWinningScreen() {
-    if(!battlefield.allNexusAlive()) {
-      try {
-        Thread.sleep(1500);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      Nexus nexus = battlefield.nexusOf(Nexus.BLUE);
-      if(nexus.isAlive()) {
-        displayWinner(Nexus.BLUE);
-      } else {
-        displayWinner(Nexus.RED);
-      }
-      scene = new Scene(wt);
-    } else {
-      scene = new Scene(tiles);
-    }
-    stage.setScene(scene);
-  }
-
-  private void displayWinner(int teamId) {
-    wt.setPrefColumns(1);
-    wt.setPrefRows(1);
-    wt.setTileAlignment(Pos.CENTER);
-    wt.setMinSize(640, 640);
-    StackPane stack = new StackPane();
-    sprites.finalSceneView(teamId).setFitWidth(640);
-    sprites.finalSceneView(teamId).setFitHeight(640);
-    sprites.finalSceneView(teamId).setPreserveRatio(true);
-    stack.setAlignment(Pos.CENTER);
-    stack.getChildren().addAll(new Rectangle(640,640, Color.WHITE ),sprites.finalSceneView(teamId));
-    wt.getChildren().add(stack);
   }
 
   private void drawLifeBar(StackPane stack, Destructible d){
