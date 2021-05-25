@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import lol.common.*;
 import lol.game.action.*;
+import java.util.function.*;
 
 public class Arena {
   private ArrayList<Team> teams;
@@ -42,27 +43,24 @@ public class Arena {
       championsWhoActed = new ArrayList<>();
     }
 
-    public void visitSpawn(int teamID, int championID, int x, int y) {
-      int teamChampionID = getTeamChampionID(teamID, championID);
-      if(!championsWhoActed.contains(teamChampionID)) {
-        if(teams.get(teamID).spawnChampion(championID, x, y)) {
-          championsWhoActed.add(teamChampionID);
+    private void tryExecuteChampionAction(int teamID, int championID, Predicate<Team> action) {
+      int uniqueChampionID = teamID * 1000 + championID;
+      if(!championsWhoActed.contains(uniqueChampionID)) {
+        if(action.test(teams.get(teamID))) {
+          championsWhoActed.add(uniqueChampionID);
         }
       }
     }
 
-    private int getTeamChampionID(int teamID, int championID) {
-      return teamID * 100 + championID;
+    public void visitSpawn(int teamID, int championID, int x, int y) {
+      tryExecuteChampionAction(teamID, championID,
+        (team) -> team.spawnChampion(championID, x, y));
     }
 
     public void visitMove(int teamID, int championID, int x, int y) {
-      int teamChampionID = getTeamChampionID(teamID, championID);
       if(phase == Phase.GAME) {
-        if(!championsWhoActed.contains(teamChampionID)) {
-          if(teams.get(teamID).moveChampion(championID, x, y)) {
-            championsWhoActed.add(teamChampionID);
-          }
-        }
+        tryExecuteChampionAction(teamID, championID,
+        (team) -> team.moveChampion(championID, x, y));
       }
       else {
         System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
