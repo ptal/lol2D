@@ -65,7 +65,19 @@ public class BattlefieldView implements TileVisitor
 
   ImageView nexusView(Nexus nexus) {
     int teamID = nexus.teamOfNexus();
-    return(sprites.nexusesView(teamID));
+    double hpPercentage = (nexus.currentHP())/(double)(nexus.initialHP());
+    if (hpPercentage<=1.0 && hpPercentage>=0.5){
+      return(sprites.nexusesView(teamID));
+    }
+    else if(hpPercentage< 0.5 && hpPercentage> 0.0){
+      return (sprites.nexusesOnfire(teamID));
+    }
+    else if(hpPercentage == 0.0){
+      return (sprites.nexusesDestroyed(teamID));
+    }
+    else{
+      throw new RuntimeException("Unsupported Nexus color");
+    }
   }
 
   ImageView towerView(Tower tower){
