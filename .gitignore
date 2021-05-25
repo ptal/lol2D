@@ -27,3 +27,7 @@ hs_err_pid*
 
 # .DStore files
 *.DS_Store
+/.idea/
+lib
+out/
+target/
