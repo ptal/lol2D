@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import lol.common.*;
 import lol.game.action.*;
+import java.util.function.*;
 
 public class Arena {
   private ArrayList<Team> teams;
@@ -42,21 +43,24 @@ public class Arena {
       championsWhoActed = new ArrayList<>();
     }
 
-    public void visitSpawn(int teamID, int championID, int x, int y) {
-      if(!championsWhoActed.contains(championID)) {
-        if(teams.get(teamID).spawnChampion(championID, x, y)) {
-          championsWhoActed.add(championID);
+    private void tryExecuteChampionAction(int teamID, int championID, Predicate<Team> action) {
+      int uniqueChampionID = teamID * 1000 + championID;
+      if(!championsWhoActed.contains(uniqueChampionID)) {
+        if(action.test(teams.get(teamID))) {
+          championsWhoActed.add(uniqueChampionID);
         }
       }
     }
 
+    public void visitSpawn(int teamID, int championID, int x, int y) {
+      tryExecuteChampionAction(teamID, championID,
+        (team) -> team.spawnChampion(championID, x, y));
+    }
+
     public void visitMove(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
-        if(!championsWhoActed.contains(championID)) {
-          if(teams.get(teamID).moveChampion(championID, x, y)) {
-            championsWhoActed.add(championID);
-          }
-        }
+        tryExecuteChampionAction(teamID, championID,
+        (team) -> team.moveChampion(championID, x, y));
       }
       else {
         System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
@@ -65,11 +69,8 @@ public class Arena {
 
     public void visitAttack(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
-        if(!championsWhoActed.contains(championID)) {
-          if(teams.get(teamID).championAttack(championID, x, y)) {
-            championsWhoActed.add(championID);
-          }
-        }
+        tryExecuteChampionAction(teamID, championID,
+        (team) -> team.championAttack(championID, x, y));
       }
       else {
         System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
