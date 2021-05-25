@@ -21,6 +21,7 @@ public class BattlefieldView implements TileVisitor
   BattlefieldTraversal battlefieldTraversal;
   Sprites sprites;
   TilePane tiles;
+  TilePane wt = new TilePane();
   Stage stage;
   Scene scene;
 
@@ -44,7 +45,8 @@ public class BattlefieldView implements TileVisitor
       initTilePane();
       battlefieldTraversal.visitFullMap(this);
       scene = new Scene(tiles);
-      stage.setScene(scene);});
+      stage.setScene(scene);
+      displayWinningScreen();});
   }
 
   ImageView groundView(Battlefield.GroundTile tile) {
@@ -116,6 +118,40 @@ public class BattlefieldView implements TileVisitor
     lifeBarStatic.setStrokeWidth(1);
     stack.getChildren().add(lifeBarStatic);
     stack.getChildren().add(lifeBar);
+  }
+
+  private void displayWinningScreen(){
+    if (!battlefield.allNexusAlive()) {
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      Nexus nexus = battlefield.nexusOf(Nexus.BLUE);
+      if (nexus.isAlive()) {
+        displayWinner(Nexus.BLUE);
+      } else {
+        displayWinner(Nexus.RED);
+      }
+      scene = new Scene(wt);
+    } else {
+      scene = new Scene(tiles);
+    }
+    stage.setScene(scene);
+  }
+
+  private void displayWinner(int teamId) {
+    wt.setPrefColumns(1);
+    wt.setPrefRows(1);
+    wt.setTileAlignment(Pos.CENTER);
+    wt.setMinSize(640, 640);
+    StackPane stack = new StackPane();
+    sprites.finalSceneView(teamId).setFitWidth(640);
+    sprites.finalSceneView(teamId).setFitHeight(640);
+    sprites.finalSceneView(teamId).setPreserveRatio(true);
+    stack.setAlignment(Pos.CENTER);
+    stack.getChildren().addAll(new Rectangle(640,640, Color.WHITE ),sprites.finalSceneView(teamId));
+    wt.getChildren().add(stack);
   }
 
   @Override public void visitChampion(Champion champion) {
