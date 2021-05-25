@@ -43,25 +43,7 @@ public class BattlefieldView implements TileVisitor{
       System.out.println("Updating battefield view...");
       initTilePane();
       battlefieldTraversal.visitFullMap(this);
-      if(!battlefield.allNexusAlive()){
-        try {
-          Thread.sleep(1500);
-        } catch(InterruptedException e) {
-          e.printStackTrace();
-        }
-        Nexus nexus = battlefield.nexusOf(Nexus.BLUE);
-        if(nexus.isAlive()) {
-          displayWinner(Nexus.BLUE);
-        }
-        else {
-          displayWinner(Nexus.RED);
-        }
-        scene = new Scene(wt);
-      }
-      else{
-        scene = new Scene(tiles);
-      }
-      stage.setScene(scene);
+      displayWinningScreen();
     });
   }
 
@@ -106,6 +88,26 @@ public class BattlefieldView implements TileVisitor{
     stack.getChildren().add(dView);
     drawLifeBar(stack, d);
     tiles.getChildren().add(stack);
+  }
+
+  private void displayWinningScreen() {
+    if(!battlefield.allNexusAlive()) {
+      try {
+        Thread.sleep(1500);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      Nexus nexus = battlefield.nexusOf(Nexus.BLUE);
+      if(nexus.isAlive()) {
+        displayWinner(Nexus.BLUE);
+      } else {
+        displayWinner(Nexus.RED);
+      }
+      scene = new Scene(wt);
+    } else {
+      scene = new Scene(tiles);
+    }
+    stage.setScene(scene);
   }
 
   private void displayWinner(int teamId) {
