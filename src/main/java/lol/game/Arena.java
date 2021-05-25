@@ -69,11 +69,8 @@ public class Arena {
 
     public void visitAttack(int teamID, int championID, int x, int y) {
       if(phase == Phase.GAME) {
-        if(!championsWhoActed.contains(championID)) {
-          if(teams.get(teamID).championAttack(championID, x, y)) {
-            championsWhoActed.add(championID);
-          }
-        }
+        tryExecuteChampionAction(teamID, championID,
+        (team) -> team.championAttack(championID, x, y));
       }
       else {
         System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
