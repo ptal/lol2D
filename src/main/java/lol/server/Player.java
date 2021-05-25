@@ -38,4 +38,8 @@ public class Player {
     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
     objectOutputStream.writeObject(this.uid);
   }
+
+  public void setRoundUID(int pUID) {
+    this.uid = pUID;
+  }
 }

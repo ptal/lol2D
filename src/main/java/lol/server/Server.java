@@ -9,17 +9,15 @@ import lol.game.action.*;
 import lol.ui.*;
 
 public class Server implements Runnable {
-  private final ArrayList<Player> players;
+  private final ArrayList<Player> connectedUsers;
+  private ArrayList<Integer> playerScores;
   private ServerSocket server;
-  private Arena arena;
   private LOL2D ui;
-  private Battlefield battlefield;
 
-  public Server(LOL2D ui, Battlefield battlefield) {
+  public Server(LOL2D ui) {
     this.ui = ui;
-    players = new ArrayList<>();
-    this.battlefield = battlefield;
-    arena = new Arena(battlefield);
+    connectedUsers = new ArrayList<>();
+    playerScores = new ArrayList<>();
   }
 
   @Override
@@ -27,12 +25,7 @@ public class Server implements Runnable {
     System.out.println("Starting server...");
     try(ServerSocket serverRessource = new ServerSocket(ServerInfo.port)) {
       server = serverRessource;
-      while(players.size() < battlefield.numberOfTeams()) {
-        waitNewPlayer();
-      }
-      startGame();
-      gameLoop();
-      endOfGameMessage();
+      registrationPhase();
     }
     catch (IOException e) {
       e.printStackTrace();
@@ -41,18 +34,97 @@ public class Server implements Runnable {
     System.out.println("Server shutted down.");
   }
 
+  public void registrationPhase() throws IOException {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Enter the number of participants for the tourney/match: ");
+    int expectedParticipants = scanner.nextInt();
+    scanner.close();
+    while(expectedParticipants != connectedUsers.size()) {
+      waitNewPlayer();
+      System.out.println(connectedUsers.size() + "/" + expectedParticipants + " players joined.");
+    }
+    if(connectedUsers.size() > 1) { //tourney
+      System.out.println("A tourney will be started.");
+      tourneyOrganization();
+      printScores();
+    }
+    else
+      System.out.println("Not enough players to start a match.");
+  }
+
   private void waitNewPlayer() throws IOException {
     Socket socket = server.accept();
     System.out.println("New player at " + socket);
-    players.add(new Player(socket, this));
+    connectedUsers.add(new Player(socket, this));
+    playerScores.add(0);
   }
 
-  private void startGame() throws IOException {
-    championSelectionPhase();
-    spawnPhase();
-    arena.startGamePhase();
-    ui.update();
-    wait(2000);
+ //tourney seeded into 2 groups depending on the sign up order.
+  private void tourneyOrganization() throws IOException {
+    ArrayList<Player> group1 = new ArrayList<Player>();
+    ArrayList<Player> group2 = new ArrayList<Player>();
+    for (int i = 0; i < connectedUsers.size(); i++) {
+      if(i % 2 == 0)
+        group1.add(connectedUsers.get(i));
+      else
+        group2.add(connectedUsers.get(i));
+    }
+    if(group2.size() < group1.size()) {
+      group2.add(null); //add dummy player.
+    }
+    //round robin rules according to wikipedia explanation.
+    //Dummy player round is skipped.
+    int set = 0;
+    int round = 0;
+    while(set < (int)((double)((group1.size()+group2.size())/2)*((group1.size()+group2.size())-1))) {
+      round = 0;
+      while (round < group1.size()) {
+        //group 2's dummy player is overgone.
+        if(group2.get(round) != null && group2.get(round) != null) {
+          roundOrganizer(group1.get(round), group2.get(round));
+        }
+        round++;
+      }
+      set += round;
+      group1.add(1, group2.get(0));
+      group2.remove(0);
+      group2.add(group1.get(group1.size()-1));
+      group1.remove(group1.size()-1);
+    }
+
+  }
+
+  private void roundOrganizer(Player playerGroup1, Player playerGroup2) throws IOException {
+    Player bluePlayer = playerGroup1;
+    Player redPlayer = playerGroup2;
+    bluePlayer.setRoundUID(0);
+    redPlayer.setRoundUID(1);
+    Game match = new Game(this.ui, bluePlayer, redPlayer, ui.makeNewGame());
+    match.startGame();
+    match.gameLoop();
+    int winner = match.endOfGameMessage();
+    if(winner == 0)
+      updateScores(playerGroup1);
+    else
+      updateScores(playerGroup2);
+  }
+
+  //returns the number of matches that a team won in the tourney.
+  private void updateScores(Player winningPlayer) throws IOException {
+    int scoreIndex = connectedUsers.indexOf(winningPlayer);
+    int oldScore = playerScores.get(scoreIndex);
+    oldScore++;
+    playerScores.set(scoreIndex, oldScore);
+  }
+
+  private void printScores() throws IOException {
+    int scoreIndex = 0;
+    for(Player p : connectedUsers){
+      p.setRoundUID(playerScores.get(scoreIndex)+2);
+      p.sendUID();
+      scoreIndex++;
+    }
+    System.out.println("Teamscores were sent to the clients. Good luck in the next tourney");
   }
 
   private void wait(int timeInMS) {
@@ -60,62 +132,6 @@ public class Server implements Runnable {
       Thread.sleep(timeInMS); // wait time in milliseconds to control duration
     } catch(InterruptedException e) {
       e.printStackTrace();
-    }
-  }
-
-  private void endOfGameMessage() {
-    for(int i = 0; i < battlefield.numberOfTeams(); ++i) {
-      Nexus nexus = battlefield.nexusOf(i);
-      if(nexus.isAlive()) {
-        System.out.println("WINNER: " + nexus);
-      }
-      else {
-        System.out.println("LOSER: " + nexus);
-      }
-    }
-  }
-
-  private void gameLoop() throws IOException {
-    for(int turns = 0; battlefield.allNexusAlive() && turns < lol.client.Client.MAX_TURNS; ++turns) {
-      for(Player player : players) {
-        Turn turn = player.askTurn();
-        arena.applyTurn(turn);
-        ui.update();
-        broadcast(turn);
-        wait(2000);
-      }
-    }
-  }
-
-  private void championSelectionPhase() throws IOException {
-    System.out.println("Champion selection phase...");
-    ArrayList<Turn> champSelect = new ArrayList<Turn>();
-    for(Player p : players) {
-      p.sendUID();
-      Turn turn = p.askTurn();
-      champSelect.add(turn);
-      arena.applyTurn(turn);
-    }
-    System.out.println("Broadcast team composition...");
-    broadcast(champSelect);
-  }
-
-  private void spawnPhase() throws IOException {
-    Turn turn = arena.spawnTurn();
-    arena.applyTurn(turn);
-    System.out.println("Broadcast spawning positions...");
-    broadcast(turn);
-  }
-
-  private void broadcast(Turn turn) throws IOException {
-    for(Player p : players) {
-      p.sendTurn(turn);
-    }
-  }
-
-  private void broadcast(ArrayList<Turn> turns) throws IOException {
-    for(Player p : players) {
-      p.sendTurns(turns);
     }
   }
 

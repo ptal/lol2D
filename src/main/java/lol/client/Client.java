@@ -37,24 +37,38 @@ public class Client implements Runnable {
     try(Socket s = new Socket(ServerInfo.ip, ServerInfo.port)) {
       socket = s;
       System.out.println("Connection succeeds.");
-      receiveUID();
-      ai.initTeamID(teamID);
-      System.out.println("UID received: " + teamID);
-      Turn turn = ai.championSelect();
-      System.out.println("champion selected");
-      turn.send(socket);
-      System.out.println("sent");
-      allChampionSelection();
-      System.out.println("allCham");
-      allSpawningChampion();
-      System.out.println("Champion selection phase done.");
-      // Now the turn-based game starts until the game is over.
-      arena.startGamePhase();
-      gameLoop();
+      while(1 == 1) {
+        receiveUID();
+        if(teamID >= 2)
+          break;
+        updateEnvironment();
+        ai.initTeamID(teamID);
+        System.out.println("UID received: " + teamID);
+        Turn turn = ai.championSelect();
+        System.out.println("champion selected");
+        turn.send(socket);
+        System.out.println("sent");
+        allChampionSelection();
+        System.out.println("allCham");
+        allSpawningChampion();
+        System.out.println("Champion selection phase done.");
+        // Now the turn-based game starts until the game is over.
+        arena.startGamePhase();
+        gameLoop();
+        System.out.println("End of this match, waiting for the next one...");
+      }
+      System.out.println("Nice our team won: " + (teamID-2) + " matches. EZ!");
     }
     catch (IOException e) {
       System.err.println(e);
     }
+  }
+
+  private void updateEnvironment() {
+    ASCIIBattlefieldBuilder battlefieldBuilder = new ASCIIBattlefieldBuilder();
+    battlefield = battlefieldBuilder.build();
+    arena = new Arena(battlefield);
+    ai = new RandomAITower(arena, battlefield);
   }
 
   private void gameLoop() throws IOException {
