@@ -18,6 +18,8 @@ public class Sprites {
   private Image redNexusOnfire;
   private Image redNexusDestroyed;
   private Image blueNexusDestroyed;
+  private Image[] winnerImage;
+
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -38,6 +40,9 @@ public class Sprites {
 
     towerImages[Nexus.BLUE] = new Image("sprites/blue-tower.png");
     towerImages[Nexus.RED] = new Image("sprites/red-tower.png");
+
+    winnerImage[Nexus.BLUE] = new Image("sprites/BlueWin.png");
+    winnerImage[Nexus.RED] = new Image("sprites/RedWin.png");
 
     redNexusOnfire = new Image("sprites/red-nexus-onfire.png");
     blueNexusOnfire = new Image("sprites/blue-nexus-onfire.png");
@@ -111,6 +116,11 @@ public class Sprites {
 
   public ImageView redNexusDestroyed(){
     return makeView(redNexusDestroyed);
+  }
+
+  public ImageView finalSceneView(int teamID){
+    checkTeamID(teamID, "Unsupported Winner's color. There is only 2 teams.");
+    return makeView(winnerImage[teamID]);
   }
 
 }
