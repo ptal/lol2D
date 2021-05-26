@@ -129,6 +129,7 @@ public class Battlefield {
     return false;
   }
 
+
   // Move a destructible object on the battlefield if `placeAt(d, x, y)` succeeds.
   public boolean moveTo(Destructible d, int x, int y) {
     int oldX = d.x();

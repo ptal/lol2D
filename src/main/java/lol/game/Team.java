@@ -63,7 +63,7 @@ public class Team {
     boolean[] attacked = {false};
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
-        attacked[0] = champion.attack(d);
+        attacked[0] = champion.attack(d, battlefield, traversal);
         sound.attackSound(champion.name());
         if(d.isDead()) {
           battlefield.destroy(d);
