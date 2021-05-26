@@ -16,6 +16,7 @@ public class Sprites {
   private Image[] nexusImages = new Image[2];
   private Image[] nexusOnfire = new Image[2];
   private Image[] nexusDestroyed = new Image[2];
+  private Image[] winnerImage;
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
@@ -43,6 +44,8 @@ public class Sprites {
     nexusDestroyed[Nexus.BLUE] = new Image("sprites/blue-nexus-destroyed.png");
     nexusDestroyed[Nexus.RED] = new Image("sprites/red-nexus-destroyed.png");
 
+    winnerImage[Nexus.BLUE] = new Image("sprites/BlueWin.png");
+    winnerImage[Nexus.RED] = new Image("sprites/RedWin.png");
   }
 
   private ImageView makeView(Image image) {
@@ -104,6 +107,10 @@ public class Sprites {
   public ImageView nexusesDestroyed(int teamID) {
     checkTeamID(teamID, "Unsupported Nexus color. There is only 2 teams.");
     return makeView(nexusDestroyed[teamID]);
-  }  
+  }
 
+  public ImageView finalSceneView(int teamID){
+    checkTeamID(teamID, "Unsupported Winner's color. There is only 2 teams.");
+    return makeView(winnerImage[teamID]);
+  }
 }
