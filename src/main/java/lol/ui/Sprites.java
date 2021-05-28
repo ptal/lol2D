@@ -21,7 +21,7 @@ public class Sprites {
   private Image[] nexusImages = new Image[2];
   private Image[] nexusOnfire = new Image[2];
   private Image[] nexusDestroyed = new Image[2];
-  private Image[] winnerImage;
+  private Image[] winnerImage = new Image[2];
 
   public Sprites() {
     grassImage = new Image("sprites/grass-tile.png");
