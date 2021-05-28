@@ -87,10 +87,15 @@ public class BattlefieldView implements TileVisitor
     return(sprites.towersView(teamID));
   }
 
+  ImageView projectileView(Projectile projectile) {
+    int typeID = projectile.typeOfProjectile();
+    int rotation = projectile.rotationOfProjectile();
+    return(sprites.projectileView(typeID, rotation));
+  }
+
   ImageView monsterView(Monster monster) {
     return sprites.monsterView(monster.monsterID());
   }
-
 
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
     tiles.getChildren().add(groundView(tile));
@@ -100,7 +105,9 @@ public class BattlefieldView implements TileVisitor
     StackPane stack = new StackPane();
     stack.getChildren().add(groundView(battlefield.groundAt(d.x(), d.y())));
     stack.getChildren().add(dView);
-    drawLifeBar(stack, d);
+    if(!(d instanceof Projectile)) {
+      drawLifeBar(stack, d);
+    }
     tiles.getChildren().add(stack);
   }
 
@@ -167,8 +174,11 @@ public class BattlefieldView implements TileVisitor
     displayDestructible(tower, towerView(tower));
   }
 
+  @Override public void visitProjectile(Projectile projectile) {
+    displayDestructible(projectile, projectileView(projectile));
+  }
+
   @Override public void visitMonster(Monster monster) {
     displayDestructible(monster, monsterView(monster));
   }
-
 }

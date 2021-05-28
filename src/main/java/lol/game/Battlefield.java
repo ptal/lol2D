@@ -109,6 +109,14 @@ public class Battlefield {
     return true;
   }
 
+  public void clean() {
+    new BattlefieldTraversal(this).visitFullMap(new TileVisitor(){
+      @Override public void visitProjectile(Projectile p) {
+        destroy(p);
+      }
+    });
+  }
+
   // We can place something at (x, y) if:
   //   * The ground tile at (x, y) is walkable.
   //   * No other destructible is present at (x, y).
@@ -203,6 +211,11 @@ public class Battlefield {
           default: throw new RuntimeException("Unknown Nexus Color in Battlefield.toString");
         }
         newline(n.x());
+      }
+
+      @Override public void visitProjectile(Projectile p) {
+        map.append('p');
+        newline(p.x());
       }
     });
     return map.toString();

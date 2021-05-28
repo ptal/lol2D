@@ -60,6 +60,7 @@ public class Team {
 
   public boolean championAttack(int championID, int x, int y) {
     Champion champion = champions.get(championID);
+    boolean championIsArcher = "Archer".equals(champion.name());
     boolean[] attacked = {false};
     battlefield.visit(x, y, new TileVisitor(){
       @Override public void visitDestructible(Destructible d) {
@@ -74,6 +75,8 @@ public class Team {
     });
     if(!attacked[0]) {
       System.out.println("Invalid attack target of champion " + champion.name());
+    } else if(championIsArcher) {
+      flyProjectile(champion.x(), champion.y(), x, y, Projectile.ARROW);
     }
     return attacked[0];
   }
@@ -92,6 +95,33 @@ public class Team {
     if(champIdx[0] != champions.size()) {
       throw new RuntimeException("Cannot place all champions because all spawned spots next to the Nexus are already taken.");
     }
+  }
+
+  private void flyProjectile(int xA, int yA, int xB, int yB, int typeID) {
+    boolean placed = false;
+    int deltaX = xA - xB;
+    int deltaY = yA - yB;
+    int rotation = angleBetweenTiles(deltaX, deltaY) + 90;// The 90 is here as a constant because the arrow sprite is looking 270 degrees down
+    Projectile p = new Projectile(typeID, rotation);
+    for (int j = 0; j < Math.abs(deltaX) + 1; j++) {
+      for (int i = 0; i < Math.abs(deltaY) + 1; i++) {
+        if (!(Math.max(xA, xB) - j == xA && Math.max(yA, yB) - i == yB) && !(Math.max(xA, xB) - j == xB && Math.max(yA, yB) - i == yA)) {
+          if(battlefield.placeAt(p, Math.max(xA, xB) - j, Math.max(yA, yB) - i)) {
+            placed = true;
+            break;
+          }
+        }
+      }
+      if(placed) {
+        break;
+      }
+    }
+  }
+
+  private int angleBetweenTiles(int dX, int dY) {
+    double angle = Math.atan2(dY, dX) * 180 / Math.PI;
+    int roundedAngle = (int) Math.round(angle);
+    return roundedAngle;
   }
 
   @Override public String toString() {

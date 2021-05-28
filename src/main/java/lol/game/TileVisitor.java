@@ -25,6 +25,10 @@ public interface TileVisitor {
     visitDestructible(t);
   }
 
+  default void visitProjectile(Projectile p) {
+    visitDestructible(p);
+}
+
   default void visitMonster(Monster monster) {
     visitDestructible(monster);
   }

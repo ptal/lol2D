@@ -3,13 +3,18 @@ package lol.ui;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lol.game.Nexus;
+import lol.game.Projectile;
 import lol.game.Monster;
 
 public class Sprites {
   private Image grassImage;
   private Image treeImage;
   private Image rockImage;
+
+  private Image[] projectileImages = new Image[1];
+
   private Image[] monsterImages = new Image[2];
+
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
   private Image[] towerImages = new Image[2];
@@ -23,8 +28,12 @@ public class Sprites {
     rockImage = new Image("sprites/rock-tile.png");
     treeImage = new Image("sprites/tree-tile.png");
 
+
+    projectileImages[Projectile.ARROW] = new Image("sprites/arrow.png");
+
     monsterImages[Monster.DRAGON] = new Image("sprites/dragon.png");
     monsterImages[Monster.NASHOR] = new Image("sprites/nashor.png");
+
 
     archerImages[Nexus.BLUE] = new Image("sprites/blue-archer.png");
     archerImages[Nexus.RED] = new Image("sprites/red-archer.png");
@@ -54,8 +63,22 @@ public class Sprites {
     return view;
   }
 
+  private ImageView makeViewWithRotation(Image image, int rotation) {
+    ImageView view = new ImageView();
+    view.setImage(image);
+    view.setRotate(rotation);
+    return view;
+  }
+
   private boolean checkTeamID(int teamID, String errorMessage){
     if (teamID > 2){
+      throw new RuntimeException(errorMessage);
+    }
+    return true;
+  }
+
+  private boolean checkTypeID(int typeID, String errorMessage){
+    if (typeID > 1){
       throw new RuntimeException(errorMessage);
     }
     return true;
@@ -81,6 +104,11 @@ public class Sprites {
   public ImageView towersView(int teamID) {
     checkTeamID(teamID, "Unsupported Tower's color. There is only 2 teams.");
     return makeView(towerImages[teamID]);
+  }
+
+  public ImageView projectileView(int typeID, int rotation) {
+    checkTypeID(typeID, "Unsupported projectile type. There is only 1 type.");
+    return makeViewWithRotation(projectileImages[typeID], rotation);
   }
 
   public ImageView treeView() {

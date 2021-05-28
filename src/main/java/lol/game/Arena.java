@@ -94,6 +94,7 @@ public class Arena {
   }
 
   public void applyTurn(Turn turn) {
+    battlefield.clean();
     turn.accept(new ApplyAction());
   }
 
