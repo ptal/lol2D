@@ -14,6 +14,7 @@ public class Server implements Runnable {
   private Arena arena;
   private LOL2D ui;
   private Battlefield battlefield;
+  private int MILLISECOND_PER_TURN = 2000;
 
   public Server(LOL2D ui, Battlefield battlefield) {
     this.ui = ui;
@@ -52,7 +53,7 @@ public class Server implements Runnable {
     spawnPhase();
     arena.startGamePhase();
     ui.update();
-    wait(2000);
+    wait(MILLISECOND_PER_TURN);
   }
 
   private void wait(int timeInMS) {
@@ -82,7 +83,7 @@ public class Server implements Runnable {
         arena.applyTurn(turn);
         ui.update();
         broadcast(turn);
-        wait(2000);
+        wait(MILLISECOND_PER_TURN);
       }
     }
   }

@@ -27,3 +27,6 @@ hs_err_pid*
 
 # .DStore files
 *.DS_Store
+.idea
+lol2D.iml
+lib
