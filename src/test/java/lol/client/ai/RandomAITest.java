@@ -12,9 +12,13 @@ class RandomAITest{
 	Turn turn = new Turn();
 
 	@Test
-	public Turn testChampionSelect() {
+	public Turn testChampionSelect extends Attacker() {
     String championName = Warrior;
     assertTrue(Nexus.BLUE);
+    String championName = Archer;
+    assertTrue(Nexus.RED);
+    String championName != Archer or Warrior;
+    assertTrue(RuntimeException);
 
 	}
 	@Test

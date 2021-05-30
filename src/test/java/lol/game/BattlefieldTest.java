@@ -14,13 +14,6 @@ class BattlefieldTest {
       	
     }
     @Test
-    public boolean testPlaceAt(Destructible d, int x, int y) {
-    	x==3; y==2;
-      	assertEquals(d.place(x, y),battlefield[3],[2]);
-      	
-
-    }
-    @Test
     public void visitAdjacent(int x, int y, int radius, TileVisitor visitor) {
     	r == 3;
     	xCorner == 6;
