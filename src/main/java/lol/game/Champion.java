@@ -50,6 +50,44 @@ public class Champion extends Attacker {
     return distanceFrom(toX, toY) <= speed;
   }
 
+
+  //for speed spells
+  public boolean canWalkToEnhanced(int toX, int toY, int factor) {
+    return distanceFrom(toX, toY) <= speed*factor;
+  }
+
+  //for healing spells
+  public void heal(int hp) {
+    super.currentHP = Math.min(super.currentHP + hp, super.initialHP);
+  }
+
+  public boolean canAttack(int toX, int toY) {
+    return distanceFrom(toX, toY) <= rangeOfAttack;
+  }
+
+  //for changing the range of attack in spells
+  public boolean canAttackEnhanced(int toX, int toY, int factor) {
+    return distanceFrom(toX, toY) <= rangeOfAttack*factor;
+  }
+
+  public boolean attack(Destructible d) {
+    if(canAttack(d.x(), d.y())) {
+      d.hit(damages);
+      return true;
+    }
+    return false;
+  }
+
+  //for damage spells
+  public boolean attackEnhanced(Destructible d, int factor) {
+    if(canAttack(d.x(), d.y())) {
+      d.hit(damages*factor);
+      return true;
+    }
+    return false;
+  }
+
+
   @Override public String toString() {
     return name() + "  (speed: " + this.speed + " - damages: " + this.damages() + ")";
   }

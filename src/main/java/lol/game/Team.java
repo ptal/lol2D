@@ -78,6 +78,23 @@ public class Team {
     return attacked[0];
   }
 
+  public boolean championDoubleDamage(int championID,int x, int y){
+    Champion champion = champions.get(championID);
+    boolean[] attacked = {false};
+    battlefield.visit(x, y, new TileVisitor(){
+      @Override public void visitDestructible(Destructible d) {
+        attacked[0] = champion.attackEnhanced(d,2);
+        if(d.isDead()){
+          battlefield.destroy(d);
+        }
+      }
+    });
+    if(!attacked[0]) {
+      System.out.println("Invalid attack target of champion " + champion.name());
+    }
+    return attacked[0];
+  }
+
   public void makeSpawnTurn(final Turn turn) {
     int[] champIdx = {0};
     traversal.visitAdjacent(nexus.x(), nexus.y(), 1, new TileVisitor(){

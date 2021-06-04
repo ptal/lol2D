@@ -77,6 +77,19 @@ public class Arena {
       }
     }
 
+    public void visitDoubleDamage(int teamID, int championID, int x, int y) {
+      if(phase == Phase.GAME) {
+        if(!championsWhoActed.contains(championID)) {
+          if(teams.get(teamID).championDoubleDamage(championID, x, y)) {
+            championsWhoActed.add(championID);
+          }
+        }
+      }
+      else {
+        System.out.println("Team " + teamID + " tried to move a champion outside a GAME phase.");
+      }
+    }
+
     public void visitChampionSelect(int teamID, String championName) {
       if(phase == Phase.CHAMP_SELECT) {
         try {
@@ -92,6 +105,7 @@ public class Arena {
       }
     }
   }
+
 
   public void applyTurn(Turn turn) {
     turn.accept(new ApplyAction());

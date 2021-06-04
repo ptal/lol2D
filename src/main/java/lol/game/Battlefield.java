@@ -142,6 +142,7 @@ public class Battlefield {
 
   public void destroy(Destructible d) {
       battlefield[d.y()][d.x()] = Optional.empty();
+
   }
 
   // Visit a tile using the visitor.

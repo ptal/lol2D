@@ -3,8 +3,8 @@ package lol.game;
 
 // class is abstract, since it should never be used alone
 public abstract class Attacker extends Destructible {
-    private int rangeOfAttack;
-    private int damages;
+    protected int rangeOfAttack;
+    protected int damages;
 
     public Attacker(int hp, int rangeOfAttack, int damages) {
         super(hp);
