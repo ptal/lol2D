@@ -1,0 +1,15 @@
+.root {
+  -fx-background-image: url(background-img.jpg);
+  -fx-background-size: cover, auto;
+}
+
+.button {
+  -fx-background-color: rgb(243, 5, 251);
+  -fx-font-color: #fff;
+  -fx-background-border: 20px;
+  -fx-font-size: 20px;
+}
+
+.button:hover {
+  -fx-background-color: rgb(5, 71, 251);
+}
