@@ -22,7 +22,7 @@ public class RandomAI extends AIBase {
       default: throw new RuntimeException("Unknown team color.");
     }
     turn.registerAction(new ChampionSelect(teamID, championName));
-    turn.registerAction(new ChampionSelect(teamID, "Warrior"));
+    turn.registerAction(new ChampionSelect(teamID, "Wizard"));
     turn.registerAction(new ChampionSelect(teamID, "Archer"));
     return turn;
   }
