@@ -33,8 +33,8 @@ public class Sprites {
     warriorImages[Nexus.BLUE] = new Image("sprites/blue-warrior.png");
     warriorImages[Nexus.RED] = new Image("sprites/red-warrior.png");
 
-    wizardImages[Nexus.BLUE] = new Image("sprites/blue-wizard") //https://craftpix.net/freebies/wizard-character-free-sprite/
-    wizardImages[Nexus.RED] = new Image("sprites/red-wizard") //https://craftpix.net/freebies/wizard-character-free-sprite/
+    wizardImages[Nexus.BLUE] = new Image("sprites/blue-wizard"); //https://craftpix.net/freebies/wizard-character-free-sprite/
+    wizardImages[Nexus.RED] = new Image("sprites/red-wizard"); //https://craftpix.net/freebies/wizard-character-free-sprite/
 
     nexusImages[Nexus.BLUE] = new Image("sprites/blue-nexus.png");
     nexusImages[Nexus.RED] = new Image("sprites/red-nexus.png");
