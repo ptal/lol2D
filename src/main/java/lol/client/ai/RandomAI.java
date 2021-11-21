@@ -15,7 +15,13 @@ public class RandomAI extends AIBase {
   }
   public Turn championSelect() {
     Turn turn = new Turn();
-    turn.registerAction(new ChampionSelect(teamID, "Wizard"));
+    String championName;
+    switch(teamID) {
+      case Nexus.BLUE: championName = "Warrior"; break;
+      case Nexus.RED: championName = "Archer"; break;
+      default: throw new RuntimeException("Unknown team color.");
+    }
+    turn.registerAction(new ChampionSelect(teamID, championName));
     turn.registerAction(new ChampionSelect(teamID, "Warrior"));
     turn.registerAction(new ChampionSelect(teamID, "Archer"));
     return turn;
