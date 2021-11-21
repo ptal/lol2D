@@ -22,10 +22,15 @@ public class Champion extends Attacker {
     return new Champion(teamID, "Warrior", Config.HP_WARRIOR, Config.RANGE_OF_ATTACK_WARRIOR, Config.DAMAGE_WARRIOR, Config.SPEED_WARRIOR);
   }
 
+  public static Champion makeWizard(int teamID) {
+    return new Champion(teamID, "Wizard", Config.HP_WIZARD, Config.RANGE_OF_ATTACK_WIZARD, Config.DAMAGE_WIZARD, Config.SPEED_WIZARD);
+  }
+
   public static Champion make(int teamID, String name) {
     switch(name) {
       case "Archer": return makeArcher(teamID);
       case "Warrior": return makeWarrior(teamID);
+      case "Wizard": return makeWizard(teamID);
       default: throw new RuntimeException("The champion " + name + " does not exist.");
     }
   }

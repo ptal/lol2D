@@ -12,6 +12,7 @@ public class Sprites {
   private Image[] monsterImages = new Image[2];
   private Image[] archerImages = new Image[2];
   private Image[] warriorImages = new Image[2];
+  private Image[] wizardImages = new Image[2];
   private Image[] towerImages = new Image[2];
   private Image[] nexusImages = new Image[2];
   private Image[] nexusOnfire = new Image[2];
@@ -31,6 +32,9 @@ public class Sprites {
 
     warriorImages[Nexus.BLUE] = new Image("sprites/blue-warrior.png");
     warriorImages[Nexus.RED] = new Image("sprites/red-warrior.png");
+
+    wizardImages[Nexus.BLUE] = new Image("sprites/blue-wizard") //https://craftpix.net/freebies/wizard-character-free-sprite/
+    wizardImages[Nexus.RED] = new Image("sprites/red-wizard") //https://craftpix.net/freebies/wizard-character-free-sprite/
 
     nexusImages[Nexus.BLUE] = new Image("sprites/blue-nexus.png");
     nexusImages[Nexus.RED] = new Image("sprites/red-nexus.png");
@@ -69,6 +73,9 @@ public class Sprites {
     }
     else if(name.equals("Warrior")){
       return makeView(warriorImages[teamID]);
+    }
+    else if(name.equals("Wizard")){
+      return makeView(wizardImages[teamID]);
     }
     else {throw new RuntimeException("No champion named `" + name + "`.");}
   }

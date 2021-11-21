@@ -9,10 +9,16 @@ public class Config {
   public static final int DAMAGE_ARCHER = 2;
   public static final int SPEED_ARCHER = 2;
 
+  public static final int HP_WIZARD = 8;
+  public static final int RANGE_OF_ATTACK_WIZARD = 2;
+  public static final int DAMAGE_WIZARD = 3;
+  public static final int SPEED_WIZARD = 1;
+
   public static final int HP_WARRIOR = 15;
   public static final int RANGE_OF_ATTACK_WARRIOR = 1;
   public static final int DAMAGE_WARRIOR = 3;
   public static final int SPEED_WARRIOR = 2;
+
 
   public static final int HP_TOWER = 5;
   public static final int RANGE_OF_ATTACK_TOWER = 2;

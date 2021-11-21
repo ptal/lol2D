@@ -17,10 +17,12 @@ public class Sound  {
    private File shootArrow;
    private File swordHit;
    private File explodeBuilding;
+   private File spellCast;
    public Sound(){      
       this.shootArrow = openSoundFile("attack_sounds/arrow.wav");
       this.swordHit = openSoundFile("attack_sounds/sword.wav");
       this.explodeBuilding = openSoundFile("attack_sounds/explode.wav");
+      this.spellCast = openSoundFile("attack_sounds/spell.wav"); //https://www.epidemicsound.com/music/featured/
    }
    public void attackSound(String entity){
       switch (entity.toLowerCase()) {
@@ -29,7 +31,10 @@ public class Sound  {
             break;
          case "warrior":
             playSound(this.swordHit);
-            break;      
+            break;
+         case "wizard":
+            playSound(this.spellCast);
+            break;
          default:
             throw new RuntimeException("The sound for " + entity + " doesn't exist");            
       }
