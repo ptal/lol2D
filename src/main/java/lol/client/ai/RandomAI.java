@@ -15,9 +15,9 @@ public class RandomAI extends AIBase {
   }
   public Turn championSelect() {
     Turn turn = new Turn();
-    turn.registerAction(new ChampionSelect(teamID, "Warrior"));
     turn.registerAction(new ChampionSelect(teamID, "Wizard"));
-    turn.registerAction(new ChampionSelect(teamID, "Archer"));
+    turn.registerAction(new ChampionSelect(teamID, "Wizard"));
+    turn.registerAction(new ChampionSelect(teamID, "Wizard"));
     return turn;
   }
 

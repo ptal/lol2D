@@ -36,7 +36,7 @@ public class Sound  {
             playSound(this.spellCast);
             break;
          default:
-            throw new RuntimeException("The sound for " + entity + " doesn't exist");            
+            throw new RuntimeException("The sound for " + entity.toLowerCase() + " doesn't exist");
       }
    } 
    public void destroyBuilding(){
@@ -54,7 +54,7 @@ public class Sound  {
          AudioInputStream audioIn = AudioSystem.getAudioInputStream(sound);         
          Clip clip = AudioSystem.getClip();         
          clip.open(audioIn);
-         setVolume(clip);
+         //setVolume(clip);
          clip.start();        
       } catch (UnsupportedAudioFileException e) {
          System.out.println("The file type and format are not recognized");
@@ -67,6 +67,7 @@ public class Sound  {
       }
    }  
    private void setVolume(Clip clip){
+
       FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
       gainControl.setValue(-15.0f);//decibels
    }
