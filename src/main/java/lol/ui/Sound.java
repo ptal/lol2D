@@ -44,8 +44,8 @@ public class Sound  {
    }  
 
    private void playSound(File soundFile) {
-      Media sound = new Media(soundFile.toURI().toString());
-      MediaPlayer mediaPlayer = new MediaPlayer(sound);
-      mediaPlayer.play();
+      // Media sound = new Media(soundFile.toURI().toString());
+      // MediaPlayer mediaPlayer = new MediaPlayer(sound);
+      // mediaPlayer.play();
    }
 }
