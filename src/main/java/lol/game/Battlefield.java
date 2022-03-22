@@ -30,7 +30,6 @@ public class Battlefield {
       }
     }
 
-
     public static char stringOf(GroundTile groundTile) {
       switch(groundTile) {
         case GRASS: return '~';

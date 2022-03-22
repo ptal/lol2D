@@ -91,7 +91,6 @@ public class BattlefieldView implements TileVisitor
     return sprites.monsterView(monster.monsterID());
   }
 
-
   @Override public void visitGround(Battlefield.GroundTile tile, int x, int y) {
     tiles.getChildren().add(groundView(tile));
   }

@@ -51,14 +51,15 @@ public class RandomAI extends AIBase {
   }
 
   protected void tryMove(Turn turn) {
-    arena.teamOf(teamID).forEachChampion((champion, id) ->
+    arena.teamOf(teamID).forEachChampion((champion, id) -> {
+      ArrayList<Move> possibleMoves = new ArrayList<>();
       traversal.visitAdjacent(champion.x(), champion.y(), champion.walkSpeed(), new TileVisitor(){
         public void visitGrass(int x, int y) {
-          if(random.nextInt() % 3 == 0) {
-            turn.registerAction(new Move(teamID, id, x, y));
-          }
+          possibleMoves.add(new Move(teamID, id, x, y));
         }
-      }));
+      });
+      turn.registerAction(possibleMoves.get(random.nextInt(possibleMoves.size())));
+    });
   }
 
   protected void tryAttackMonster(Turn turn) {
